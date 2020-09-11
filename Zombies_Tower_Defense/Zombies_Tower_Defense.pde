@@ -57,6 +57,13 @@ void mouseClicked() {
   }
 }
 
+void die() {
+
+  if (z.delete()) {
+    z.remove();
+  }
+}
+
 void keyPressed() {
   if (key == ENTER) {
     s.startWave(waveNumber, lk[levelNumber].start.x, lk[levelNumber].start.y);
