@@ -14,7 +14,6 @@ LevelKoords[] lk = new LevelKoords[levelsTotal+1];
 float shopLength = 300;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
-
 void setup() {
   size(1200, 700);
   pathWidth = (width-shopLength)/13;
