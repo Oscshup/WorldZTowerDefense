@@ -3,102 +3,59 @@ class Map {
   int level;
   float xMax;
   float yMax;
+  float xStart;
+  float yStart;
+  float pW;
+  
+  color brown = color(117,75,13);
 
-  Map(float xMax_, float yMax_, int level_) {
+  Map(float pW_, int level_, float xMax_, float yMax_, float xStart_, float yStart_) {
     level = level_;
+    xStart = xStart_;
+    yStart = yStart_;
     xMax = xMax_;
     yMax = yMax_;
+    pW = pW_;
   }
 
   void display() {
-
-    stroke(0);
-    strokeWeight(3);
+    noStroke();
+    fill(brown);
+    rectMode(CENTER);
+          
     if (level == 3) {
-      line(xMax/2-pathWidth/2, 0, xMax/2-pathWidth/2, yMax/3);
-      line(xMax/2+pathWidth/2, 0, xMax/2+pathWidth/2, yMax/3+pathWidth);
-      
-      line(xMax/2-pathWidth/2, yMax/3, xMax/8, yMax/3);
-      line(xMax/2+pathWidth/2, yMax/3+pathWidth, xMax/8+pathWidth, yMax/3+pathWidth);
-      
-      line(xMax/8, yMax/3, xMax/8, yMax*2/3);
-      line(xMax/8+pathWidth, yMax/3+pathWidth, xMax/8+pathWidth, yMax*2/3-pathWidth);
-      
-      line(xMax/8, yMax*2/3, xMax*2/3+pathWidth, yMax*2/3);
-      line(xMax/8+pathWidth, yMax*2/3-pathWidth, xMax*2/3, yMax*2/3-pathWidth);
-      
-      line(xMax*2/3+pathWidth, yMax*2/3, xMax*2/3+pathWidth, pathWidth*5/2);
-      line(xMax*2/3, yMax*2/3-pathWidth, xMax*2/3, pathWidth*3/2);
-      
-      line(xMax*2/3+pathWidth, pathWidth*5/2, xMax-xMax/10-pathWidth, pathWidth*5/2);
-      line(xMax*2/3, pathWidth*3/2, xMax-xMax/10, pathWidth*3/2);
-      
-      line(xMax-xMax/10-pathWidth, pathWidth*5/2, xMax-xMax/10-pathWidth, yMax*2/3+pathWidth*3/2);
-      line(xMax-xMax/10, pathWidth*3/2, xMax-xMax/10, yMax*2/3+pathWidth*5/2);
-      
-      line(xMax-xMax/10-pathWidth, yMax*2/3+pathWidth*3/2, xMax/3, yMax*2/3+pathWidth*3/2);
-      line(xMax-xMax/10, yMax*2/3+pathWidth*5/2, xMax/3+pathWidth, yMax*2/3+pathWidth*5/2);
-      
-      line(xMax/3, yMax*2/3+pathWidth*3/2, xMax/3, yMax);
-      line(xMax/3+pathWidth, yMax*2/3+pathWidth*5/2, xMax/3+pathWidth, yMax);
+      rect(xStart+(xMax-xStart)/2, yStart+(yMax/3-yStart)/2, pW, yMax/3-yStart);
+      rect(xStart+xMax/8+pW/2+((xMax/2-pW/2)-xMax/8)/2, yStart+yMax/3+(yMax/3+pW-yMax/3)/2, (xMax/2-pW/2)-xMax/8+pW, pW);
+      rect(xStart+xMax/8+pW/2, yStart+yMax/3+(yMax*2/3-yMax/3)/2, pW, yMax*2/3-yMax/3);
+      rect(xStart+xMax/8+(xMax*2/3+pW-xMax/8)/2, yStart+yMax*2/3-pW/2, xMax*2/3+pW-xMax/8, pW);
+      rect(xStart+xMax*2/3+pW/2, yStart+pW*3/2+(yMax*2/3-pW*3/2)/2, pW, yMax*2/3-pW*3/2);
+      rect(xStart+xMax*2/3+(xMax-xMax/10-xMax*2/3)/2, yStart+pW*3/2+pW/2, xMax-xMax/10-xMax*2/3, pW);
+      rect(xStart+xMax-xMax/10-pW/2, yStart+pW*3/2+(yMax*2/3+pW*5/2-pW*3/2)/2, pW, yMax*2/3+pW*5/2-pW*3/2);
+      rect(xStart+xMax/3+(xMax-xMax/10-xMax/3)/2, yStart+yMax*2/3+pW*2, xMax-xMax/10-xMax/3, pW);
+      rect(xStart+xMax/3+pW/2, yStart+yMax*2/3+pW*3/2+(yMax-(yMax*2/3+pW*3/2))/2, pW, yMax-(yMax*2/3+pW*3/2));
     }
     else if(level == 2){
-      line(xMax/8,0,xMax/8,yMax*3/4+pathWidth);
-      line(xMax/8+pathWidth, 0, xMax/8+pathWidth, yMax*3/4);
-      
-      line(xMax/8, yMax*3/4+pathWidth, xMax/2, yMax*3/4+pathWidth);
-      line(xMax/8+pathWidth, yMax*3/4, xMax/2-pathWidth, yMax*3/4);
-      
-      line(xMax/2, yMax*3/4+pathWidth, xMax/2, yMax/4);
-      line(xMax/2-pathWidth, yMax*3/4, xMax/2-pathWidth, yMax/4-pathWidth);
-      
-      line(xMax/2, yMax/4, xMax*3/4, yMax/4);
-      line(xMax/2-pathWidth, yMax/4-pathWidth, xMax*3/4+pathWidth, yMax/4-pathWidth);
-      
-      line(xMax*3/4, yMax/4, xMax*3/4, yMax/2-pathWidth);
-      line(xMax*3/4+pathWidth, yMax/4-pathWidth, xMax*3/4+pathWidth, yMax/2);
-      
-      line(xMax*3/4, yMax/2-pathWidth, xMax/2+pathWidth*3/2, yMax/2-pathWidth);
-      line(xMax*3/4+pathWidth, yMax/2, xMax/2+pathWidth*5/2, yMax/2);
-      
-      line(xMax/2+pathWidth*3/2, yMax/2-pathWidth, xMax/2+pathWidth*3/2, yMax*3/4+pathWidth);
-      line(xMax/2+pathWidth*5/2, yMax/2, xMax/2+pathWidth*5/2, yMax*3/4);
-      
-      line(xMax/2+pathWidth*3/2, yMax*3/4+pathWidth, xMax, yMax*3/4+pathWidth);
-      line(xMax/2+pathWidth*5/2, yMax*3/4, xMax, yMax*3/4);
-    } else if(level == 1){
-      line(0,yMax*3/4+pathWidth, xMax/7, yMax*3/4+pathWidth);
-      line(0,yMax*3/4, xMax/7-pathWidth, yMax*3/4);
-      
-      line(xMax/7, yMax*3/4+pathWidth, xMax/7, pathWidth*2);
-      line(xMax/7-pathWidth, yMax*3/4, xMax/7-pathWidth, pathWidth);
-      
-      line(xMax/7, pathWidth*2, xMax-pathWidth*3/2, pathWidth*2);
-      line(xMax/7-pathWidth, pathWidth, xMax-pathWidth/2, pathWidth);
-      
-      line(xMax-pathWidth*3/2, pathWidth*2, xMax-pathWidth*3/2, yMax/2-pathWidth);
-      line(xMax-pathWidth/2, pathWidth, xMax-pathWidth/2, yMax/2);
-      
-      line(xMax-pathWidth*3/2, yMax/2-pathWidth, xMax/2+pathWidth, yMax/2-pathWidth);
-      line(xMax-pathWidth/2, yMax/2, xMax/2, yMax/2);
-      
-      line(xMax/2+pathWidth, yMax/2-pathWidth, xMax/2+pathWidth, pathWidth*3);
-      line(xMax/2, yMax/2, xMax/2, pathWidth*4);
-      
-      line(xMax/2+pathWidth, pathWidth*3, xMax/7+pathWidth*3/2, pathWidth*3);
-      line(xMax/2, pathWidth*4, xMax/7+pathWidth*5/2, pathWidth*4);
-      
-      line(xMax/7+pathWidth*3/2, pathWidth*3, xMax/7+pathWidth*3/2, yMax/2+5*pathWidth/2);
-      line(xMax/7+pathWidth*5/2, pathWidth*4, xMax/7+pathWidth*5/2, yMax/2+3*pathWidth/2);
-      
-      line(xMax/7+pathWidth*3/2, yMax/2+5*pathWidth/2, xMax/2, yMax/2+5*pathWidth/2);
-      line(xMax/7+pathWidth*5/2, yMax/2+3*pathWidth/2, xMax/2+pathWidth, yMax/2+3*pathWidth/2);
-      
-      line(xMax/2, yMax/2+5*pathWidth/2, xMax/2, yMax*3/4+pathWidth);
-      line(xMax/2+pathWidth, yMax/2+3*pathWidth/2, xMax/2+pathWidth, yMax*3/4);
-      
-      line(xMax/2, yMax*3/4+pathWidth, xMax, yMax*3/4+pathWidth);
-      line(xMax/2+pathWidth, yMax*3/4, xMax, yMax*3/4);
+      rect(xMax/8+pW/2, yStart+(yMax*3/4+pW-yStart)/2, pW, yMax*3/4+pW-yStart);
+      rect(xMax/8+(xMax/2-xMax/8)/2, yMax*3/4+pW/2, xMax/2-xMax/8, pW);
+      rect(xMax/2-pW/2, yMax/4-pW+(yMax*3/4+pW-(yMax/4-pW))/2, pW, yMax*3/4+pW-(yMax/4-pW));
+      rect(xMax/2-pW+(xMax*3/4+pW-(xMax/2-pW))/2, yMax/4-pW/2, xMax*3/4+pW-(xMax/2-pW), pW);
+      rect(xMax*3/4+pW/2, yMax/4-pW+(yMax/2-(yMax/4-pW))/2, pW, yMax/2-(yMax/4-pW));
+      rect(xMax/2+pW*3/2+(xMax*3/4-(xMax/2+pW*3/2))/2, yMax/2-pW/2, xMax*3/4-(xMax/2+pW*3/2), pW);
+      rect(xMax/2+pW*2, yMax/2-pW+(yMax*3/4+pW-(yMax/2-pW))/2, pW, yMax*3/4+pW-(yMax/2-pW));
+      rect(xMax/2+pW*3/2+(xMax-(xMax/2+pW*3/2))/2, yMax*3/4+pW/2, xMax-(xMax/2+pW*3/2), pW);
+    } 
+    else if(level == 1){
+      rect(xStart+(xMax/7-xStart)/2, yMax*3/4+pW/2, xMax/7-xStart, pW);
+      rect(xMax/7-pW/2, pW +(yMax*3/4+pW-pW)/2, pW, yMax*3/4+pW-pW);
+      rect(xMax/7-pW+(xMax-pW/2-(xMax/7-pW))/2, pW*3/2, xMax-pW/2-(xMax/7-pW), pW);
+      rect(xMax-pW, pW+(yMax/2-pW)/2, pW, yMax/2-pW);
+      rect(xMax/2+(xMax-pW/2-xMax/2)/2, yMax/2-pW/2, xMax-pW/2-xMax/2, pW);
+      rect(xMax/2+pW/2, yMax/2-pW+(pW*4-(yMax/2-pW))/2, pW, pW*4-(yMax/2-pW));
+      rect(xMax/7+pW*3/2+(xMax/2+pW-(xMax/7+pW*3/2))/2, pW*7/2, xMax/2+pW-(xMax/7+pW*3/2), pW);
+      rect(xMax/7+pW*2, pW*3+(yMax/2+5*pW/2-pW*3)/2, pW, yMax/2+5*pW/2-pW*3);
+      rect(xMax/7+pW*3/2+(xMax/2+pW-(xMax/7+pW*3/2))/2, yMax/2+pW*2, xMax/2+pW-(xMax/7+pW*3/2), pW);
+      rect(xMax/2+pW/2, yMax/2+3*pW/2+(yMax*3/4+pW-(yMax/2+3*pW/2))/2, pW, yMax*3/4+pW-(yMax/2+3*pW/2));
+      rect(xMax/2+(xMax-xMax/2)/2, yMax*3/4+pW/2, xMax-xMax/2, pW);
     }
   }
 }
