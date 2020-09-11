@@ -26,7 +26,7 @@ class Screen {
   }
 
   void gameScreen(int level) {
-    background(255);
+    background(0,230,0);
     m[level].display();
     shop.display();
     if (waveActive == true) {

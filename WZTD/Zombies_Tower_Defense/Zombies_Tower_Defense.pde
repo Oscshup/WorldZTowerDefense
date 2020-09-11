@@ -12,19 +12,19 @@ Player p;
 int waveNumber = 1;
 LevelKoords[] lk = new LevelKoords[levelsTotal+1];
 float shopLength = 300;
-StartButtons[] sb = new StartButtons[levelsTotal];
+StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 
 void setup() {
   size(1200, 700);
+  pathWidth = (width-shopLength)/13;
   for (int i = 0; i < m.length; i++) {
-    m[i] = new Map(width-shopLength, height, i);
+    m[i] = new Map(pathWidth, i, width-shopLength, height, 0, 0);
   }
   for (int i = 0; i < sb.length; i++) {
-    sb[i] = new StartButtons(i*width/3+width/4, height/2, width/4, width/4, i+1);
+    sb[i] = new StartButtons(i*width/4, height/2, width/4, width/4, i);
   }
   s = new Screen();
-  pathWidth = width/13;
   for (int i = 0; i < lk.length; i++) {
     if (i == 0) {
       lk[i] = new LevelKoords(0, 0, 0, 0);
