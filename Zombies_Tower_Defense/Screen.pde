@@ -31,7 +31,7 @@ class Screen {
     m[level].display();
     shop.display();
 
-    //tower attack the zombie, if distance is smaller than the radius, attack!
+   //tower attack the zombie, if distance is smaller than the radius, attack!
     for (Tower tower : t) {
       PVector target = new PVector( width-100, 100);
       if (dist(tower.location.x, tower.location.y, target.x, target.y) < tower.AttackRadius ) {
@@ -48,18 +48,19 @@ class Screen {
       b.update();
     }
 
-
     if (waveActive == true) {
-      z.move();
-      z.update();
-      z.display();
+      for (Zombie zombie : z) {
+        zombie.move();
+        zombie.update();
+        zombie.display();
+      }
     }
   }
 
   void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
     PVector tempVel = new PVector(0, 1);
-    z = new Fast_Zombie(startX_, startY_, 20, 50, tempVel, 10, color(150, 70, 30));
+    z.add(new Fast_Zombie(startX_, startY_, 20, 50, tempVel, 10, color(150, 70, 30)));
   }
 
   void endScreen() {

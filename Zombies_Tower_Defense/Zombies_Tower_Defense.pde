@@ -1,5 +1,7 @@
 import controlP5.*;
 
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+
 float pathWidth;
 Timer timer;
 int levelsTotal = 3;
@@ -16,6 +18,8 @@ int startHealth = 100;
 int waveNumber = 1;
 float shopLength = 300;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
+
+
 
 void setup() {
   size(1200, 700);
