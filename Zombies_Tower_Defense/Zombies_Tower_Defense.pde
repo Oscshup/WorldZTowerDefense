@@ -1,30 +1,27 @@
+float pathWidth;
 int levelsTotal = 3;
 int levelNumber = 3;
+ArrayList<Tower> t = new ArrayList<Tower>();
 Map[] m = new Map[levelsTotal+1];
 Screen s;
+Shop shop;
 int screenNumber = 0;
 int startHealth = 100;
 Zombie z;
 Player p;
 int waveNumber = 1;
 LevelKoords[] lk = new LevelKoords[levelsTotal+1];
-float shopLength = 100;
-float pathWidth;
+float shopLength = 300;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
-
 void setup() {
-  size(900, 900);
-  Start();
-}
-
-void Start() {
-  for (int i = 0; i < sb.length; i++) {
-    sb[i] = new StartButtons(i*width/4, height/2, width/4, width/4, i);
-  }
+  size(1200, 700);
   pathWidth = (width-shopLength)/13;
   for (int i = 0; i < m.length; i++) {
     m[i] = new Map(pathWidth, i, width-shopLength, height, 0, 0);
+  }
+  for (int i = 0; i < sb.length; i++) {
+    sb[i] = new StartButtons(i*width/4, height/2, width/4, width/4, i);
   }
   s = new Screen();
   for (int i = 0; i < lk.length; i++) {
@@ -38,6 +35,8 @@ void Start() {
       lk[i] = new LevelKoords(width/2, 0, width/3+pathWidth/2, height);
     }
   }
+  shop = new Shop(200);
+ 
 }
 
 void draw() {
