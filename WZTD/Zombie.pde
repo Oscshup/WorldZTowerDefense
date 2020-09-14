@@ -12,7 +12,6 @@ class Zombie {
   Zombie(float x_, float y_, float r_, float health_, float damage_) {
     location = new PVector(x_, y_);
     velocity = new PVector(startVel(m[levelNumber]).x, startVel(m[levelNumber]).y);
-    println(velocity);
     r = r_;
     health = health_;
     damage = damage_;
@@ -49,30 +48,29 @@ class Zombie {
   }
 
   void move() {
-    /*
-    if (timer.isFinished(100)) {
-      if (abs(velocity.y) == abs(speed) ) {
-        PVector tempVel = new PVector(0, 0);
-        tempVel.add(velocity.normalize());
-        if (get(int(location.x), int(location.y+velocity.y+(tempVel.y*pathWidth/2))) != m[0].brown) {
-          if (get(int(location.x+pathWidth/2), int(location.y)) != m[0].brown) {
-            velocity = new PVector(-1, 0);
-          } else if (get(int(location.x-pathWidth/2), int(location.y)) != m[0].brown) {
-            velocity = new PVector(1, 0);
-          }
-        }
-      } else if (abs(velocity.x) == abs(speed)) {
-        PVector tempVel = new PVector(0, 0);
-        tempVel.add(velocity.normalize());
-        if (get(int(location.x+velocity.x+(tempVel.x*pathWidth/2)), int(location.y)) != m[0].brown) {
-          if (get(int(location.x+pathWidth/2), int(location.y)) != m[0].brown) {
-            velocity = new PVector(0, -1);
-          } else if (get(int(location.x-pathWidth/2), int(location.y)) != m[0].brown) {
-            velocity = new PVector(0, 1);
-          }
+
+    if (abs(velocity.y) == abs(speed) ) {
+      PVector tempVel = new PVector(0, 0);
+      tempVel.add(velocity.normalize());
+      if (get(int(location.x), int(location.y+velocity.y+(tempVel.y*pathWidth/2))) != m[0].brown) {
+        if (get(int(location.x+pathWidth/2), int(location.y)) != m[0].brown) {
+          velocity = new PVector(-1, 0);
+        } else if (get(int(location.x-pathWidth/2), int(location.y)) != m[0].brown) {
+          velocity = new PVector(1, 0);
         }
       }
-    }*/
+    } else if (abs(velocity.x) == abs(speed)) {
+      PVector tempVel = new PVector(0, 0);
+      tempVel.add(velocity.normalize());
+      if (get(int(location.x+velocity.x+(tempVel.x*pathWidth/2)), int(location.y)) != m[0].brown) {
+        if (get(int(location.x+pathWidth/2), int(location.y)) != m[0].brown) {
+          velocity = new PVector(0, -1);
+        } else if (get(int(location.x-pathWidth/2), int(location.y)) != m[0].brown) {
+          velocity = new PVector(0, 1);
+        }
+      }
+    }
+
     location.add(velocity);
   }
 }

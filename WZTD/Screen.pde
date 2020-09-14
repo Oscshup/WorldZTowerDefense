@@ -36,6 +36,9 @@ class Screen {
         z.get(i).display();
       }
     }
+    for(int i = 0; i < t.size(); i++){
+      t.get(i).update();
+    }
   }
 
   void startWave(int waveNumber_, float startX_, float startY_) {
