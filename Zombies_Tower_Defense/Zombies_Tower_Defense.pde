@@ -2,6 +2,7 @@ float pathWidth;
 int levelsTotal = 3;
 int levelNumber = 3;
 ArrayList<Tower> t = new ArrayList<Tower>();
+ArrayList<Bullet> bullets = new ArrayList<Bullet>(); 
 Map[] m = new Map[levelsTotal+1];
 Screen s;
 Shop shop;
