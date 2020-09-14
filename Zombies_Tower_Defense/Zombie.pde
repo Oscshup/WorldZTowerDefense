@@ -4,6 +4,7 @@ class Zombie {
   PVector velocity;
   float health;
   float speed = 1;
+  float Bspeed;
   float damage;
   float r;
   float dirX;

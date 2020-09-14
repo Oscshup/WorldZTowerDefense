@@ -29,6 +29,24 @@ class Screen {
     background(0, 230, 0);
     m[level].display();
     shop.display();
+    
+    //tower attack the zombie, if distance is smaller than the radius, attack!
+    for (Tower tower : t) {
+      PVector target = new PVector( width-100, 100);
+      if (dist(tower.location.x, tower.location.y, target.x, target.y) < tower.AttackRadius ) {
+
+        //shoot every number frames
+        if (frameCount % 10 == 0) {
+          tower.shoot();
+        }
+        //---------------------
+      }
+    }
+
+    for (Bullet b : bullets) {
+      b.update();
+    }
+    
     if (waveActive == true) {
       for (int i = 0; i < z.size(); i++) {
         z.get(i).move();

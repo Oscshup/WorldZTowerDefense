@@ -43,8 +43,15 @@ class Tower{
     
   }
   
-  void shoot(){
     
+
+  void shoot() {
+    PVector target = new PVector( width-100, 100);
+    Bullet b = new Bullet(location.x, location.y, target.x, target.y);
+    //add it to the list of bullets (for updates)
+    bullets.add(b);
+    
+    println(b);
   }
 }
 
