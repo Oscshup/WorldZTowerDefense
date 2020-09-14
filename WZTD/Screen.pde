@@ -1,54 +1,53 @@
 class Screen {
-  
+
   boolean waveActive = false;
-  
-  Screen(){
-    
+
+  Screen() {
   }
-  
-  void update(int screen, int level){
-    if(screen == 0){
+
+  void update(int screen, int level) {
+    if (screen == 0) {
       startScreen();
-    } else if(screen == 1){
+    } else if (screen == 1) {
       gameScreen(level);
-    } else if(screen == 2){
+    } else if (screen == 2) {
       endScreen();
     } else {
       pauseScreen(level);
-    } 
+    }
   }
-  
-  
-  void startScreen(){
+
+
+  void startScreen() {
     background(255);
-    for(int i = 0; i < sb.length; i++){
+    for (int i = 0; i < sb.length; i++) {
       sb[i].display();
     }
   }
-  
-  void gameScreen(int level){
-    background(0,230,0);
+
+  void gameScreen(int level) {
+    background(0, 230, 0);
     m[level].display();
-    if(waveActive == true){
-      z.move();
-      z.update();
-      z.display();
-      
+    shop.display();
+    if (waveActive == true) {
+      for (int i = 0; i < z.size(); i++) {
+        z.get(i).move();
+        z.get(i).update();
+        z.get(i).display();
+      }
     }
   }
-  
-  void startWave(int waveNumber_, float startX_, float startY_){
+
+  void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
-    PVector tempVel = new PVector(0,1);
-    z = new Fast_Zombie(startX_, startY_, 20, 50, tempVel, 10, color(150,70,30));
+    z.add(new Fast_Zombie(startX_, startY_, 20, 50, 10, color(150, 70, 30)));
   }
-  
-  void endScreen(){
+
+  void endScreen() {
     background(255);
   }
-  
-  void pauseScreen(int level){
+
+  void pauseScreen(int level) {
     background(255);
   }
-  
 }
