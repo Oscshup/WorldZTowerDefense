@@ -16,6 +16,7 @@ float shopLength = 300;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 void setup() {
+  frameRate(200);
   size(1200, 700);
   timer = new Timer();
   pathWidth = (width-shopLength)/13;

@@ -1,9 +1,12 @@
 class Screen {
 
   boolean waveActive = false;
+  PImage background;
 
   Screen() {
+    background = loadImage("grass.png");
   }
+
 
   void update(int screen, int level) {
     if (screen == 0) {
@@ -26,7 +29,10 @@ class Screen {
   }
 
   void gameScreen(int level) {
-    background(0, 230, 0);
+     imageMode(CORNER); /// WHY THE FUCK DOES THIS HAPPEN
+    image(background, 0, 0, width, height);
+
+
     m[level].display();
     shop.display();
     if (waveActive == true) {

@@ -1,12 +1,12 @@
 class Shop {
   PImage shopImg;
   PImage shopCoins;
-  PImage s1;
-  PImage s2;
-  PImage s3;
-  PImage l1;
-  PImage l2;
-  PImage l3;
+  PImage sr1;
+  PImage sr2;
+  PImage sr3;
+  PImage lr1;
+  PImage lr2;
+  PImage lr3;
   PImage sp1;  
   PImage sp2;
   PImage sp3;
@@ -18,27 +18,28 @@ class Shop {
     money = cur_;
     shopImg = loadImage("shop.png");
     shopCoins = loadImage("coins.png");
-    s1  = loadImage("Handgun.gif");
-    s2  = loadImage("AR.png");
-    s3 = loadImage("sentry.png");
-    l1 = loadImage("rifle.png");
-    l2 = loadImage("Plane.png");
-    l3 = loadImage("Missile.png");
-    sp1 = loadImage("Mine.png");
-    sp2 = loadImage("supplyDropIcon.png");
-    //sp3 = loadImage("BLANK.png");
-    
+    sr1  = loadImage("Handgun.gif");
+    sr2  = loadImage("AR.png");
+    sr3 = loadImage("sentry.png");
+    lr1 = loadImage("rifle.png");
+    lr2 = loadImage("Plane.png");
+    lr3 = loadImage("Missile.png");
+    //sp1 = loadImage("BLANK.png");
+    sp2 = loadImage("Mine.png");
+    sp3 = loadImage("supplyDropIcon.png");
+
+
 
     shopCoins.resize(50, 50);
-    s1.resize(50, 50);
-    s2.resize(50, 50);
-    s3.resize(50, 50);
-    l1.resize(50, 50);
-    l2.resize(50, 50);
-    l3.resize(50, 50);
-    sp1.resize(50, 50);
+    sr1.resize(50, 50);
+    sr2.resize(50, 50);
+    sr3.resize(50, 50);
+    lr1.resize(50, 50);
+    lr2.resize(50, 50);
+    lr3.resize(50, 50);
+    // sp1.resize(50, 50);
     sp2.resize(50, 50);
-   // sp3.resize(50, 50);
+    sp3.resize(50, 50);
     shopImg.resize(int(shopLength), height+off);
   }
 
@@ -48,18 +49,19 @@ class Shop {
   void display() {
     //  fill(155,100,1);
     // rect(width-200,0,200,height);
-    image(shopImg, width-shopLength, -off);
 
+    imageMode(CORNER);
+    image(shopImg, width-shopLength, -off);
     image(shopCoins, width-shopLength+45, 175);
-    image(s1, width-shopLength+45, 225);
-    image(s2, width-shopLength+45, 275);
-    image(s3, width-shopLength+45, 325);
-    image(l1, width-shopLength+45, 375);
-    image(l2, width-shopLength+45, 425);
-    image(l3, width-shopLength+45, 475);
-    image(sp1, width-shopLength+45, 525);
+    image(sr1, width-shopLength+45, 225);
+    image(sr2, width-shopLength+45, 275);
+    image(sr3, width-shopLength+45, 325);
+    image(lr1, width-shopLength+45, 375);
+    image(lr2, width-shopLength+45, 425);
+    image(lr3, width-shopLength+45, 475);
+    //   image(sp1, width-shopLength+45, 525);
     image(sp2, width-shopLength+45, 575);
- //   image(sp3, width-shopLength+45, 625);
+    image(sp3, width-shopLength+45, 625);
     textSize(32);
     fill(0);
     text("SHOP", width-shopLength+shopLength/3, 150);
