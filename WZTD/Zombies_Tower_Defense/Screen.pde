@@ -1,9 +1,8 @@
 class Screen {
-  PImage background;
+
   boolean waveActive = false;
 
   Screen() {
-    background =loadImage("grass.png");
   }
 
   void update(int screen, int level) {
@@ -27,20 +26,21 @@ class Screen {
   }
 
   void gameScreen(int level) {
-   image(background,0,0,width,height);
+    background(0, 230, 0);
     m[level].display();
     shop.display();
     if (waveActive == true) {
-      z.move();
-      z.update();
-      z.display();
+      for (int i = 0; i < z.size(); i++) {
+        z.get(i).move();
+        z.get(i).update();
+        z.get(i).display();
+      }
     }
   }
 
   void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
-    PVector tempVel = new PVector(0, 1);
-    z = new Fast_Zombie(startX_, startY_, 20, 50, tempVel, 10, color(150, 70, 30));
+    z.add(new Fast_Zombie(startX_, startY_, 20, 50, 10, color(150, 70, 30)));
   }
 
   void endScreen() {

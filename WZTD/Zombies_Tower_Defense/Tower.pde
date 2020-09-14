@@ -1,12 +1,13 @@
-class Tower {
-
-  float price;
-  float size;
+class Tower{
+  
+  int p;
+  float s;
   PVector location;
 
-  Tower(float p_, float s_) {
-    price = p_;
-    size = s_;
+  Tower(int p_, float s_, PVector location_) {
+    p = p_;
+    s = s_;
+    location = new PVector(location_.x, location_.y);
   }
 
   void display() {
@@ -15,8 +16,8 @@ class Tower {
 }
 
 class LongRange extends Tower {
-  LongRange(float p_, float s_) {
-    super(p_, s_);
+  LongRange(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
   }
 
   void display() {
@@ -25,31 +26,37 @@ class LongRange extends Tower {
 }
 
 class LR1 extends LongRange {
-  LR1(float p_, float s_) {
-    super(p_, s_);
+  LR1(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
   }
 
   void display() {
+    point(location.x, location.y);
   }
 }
 
 class LR2 extends LongRange {
-  LR2(float p_, float s_) {
-    super(p_, s_);
+  LR2(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 
 class LR3 extends LongRange {
-  LR3(float p_, float s_) {
-    super(p_, s_);
+  LR3(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
     p_*=100;
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 
 class ShortRange extends Tower {
-  ShortRange(float p_, float s_) {
-    super(p_, s_);
-    p_ *= 5;
+  ShortRange(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
   }
   void display() {
     point(location.x, location.y);
@@ -57,26 +64,33 @@ class ShortRange extends Tower {
 }
 
 class SR1 extends ShortRange {
-  SR1(float p_, float s_) {
-    super(p_, s_);
+  SR1(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SR2 extends ShortRange {
-  SR2(float p_, float s_) {
-    super(p_, s_);
-    p_ *= 10;
+  SR2(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SR3 extends ShortRange {
-  SR3(float p_, float s_) {
-    super(p_, s_);
-    p_ *= 100;
+  SR3(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 
 class Special extends Tower {
-  Special(float p_, float s_) {
-    super(p_, s_);
+  Special(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
   }
   void display() {
     point(location.x, location.y);
@@ -84,17 +98,26 @@ class Special extends Tower {
 }
 
 class SP1 extends Special {
-  SP1(float p_, float s_) {
-    super(p_, s_);
+  SP1(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SP2 extends Special {
-  SP2(float p_, float s_) {
-    super(p_, s_);
+  SP2(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SP3 extends Special {
-  SP3(float p_, float s_) {
-    super(p_, s_);
+  SP3(int p_, float s_, PVector location_) {
+    super(p_, s_, location_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
