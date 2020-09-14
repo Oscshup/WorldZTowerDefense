@@ -1,4 +1,3 @@
-float pathWidth;
 int levelsTotal = 3;
 int levelNumber = 3;
 Map[] m = new Map[levelsTotal+1];
@@ -10,19 +9,24 @@ Player p;
 int waveNumber = 1;
 LevelKoords[] lk = new LevelKoords[levelsTotal+1];
 float shopLength = 100;
-StartButtons[] sb = new StartButtons[levelsTotal];
+float pathWidth;
+StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 
 void setup() {
   size(900, 900);
-  for (int i = 0; i < m.length; i++) {
-    m[i] = new Map(width-shopLength, height, i);
-  }
+  Start();
+}
+
+void Start() {
   for (int i = 0; i < sb.length; i++) {
-    sb[i] = new StartButtons(i*width/3+width/4, height/2, width/4, width/4, i+1);
+    sb[i] = new StartButtons(i*width/4, height/2, width/4, width/4, i);
+  }
+  pathWidth = (width-shopLength)/13;
+  for (int i = 0; i < m.length; i++) {
+    m[i] = new Map(pathWidth, i, width-shopLength, height, 0, 0);
   }
   s = new Screen();
-  pathWidth = width/13;
   for (int i = 0; i < lk.length; i++) {
     if (i == 0) {
       lk[i] = new LevelKoords(0, 0, 0, 0);
@@ -54,13 +58,6 @@ void mouseClicked() {
         startGame();
       }
     }
-  }
-}
-
-void die() {
-
-  if (z.delete()) {
-    z.remove();
   }
 }
 
