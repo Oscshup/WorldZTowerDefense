@@ -1,22 +1,29 @@
+import controlP5.*;
+
 float pathWidth;
+Timer timer;
 int levelsTotal = 3;
 int levelNumber = 3;
-ArrayList<Tower> t = new ArrayList<Tower>();
-ArrayList<Bullet> bullets = new ArrayList<Bullet>(); 
 Map[] m = new Map[levelsTotal+1];
 Screen s;
+ArrayList<Tower> t = new ArrayList<Tower>();
+ArrayList<Zombie> z = new ArrayList<Zombie>();
 Shop shop;
+Player p;
 int screenNumber = 0;
 int startHealth = 100;
-Zombie z;
-Player p;
+
 int waveNumber = 1;
-LevelKoords[] lk = new LevelKoords[levelsTotal+1];
 float shopLength = 300;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 void setup() {
   size(1200, 700);
+  Start();
+}
+
+void Start() {
+  //timer = new Timer();
   pathWidth = (width-shopLength)/13;
   for (int i = 0; i < m.length; i++) {
     m[i] = new Map(pathWidth, i, width-shopLength, height, 0, 0);
@@ -25,37 +32,40 @@ void setup() {
     sb[i] = new StartButtons(i*width/4, height/2, width/4, width/4, i);
   }
   s = new Screen();
-  for (int i = 0; i < lk.length; i++) {
-    if (i == 0) {
-      lk[i] = new LevelKoords(0, 0, 0, 0);
-    } else if (i == 1) {
-      lk[i] = new LevelKoords(0, height*3/4-pathWidth/2, 0, 0);
-    } else if (i == 2) {
-      lk[i] = new LevelKoords(width/8+pathWidth/2, 0, width, height*3/4+pathWidth/2);
-    } else if (i == 3) {
-      lk[i] = new LevelKoords(width/2, 0, width/3+pathWidth/2, height);
-    }
-  }
   shop = new Shop(200);
- 
+
+  // Disse towers bliver ikke brugt i spillet, men bruges så vi har et af hvert tower at referere til i shoppen.
+  t.add(new SR1(50, 50, new PVector(-10000, -10000), 2, false, true)); // Nummer 0
+  t.add(new SR2(500, 50, new PVector(-10000, -10000), 10, false, true)); // Nummer 1
+  t.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, false, true)); // Nummer 2
+  t.add(new LR1(100, 50, new PVector(-10000, -10000), 5, false, true)); // Nummer 3
+  t.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, false, true)); // Nummer 4
+  t.add(new LR3(10000, 50, new PVector(-10000, -10000), 50, false, true)); // Nummer 5
+  t.add(new SP1(10, 50, new PVector(-10000, -10000), 0, false, true)); // Nummer 6
+  t.add(new SP2(20, 50, new PVector(-10000, -10000), 10, false, true)); // Nummer 7
+  t.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, false, true)); // Nummer 8
+
+
+  p = new Player(100);
 }
 
 void draw() {
   s.update(screenNumber, levelNumber);
 }
 
-void startGame() {
-  p = new Player(startHealth);
-}
-
 void mouseClicked() {
+  if (screenNumber == 1) {
+    if (t.get(t.size()-1).placed == false) {
+      t.get(t.size()-1).onClick();
+    }
+    shop.onClick();
+  }
   if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
       int tempLevel = sb[i].clicked();
       if (tempLevel != 0) {
         screenNumber = 1;
         levelNumber = tempLevel;
-        startGame();
       }
     }
   }
@@ -63,6 +73,6 @@ void mouseClicked() {
 
 void keyPressed() {
   if (key == ENTER) {
-    s.startWave(waveNumber, lk[levelNumber].start.x, lk[levelNumber].start.y);
+    s.startWave(waveNumber, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y);
   }
 }

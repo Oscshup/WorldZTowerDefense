@@ -1,33 +1,56 @@
-class Tower {
-
-  float price;
-  float size;
+class Tower{
+  
+  int p;
+  float s;
   PVector location;
+  float damage;
+  boolean active;
+  boolean placed;
 
-  float AttackRadius = 200; 
-
-  Tower(float p_, float s_) {
-    price = p_;
-    size = s_;
+  Tower(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    p = p_;
+    s = s_;
+    location = new PVector(location_.x, location_.y);
+    damage = damage_;
+    active = active_;
+    placed = placed_;
+  }
+  
+  void update(){
+    if(placed == false){
+      location.x = mouseX;
+      location.y = mouseY;
+    }
+    if(active == true){
+      turn();
+      shoot();
+      display();
+    }
+  }
+  
+  void onClick(){
+    if(placed == false){
+      
+      placed = true;
+    }
   }
 
   void display() {
     point(location.x, location.y);
   }
-
-  void shoot() {
-    PVector target = new PVector( width-100, 100);
-    Bullet b = new Bullet(location.x, location.y, target.x, target.y);
-    //add it to the list of bullets (for updates)
-    bullets.add(b);
+  
+  void turn(){
     
-    println(b);
+  }
+  
+  void shoot(){
+    
   }
 }
 
 class LongRange extends Tower {
-  LongRange(float p_, float s_) {
-    super(p_, s_);
+  LongRange(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
   }
 
   void display() {
@@ -36,31 +59,37 @@ class LongRange extends Tower {
 }
 
 class LR1 extends LongRange {
-  LR1(float p_, float s_) {
-    super(p_, s_);
+  LR1(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
   }
 
   void display() {
+    image(shop.lr1, location.x, location.y);
   }
 }
 
 class LR2 extends LongRange {
-  LR2(float p_, float s_) {
-    super(p_, s_);
+  LR2(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 
 class LR3 extends LongRange {
-  LR3(float p_, float s_) {
-    super(p_, s_);
+  LR3(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
     p_*=100;
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 
 class ShortRange extends Tower {
-  ShortRange(float p_, float s_) {
-    super(p_, s_);
-    p_ *= 5;
+  ShortRange(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
   }
   void display() {
     point(location.x, location.y);
@@ -68,26 +97,33 @@ class ShortRange extends Tower {
 }
 
 class SR1 extends ShortRange {
-  SR1(float p_, float s_) {
-    super(p_, s_);
+  SR1(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SR2 extends ShortRange {
-  SR2(float p_, float s_) {
-    super(p_, s_);
-    p_ *= 10;
+  SR2(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SR3 extends ShortRange {
-  SR3(float p_, float s_) {
-    super(p_, s_);
-    p_ *= 100;
+  SR3(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 
 class Special extends Tower {
-  Special(float p_, float s_) {
-    super(p_, s_);
+  Special(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
   }
   void display() {
     point(location.x, location.y);
@@ -95,17 +131,26 @@ class Special extends Tower {
 }
 
 class SP1 extends Special {
-  SP1(float p_, float s_) {
-    super(p_, s_);
+  SP1(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SP2 extends Special {
-  SP2(float p_, float s_) {
-    super(p_, s_);
+  SP2(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
 class SP3 extends Special {
-  SP3(float p_, float s_) {
-    super(p_, s_);
+  SP3(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
+    super(p_, s_, location_, damage_, active_, placed_);
+  }
+  void display() {
+    point(location.x, location.y);
   }
 }
