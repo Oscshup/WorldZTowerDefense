@@ -6,6 +6,8 @@ class Tower{
   float damage;
   boolean active;
   boolean placed;
+  
+  float AttackRadius = 300; 
 
   Tower(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
     p = p_;

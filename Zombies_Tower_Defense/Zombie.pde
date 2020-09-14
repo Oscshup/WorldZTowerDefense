@@ -4,23 +4,21 @@ class Zombie {
   PVector velocity;
   float health;
   float speed = 1;
-  float Bspeed;
   float damage;
   float r;
   float dirX;
   float dirY;
   float rotate =HALF_PI;
 
-  Zombie(float x_, float y_, float r_, float health_, float damage_) {
+   Zombie(float x_, float y_, float r_, float health_, float damage_) {
     location = new PVector(x_, y_);
     velocity = new PVector(startVel(m[levelNumber]).x, startVel(m[levelNumber]).y);
-    println(velocity);
     r = r_;
     health = health_;
     damage = damage_;
   }
 
-  PVector startVel (Map m) {
+   PVector startVel (Map m) {
     PVector StartVel = new PVector(0, 0);
     if (m.zombieStart.y == m.yStart) {
       StartVel.add(0, speed);
@@ -51,7 +49,7 @@ class Zombie {
   }
 
   void move() {
-   if (levelNumber == 1) {
+    if (levelNumber == 1) {
       dirX = 1;
       dirY = 0;
       rotate = HALF_PI;
@@ -66,13 +64,11 @@ class Zombie {
       dirY = 1;
       rotate = PI;
     }
-   // color c = ;
-if (get(int(location.x+(pathWidth/2*dirX)),int(location.y+(pathWidth/2*dirY))) != m[0].brown && get(int(location.x+(pathWidth/2*dirX+2)),int(location.y+(pathWidth/2*dirY+2))) != m[0].brown ){
-  println("not brown");  
-  rotate=0;
-}
-
-
+    // color c = ;
+    if (get(int(location.x+(pathWidth/2*dirX)), int(location.y+(pathWidth/2*dirY))) != m[0].brown && get(int(location.x+(pathWidth/2*dirX+2)), int(location.y+(pathWidth/2*dirY+2))) != m[0].brown ) {
+      println("not brown");  
+      rotate=0;
+    }
 
     location.add(velocity);
   }
@@ -105,7 +101,6 @@ class Fast_Zombie extends Zombie {
     c = c_;
     zFast = loadImage("zHurtig.png");
     zFast.resize(50, 50);
-    
   }
 
   void display() {
