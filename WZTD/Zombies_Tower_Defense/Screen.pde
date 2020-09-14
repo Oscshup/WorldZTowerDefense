@@ -1,8 +1,9 @@
 class Screen {
-
+  PImage background;
   boolean waveActive = false;
 
   Screen() {
+    background =loadImage("grass.png");
   }
 
   void update(int screen, int level) {
@@ -26,7 +27,7 @@ class Screen {
   }
 
   void gameScreen(int level) {
-    background(0,230,0);
+   image(background,0,0,width,height);
     m[level].display();
     shop.display();
     if (waveActive == true) {
