@@ -29,9 +29,9 @@ class Screen {
   }
 
   void gameScreen(int level) {
-     imageMode(CORNER); /// WHY THE FUCK DOES THIS HAPPEN
-    image(background, 0, 0, width, height);
-
+    //imageMode(CORNER); /// WHY THE FUCK DOES THIS HAPPEN
+    //   image(background, 0, 0);
+    background(0, 255, 0);
 
     m[level].display();
     shop.display();

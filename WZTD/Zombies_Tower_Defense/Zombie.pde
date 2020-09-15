@@ -8,7 +8,8 @@ class Zombie {
   float r;
   float dirX;
   float dirY;
-  float rotate =HALF_PI;
+  float rotate=0;
+  float tempDir = 0;
 
   Zombie(float x_, float y_, float r_, float health_, float damage_) {
     location = new PVector(x_, y_);
@@ -17,6 +18,19 @@ class Zombie {
     r = r_;
     health = health_;
     damage = damage_;
+
+    if (levelNumber == 1) {
+      dirX = 1;
+      dirY = 0;
+    }
+    if (levelNumber == 2) {
+      dirX = 0;
+      dirY = 1;
+    }
+    if (levelNumber == 3) {
+      dirX = 0;
+      dirY = 1;
+    }
   }
 
   PVector startVel (Map m) {
@@ -50,29 +64,49 @@ class Zombie {
   }
 
   void move() {
-   if (levelNumber == 1) {
-      dirX = 1;
-      dirY = 0;
+    tempDir =0;
+
+    if (dirX == 1 && dirY ==0) {
       rotate = HALF_PI;
+      velocity = new PVector(1, 0);
     }
-    if (levelNumber == 2) {
-      dirX = 0;
-      dirY = 1;
+
+    if (dirX == 0 && dirY ==1) {
       rotate = PI;
+      velocity = new PVector(0, 1);
     }
-    if (levelNumber == 3) {
-      dirX = 0;
-      dirY = 1;
-      rotate = PI;
+
+    if (dirX == -1 && dirY ==0) {
+      rotate = PI*1.5;
+      velocity = new PVector(-1, 0);
     }
-   // color c = ;
-if (get(int(location.x+(pathWidth/2*dirX)),int(location.y+(pathWidth/2*dirY))) != m[0].brown && get(int(location.x+(pathWidth/2*dirX+2)),int(location.y+(pathWidth/2*dirY+2))) != m[0].brown ){
-  println("not brown");  
-  rotate=0;
-}
+    if (dirX ==0 && dirY ==-1) {
+      rotate = 0;
+      velocity = new PVector(0, -1);
+    }
+    // color c = ;
 
 
+    if (get(int(location.x+(pathWidth/2)*dirX), int(location.y+(pathWidth/2)*dirY)) != m[0].brown 
+      && get(int(location.x+((pathWidth/2)+2)*dirX), int(location.y+((pathWidth/2)+2)*dirY+2*dirY)) != m[0].brown) {
+      println("not brown");
+      if (get(int(location.x+(pathWidth/2)*dirY), int(location.y+(pathWidth/2)*dirX)) != m[0].brown 
+        && get(int(location.x+((pathWidth/2)+2)*dirY), int(location.y+((pathWidth/2)+2)*dirX)) != m[0].brown) {
+        tempDir = dirX;
+        dirX = -dirY;
+        dirY = -tempDir;
+      } else if (get(int(location.x+(pathWidth/2)*(-dirY)), int(location.y+(pathWidth/2)*(-dirX))) != m[0].brown 
+        && get(int(location.x+(pathWidth/2)*(-dirY)+2), int(location.y+(pathWidth/2)*(-dirX+2))) != m[0].brown) {
+        tempDir = dirX;
+        dirX = dirY;
+        dirY = tempDir;
+      }
+    } else {
+      //     println("brown");
+    }
 
+
+    circle(location.x+(pathWidth/2*dirX), location.y+(pathWidth/2*dirY), 5);
     location.add(velocity);
   }
 }
@@ -104,7 +138,6 @@ class Fast_Zombie extends Zombie {
     c = c_;
     zFast = loadImage("zHurtig.png");
     zFast.resize(50, 50);
-    
   }
 
   void display() {
