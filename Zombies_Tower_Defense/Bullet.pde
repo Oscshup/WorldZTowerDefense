@@ -8,44 +8,50 @@ class Bullet {
   float size = 1;
 
   int id;
+  int id2;
 
+  
   //bullet velocity
   PVector velocity;
-  
+
   boolean hit = false;
 
   float damage;
 
-  Bullet(float startX, float startY, float damage_, int id_) {
+  Bullet(float startX, float startY, float damage_, int id_, int id2_) {
     location = new PVector(startX, startY);
     id = id_;
+    id2 = id2_;
     damage = damage_;
   }
 
 
-  void update(Zombie z) {
-    float opacity = 255;
-    if(z.health <= 0){
-      opacity = 0;
-    }
-    velocity = PVector.sub(z.location, location);
-    velocity.setMag(speed); 
-    location.add(velocity);
-    float angle = velocity.heading();
-    if(size >= dist(location.x, location.y, z.location.x, z.location.y)){
-      opacity = 0;
-      z.health-=damage;
+  void update() {
+    float angle = 0;
+    if (listT.get(id).savedId != -1) {
+      Zombie target = listZ.get(listT.get(id).savedId);
+
+      if (target.health <= 0) {
+        s.removeBullet(id2);
+      }
+      velocity = PVector.sub(target.location, location);
+      velocity.setMag(speed); 
+      location.add(velocity);
+      angle = velocity.heading();
+      if (size >= dist(location.x, location.y, target.location.x, target.location.y)) {
+        target.health-=damage;
+      }
+    } else {
+      angle = 0;
     }
 
     //compute rotation angle from velocity
-    
+
     pushMatrix();
     translate(location.x, location.y);
     rotate(angle);
-    stroke(0, opacity);
+    stroke(255,0,0);
     line(0, 0, size, 0);
     popMatrix();
   }
-
- 
 }

@@ -10,8 +10,11 @@ class Zombie {
   float dirY;
   float rotate=0;
   float tempDir = 0;
+  float distanceTravelled = 0;
+  int id;
 
-  Zombie(float x_, float y_, float r_, float health_, float damage_) {
+  Zombie(float x_, float y_, float r_, float health_, float damage_, int id_) {
+    id = id_;
     location = new PVector(x_, y_);
     velocity = new PVector(startVel(m[levelNumber]).x, startVel(m[levelNumber]).y);
     r = r_;
@@ -106,14 +109,16 @@ class Zombie {
 
     circle(location.x+(pathWidth/2*dirX), location.y+(pathWidth/2*dirY), 5);
     location.add(velocity);
+    distanceTravelled+=velocity.mag();
+    println(distanceTravelled);
   }
 }
 
 
 class Normal_Zombie extends Zombie {
   PImage  zNormal;
-  Normal_Zombie(float x_, float y_, float r_, float health_, float damage_) {
-    super(x_, y_, r_, health_, damage_);
+  Normal_Zombie(float x_, float y_, float r_, float health_, float damage_, int id_) {
+    super(x_, y_, r_, health_, damage_, id_);
     zNormal = loadImage("zNormal.png");
     zNormal.resize(50, 50);
   }
@@ -130,8 +135,8 @@ class Fast_Zombie extends Zombie {
   float dia;
   color c;
   PImage  zFast;
-  Fast_Zombie(float x_, float y_, float r_, float health_, float damage_, color c_) {
-    super(x_, y_, r_, health_, damage_);
+  Fast_Zombie(float x_, float y_, float r_, float health_, float damage_, int id_, color c_) {
+    super(x_, y_, r_, health_, damage_, id_);
     dia = r*2;
     c = c_;
     zFast = loadImage("zHurtig.png");

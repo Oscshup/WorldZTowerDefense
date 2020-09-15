@@ -3,11 +3,15 @@ class Tower {
   int p;
   float s;
   PVector location;
+  PVector distance;
   float damage;
   boolean active;
   boolean placed;
   int id;
-  float AttackRadius = 250;
+  int id2;
+  float AttackRadius = 100;
+  float angle = 0;
+  int savedId;
 
   Tower(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_, int id_) {
     p = p_;
@@ -24,14 +28,36 @@ class Tower {
     return new Tower(p, s, locationNew, damage, activeNew, placedNew, totalTowers);
   }
 
+
+
   void update() {
     if (placed == false) {
       location.x = mouseX;
       location.y = mouseY;
-    }
+    } 
     if (active == true) {
-      turn();
+      float highestDistanceTravelled = 0;
+      savedId = -1;
+      for (int i = 0; i < listZ.size(); i++) {
+        float dis = dist(listZ.get(i).location.x, listZ.get(i).location.y, location.x, location.y);
+        if (dis<=AttackRadius) {
+          if (listZ.get(i).distanceTravelled > highestDistanceTravelled) {
+            highestDistanceTravelled = listZ.get(i).distanceTravelled;
+            savedId = listZ.get(i).id;
+          }
+        }
+      }
+      if (listZ.size() > 0 && savedId != -1) {
+        distance = PVector.sub(listZ.get(savedId).location, location);
+        angle = distance.heading();
+      } else {
+        angle = 0;
+      }
+      pushMatrix();
+      translate(location.x, location.y);
+      rotate(angle);
       display();
+      popMatrix();
     }
   }
 
@@ -96,12 +122,9 @@ class Tower {
   }
 
   void shoot() {
-    for (int i = 0; i < listZ.size(); i++) {
-      Bullet b = new Bullet(location.x, location.y, damage, i);
-
-      bullets.add(b);
-      //println(b);
-    }
+    Bullet b = new Bullet(location.x, location.y, damage, id,id2);
+    bullets.add(b);
+    //println(b);
   }
 }
 
@@ -126,7 +149,7 @@ class LR1 extends LongRange {
 
   void display() {
     imageMode(CENTER);
-    image(shop.lr1, location.x, location.y);
+    image(shop.lr1, 0, 0);
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
@@ -141,7 +164,7 @@ class LR2 extends LongRange {
   }
   void display() {
     imageMode(CENTER);
-    image(shop.lr2, location.x, location.y);
+    image(shop.lr2, 0, 0);
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
@@ -156,7 +179,7 @@ class LR3 extends LongRange {
   }
   void display() {
     imageMode(CENTER);
-    image(shop.lr3, location.x, location.y);
+    image(shop.lr3, 0, 0);
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new LR3(p, s, locationNew, damage, activeNew, placedNew, totalTowers);
@@ -181,7 +204,7 @@ class SR1 extends ShortRange {
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sr1, location.x, location.y);
+    image(shop.sr1, 0, 0);
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new SR1(p, s, locationNew, damage, activeNew, placedNew, totalTowers);
@@ -193,7 +216,7 @@ class SR2 extends ShortRange {
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sr2, location.x, location.y);
+    image(shop.sr2, 0, 0);
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new SR2(p, s, locationNew, damage, activeNew, placedNew, totalTowers);
@@ -205,11 +228,11 @@ class SR3 extends ShortRange {
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sr3, location.x, location.y);
+    image(shop.sr3, 0, 0);
   }
-  void turn(){
+  void turn() {
   }
-  void shoot(){
+  void shoot() {
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new SR3(p, s, locationNew, damage, activeNew, placedNew, totalTowers);
@@ -258,7 +281,7 @@ class SP3 extends Special {
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sp1, location.x, location.y);
+    image(shop.sp3, location.x, location.y);
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new SP3(p, s, locationNew, damage, activeNew, placedNew, totalTowers);
