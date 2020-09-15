@@ -29,6 +29,7 @@ class Screen {
     background(0, 230, 0);
     m[level].display();
     shop.display();
+    p.update();
     if (waveActive == true) {
       for (int i = 0; i < z.size(); i++) {
         z.get(i).move();
@@ -47,7 +48,15 @@ class Screen {
   }
 
   void endScreen() {
-    background(255);
+    background(0);
+    fill(255,0,0);
+    textSize(40);
+    String dieText = "GAME OVER!\nYOU DIED";
+    String restartText = "Click to go to menu!";
+    textAlign(CENTER);
+    text(dieText, width/2, height/2);
+    fill(255);
+    text(restartText, width/2, 100); 
   }
 
   void pauseScreen(int level) {

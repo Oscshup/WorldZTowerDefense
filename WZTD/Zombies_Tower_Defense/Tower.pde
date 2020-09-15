@@ -73,7 +73,7 @@ class LR2 extends LongRange {
     super(p_, s_, location_, damage_, active_, placed_);
   }
   void display() {
-    point(location.x, location.y);
+    image(shop.lr2, location.x, location.y);
   }
 }
 
@@ -101,7 +101,7 @@ class SR1 extends ShortRange {
     super(p_, s_, location_, damage_, active_, placed_);
   }
   void display() {
-    point(location.x, location.y);
+    image(shop.sr1, location.x, location.y);
   }
 }
 class SR2 extends ShortRange {
@@ -109,7 +109,7 @@ class SR2 extends ShortRange {
     super(p_, s_, location_, damage_, active_, placed_);
   }
   void display() {
-    point(location.x, location.y);
+    image(shop.sr2, location.x, location.y);
   }
 }
 class SR3 extends ShortRange {
@@ -135,7 +135,7 @@ class SP1 extends Special {
     super(p_, s_, location_, damage_, active_, placed_);
   }
   void display() {
-    point(location.x, location.y);
+    image(shop.sp1, location.x, location.y);
   }
 }
 class SP2 extends Special {

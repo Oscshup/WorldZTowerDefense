@@ -1,20 +1,18 @@
-import controlP5.*;
-
 float pathWidth;
 Timer timer;
 int levelsTotal = 3;
-int levelNumber = 3;
+int levelNumber;
 Map[] m = new Map[levelsTotal+1];
 Screen s;
 ArrayList<Tower> t = new ArrayList<Tower>();
 ArrayList<Zombie> z = new ArrayList<Zombie>();
 Shop shop;
 Player p;
-int screenNumber = 0;
-int startHealth = 100;
+int screenNumber;
+int startHealth;
 
-int waveNumber = 1;
-float shopLength = 300;
+int waveNumber;
+float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 void setup() {
@@ -24,6 +22,17 @@ void setup() {
 
 void Start() {
   //timer = new Timer();
+  for(int i = t.size()-1; i >= 0; i--){
+    t.remove(i);
+  }
+  for(int i = z.size()-1; i >= 0; i--){
+    z.remove(i);
+  }
+  levelNumber = 0;
+  startHealth = 500;
+  waveNumber = 0;
+  screenNumber = 0;
+  shopLength = 300;
   pathWidth = (width-shopLength)/13;
   for (int i = 0; i < m.length; i++) {
     m[i] = new Map(pathWidth, i, width-shopLength, height, 0, 0);
@@ -44,9 +53,9 @@ void Start() {
   t.add(new SP1(10, 50, new PVector(-10000, -10000), 0, false, true)); // Nummer 6
   t.add(new SP2(20, 50, new PVector(-10000, -10000), 10, false, true)); // Nummer 7
   t.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, false, true)); // Nummer 8
+  
 
-
-  p = new Player(100);
+  p = new Player(startHealth);
 }
 
 void draw() {
@@ -54,13 +63,9 @@ void draw() {
 }
 
 void mouseClicked() {
-  if (screenNumber == 1) {
-    if (t.get(t.size()-1).placed == false) {
-      t.get(t.size()-1).onClick();
-    }
-    shop.onClick();
-  }
-  if (screenNumber == 0) {
+  if(screenNumber == 2){
+    Start();
+  } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
       int tempLevel = sb[i].clicked();
       if (tempLevel != 0) {
@@ -68,7 +73,13 @@ void mouseClicked() {
         levelNumber = tempLevel;
       }
     }
+  } else if (screenNumber == 1) {
+    if (t.get(t.size()-1).placed == false) {
+      t.get(t.size()-1).onClick();
+    }
+    shop.onClick();
   }
+  
 }
 
 void keyPressed() {
