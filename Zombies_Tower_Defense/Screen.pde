@@ -27,6 +27,7 @@ class Screen {
   }
 
   void gameScreen(int level) {
+    imageMode(CORNER);
    image(background,0,0);
     //background(0, 230, 0);
     m[level].display();
