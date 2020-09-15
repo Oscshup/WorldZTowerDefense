@@ -41,6 +41,7 @@ class Screen {
 
             if (frameCount % 30 == 0) {
               tower.shoot();
+              zombie.health -= 10;
             }
           }
         }
@@ -51,6 +52,7 @@ class Screen {
 
       PVector zLocation = new PVector(z.get(b.id).location.x, z.get(b.id).location.y);
       b.update(zLocation);
+      
     }
 
 

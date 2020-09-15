@@ -8,6 +8,7 @@ class Zombie {
   float r;
   float dirX;
   float dirY;
+  float MaxHealth = 100;
 
   Zombie(float x_, float y_, float r_, float health_, float damage_) {
     location = new PVector(x_, y_);
@@ -33,6 +34,7 @@ class Zombie {
   }
 
   void die() {
+    //Her skal zombie forsvinde fra index
     speed = 0;
     location.y = -1000;
   }
@@ -42,6 +44,8 @@ class Zombie {
       die();
     }
   }
+  
+
 
   void display() {
     point(location.x, location.y);
