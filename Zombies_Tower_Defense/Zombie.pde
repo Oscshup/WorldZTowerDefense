@@ -8,7 +8,8 @@ class Zombie {
   float r;
   float dirX;
   float dirY;
-  float MaxHealth = 100;
+  float rotate=0;
+  float tempDir = 0;
 
   Zombie(float x_, float y_, float r_, float health_, float damage_) {
     location = new PVector(x_, y_);
@@ -16,6 +17,19 @@ class Zombie {
     r = r_;
     health = health_;
     damage = damage_;
+
+    if (levelNumber == 1) {
+      dirX = 1;
+      dirY = 0;
+    }
+    if (levelNumber == 2) {
+      dirX = 0;
+      dirY = 1;
+    }
+    if (levelNumber == 3) {
+      dirX = 0;
+      dirY = 1;
+    }
   }
 
   PVector startVel (Map m) {
@@ -34,7 +48,6 @@ class Zombie {
   }
 
   void die() {
-    //Her skal zombie forsvinde fra index
     speed = 0;
     location.y = -1000;
   }
@@ -44,37 +57,94 @@ class Zombie {
       die();
     }
   }
-  
-
 
   void display() {
     point(location.x, location.y);
   }
 
   void move() {
+    tempDir =0;
 
-    if (abs(velocity.y) == abs(speed) ) {
-      PVector tempVel = new PVector(0, 0);
-      tempVel.add(velocity.normalize());
-      if (get(int(location.x), int(location.y+velocity.y+(tempVel.y*pathWidth/2))) != m[0].brown) {
-        if (get(int(location.x+pathWidth/2), int(location.y)) != m[0].brown) {
-          velocity = new PVector(-1, 0);
-        } else if (get(int(location.x-pathWidth/2), int(location.y)) != m[0].brown) {
-          velocity = new PVector(1, 0);
-        }
-      }
-    } else if (abs(velocity.x) == abs(speed)) {
-      PVector tempVel = new PVector(0, 0);
-      tempVel.add(velocity.normalize());
-      if (get(int(location.x+velocity.x+(tempVel.x*pathWidth/2)), int(location.y)) != m[0].brown) {
-        if (get(int(location.x+pathWidth/2), int(location.y)) != m[0].brown) {
-          velocity = new PVector(0, -1);
-        } else if (get(int(location.x-pathWidth/2), int(location.y)) != m[0].brown) {
-          velocity = new PVector(0, 1);
-        }
-      }
+    if (dirX == 1 && dirY ==0) {
+      rotate = HALF_PI;
+      velocity = new PVector(1, 0);
     }
 
+    if (dirX == 0 && dirY ==1) {
+      rotate = PI;
+      velocity = new PVector(0, 1);
+    }
+
+    if (dirX == -1 && dirY ==0) {
+      rotate = PI*1.5;
+      velocity = new PVector(-1, 0);
+    }
+    if (dirX ==0 && dirY ==-1) {
+      rotate = 0;
+      velocity = new PVector(0, -1);
+    }
+    // color c = ;
+
+
+    if (get(int(location.x+(pathWidth/2)*dirX), int(location.y+(pathWidth/2)*dirY)) == color(0,230,0) 
+      && get(int(location.x+((pathWidth/2)+2)*dirX), int(location.y+((pathWidth/2)+2)*dirY+2*dirY)) == color(0,230,0)) {
+      if (get(int(location.x+(pathWidth/2)*dirY), int(location.y+(pathWidth/2)*dirX)) == color(0,230,0) 
+        && get(int(location.x+((pathWidth/2)+2)*dirY), int(location.y+((pathWidth/2)+2)*dirX)) == color(0,230,0)) {
+        tempDir = dirX;
+        dirX = -dirY;
+        dirY = -tempDir;
+      } else if (get(int(location.x+(pathWidth/2)*(-dirY)), int(location.y+(pathWidth/2)*(-dirX))) == color(0,230,0) 
+        && get(int(location.x+(pathWidth/2)*(-dirY)+2), int(location.y+(pathWidth/2)*(-dirX+2))) == color(0,230,0)) {
+        tempDir = dirX;
+        dirX = dirY;
+        dirY = tempDir;
+      }
+    } else {
+      //     println("brown");
+    }
+
+
+    circle(location.x+(pathWidth/2*dirX), location.y+(pathWidth/2*dirY), 5);
     location.add(velocity);
+  }
+}
+
+
+class Normal_Zombie extends Zombie {
+  PImage  zNormal;
+  Normal_Zombie(float x_, float y_, float r_, float health_, float damage_) {
+    super(x_, y_, r_, health_, damage_);
+    zNormal = loadImage("zNormal.png");
+    zNormal.resize(50, 50);
+  }
+
+  void display() {
+    shop.money ++;
+    image(zNormal, 20, 20);
+  }
+}
+
+
+class Fast_Zombie extends Zombie {
+
+  float dia;
+  color c;
+  PImage  zFast;
+  Fast_Zombie(float x_, float y_, float r_, float health_, float damage_, color c_) {
+    super(x_, y_, r_, health_, damage_);
+    dia = r*2;
+    c = c_;
+    zFast = loadImage("zHurtig.png");
+    zFast.resize(50, 50);
+  }
+
+  void display() {
+    pushMatrix();
+    translate(location.x, location.y);
+    rotate(rotate);
+    imageMode(CENTER);
+    image(zFast, 0, 0);
+    popMatrix();
+    imageMode(CORNER);
   }
 }
