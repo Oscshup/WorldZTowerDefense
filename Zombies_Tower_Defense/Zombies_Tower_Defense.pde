@@ -87,4 +87,19 @@ void keyPressed() {
   if (key == ENTER) {
     s.startWave(waveNumber, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y);
   }
+  
+  if(key == 'p'){
+    if(looping) {
+      noLoop();
+      background(150,199);
+      String textPause = "Paused";
+      textSize(60);
+      fill(0);
+      textAlign(CENTER);
+      text(textPause, width/2, height/2);
+    }
+    else loop();
+  }
+  
+  
 }
