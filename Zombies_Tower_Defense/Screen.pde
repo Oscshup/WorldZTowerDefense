@@ -1,9 +1,8 @@
 class Screen {
-  PImage background;
+
   boolean waveActive = false;
 
   Screen() {
-    background =loadImage("grass.png");
   }
 
   void update(int screen, int level) {
@@ -27,43 +26,37 @@ class Screen {
   }
 
   void gameScreen(int level) {
-    image(background, 0, 0, width, height);
+    background(0, 230, 0);
     m[level].display();
     shop.display();
-
-    //tower attack the zombie, if distance is smaller than the radius, attack!
-    for (Tower tower : t) {
-      PVector target = new PVector( width-100, 100);
-      if (dist(tower.location.x, tower.location.y, target.x, target.y) < tower.AttackRadius ) {
-
-        //shoot every number frames
-        if (frameCount % 10 == 0) {
-          tower.shoot();
-        }
-        //---------------------
+    p.update();
+    if (waveActive == true) {
+      for (int i = 0; i < z.size(); i++) {
+        z.get(i).move();
+        z.get(i).update();
+        z.get(i).display();
       }
     }
-
-    for (Bullet b : bullets) {
-      b.update();
-    }
-
-
-    if (waveActive == true) {
-      z.move();
-      z.update();
-      z.display();
+    for(int i = 0; i < t.size(); i++){
+      t.get(i).update();
     }
   }
 
   void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
-    PVector tempVel = new PVector(0, 1);
-    z = new Fast_Zombie(startX_, startY_, 20, 50, tempVel, 10, color(150, 70, 30));
+    z.add(new Fast_Zombie(startX_, startY_, 20, 50, 10, color(150, 70, 30)));
   }
 
   void endScreen() {
-    background(255);
+    background(0);
+    fill(255,0,0);
+    textSize(40);
+    String dieText = "GAME OVER!\nYOU DIED";
+    String restartText = "Click to go to menu!";
+    textAlign(CENTER);
+    text(dieText, width/2, height/2);
+    fill(255);
+    text(restartText, width/2, 100); 
   }
 
   void pauseScreen(int level) {
