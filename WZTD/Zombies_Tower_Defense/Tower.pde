@@ -39,7 +39,6 @@ class Tower {
     if (placed == false) {
       boolean checkTemp = false;
       ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
-      println(squareList.size());
       for (int i = 0; i < squareList.size(); i++) {
         if (checkForPath(location.x, location.y, s/2, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
           checkTemp = true;

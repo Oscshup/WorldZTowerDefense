@@ -11,26 +11,23 @@ class Zombie {
   float rotate=0;
   float tempDir = 0;
 
+  ArrayList<Checkpoint> checkpointList;
+  int checkpointLength;
+  PVector target = new PVector(0, 0);
+
   Zombie(float x_, float y_, float r_, float health_, float damage_) {
     location = new PVector(x_, y_);
     velocity = new PVector(startVel(m[levelNumber]).x, startVel(m[levelNumber]).y);
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
     println(velocity);
+=======
+    checkpointList = m[levelNumber].listLevelCheckpoints[levelNumber-1];
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Zombie.pde
     r = r_;
     health = health_;
     damage = damage_;
 
-    if (levelNumber == 1) {
-      dirX = 1;
-      dirY = 0;
-    }
-    if (levelNumber == 2) {
-      dirX = 0;
-      dirY = 1;
-    }
-    if (levelNumber == 3) {
-      dirX = 0;
-      dirY = 1;
-    }
+    checkpointLength = 0;
   }
 
   PVector startVel (Map m) {
@@ -64,18 +61,14 @@ class Zombie {
   }
 
   void move() {
-    tempDir =0;
 
-    if (dirX == 1 && dirY ==0) {
-      rotate = HALF_PI;
-      velocity = new PVector(1, 0);
-    }
+    checkPoints();
 
-    if (dirX == 0 && dirY ==1) {
-      rotate = PI;
-      velocity = new PVector(0, 1);
-    }
+    circle(location.x+(pathWidth/2*dirX), location.y+(pathWidth/2*dirY), 5);
+    location.add(velocity);
+  }
 
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
     if (dirX == -1 && dirY ==0) {
       rotate = PI*1.5;
       velocity = new PVector(-1, 0);
@@ -100,14 +93,21 @@ class Zombie {
         tempDir = dirX;
         dirX = dirY;
         dirY = tempDir;
+=======
+  void checkPoints() {
+    float d = dist(location.x, location.y, target.x, target.y);
+    if (d <= speed) {
+      location.x = target.x;
+      location.y = target.y;
+      if (checkpointLength != checkpointList.size()-1) {
+        checkpointLength++;
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Zombie.pde
       }
-    } else {
-      //     println("brown");
     }
-
-
-    circle(location.x+(pathWidth/2*dirX), location.y+(pathWidth/2*dirY), 5);
-    location.add(velocity);
+    target.set(checkpointList.get(checkpointLength).x, checkpointList.get(checkpointLength).y);
+    velocity = PVector.sub(target, location);
+    velocity.setMag(speed);
+    rotate = velocity.heading()+PI/2;
   }
 }
 
