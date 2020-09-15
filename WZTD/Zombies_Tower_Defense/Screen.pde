@@ -31,20 +31,20 @@ class Screen {
     shop.display();
     p.update();
     if (waveActive == true) {
-      for (int i = 0; i < z.size(); i++) {
-        z.get(i).move();
-        z.get(i).update();
-        z.get(i).display();
+      for (int i = 0; i < listZ.size(); i++) {
+        listZ.get(i).move();
+        listZ.get(i).update();
+        listZ.get(i).display();
       }
     }
-    for(int i = 0; i < t.size(); i++){
-      t.get(i).update();
+    for(int i = 0; i < listT.size(); i++){
+      listT.get(i).update();
     }
   }
 
   void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
-    z.add(new Fast_Zombie(startX_, startY_, 20, 50, 10, color(150, 70, 30)));
+    listZ.add(new Fast_Zombie(startX_, startY_, 20, 50, 10, color(150, 70, 30)));
   }
 
   void endScreen() {

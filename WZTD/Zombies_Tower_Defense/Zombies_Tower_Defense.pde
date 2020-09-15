@@ -2,10 +2,11 @@ float pathWidth;
 Timer timer;
 int levelsTotal = 3;
 int levelNumber;
+int totalTowers;
 Map[] m = new Map[levelsTotal+1];
 Screen s;
-ArrayList<Tower> t = new ArrayList<Tower>();
-ArrayList<Zombie> z = new ArrayList<Zombie>();
+ArrayList<Tower> listT = new ArrayList<Tower>();
+ArrayList<Zombie> listZ = new ArrayList<Zombie>();
 Shop shop;
 Player p;
 int screenNumber;
@@ -22,12 +23,13 @@ void setup() {
 
 void Start() {
   //timer = new Timer();
-  for(int i = t.size()-1; i >= 0; i--){
-    t.remove(i);
+  for(int i = listT.size()-1; i >= 0; i--){
+    listT.remove(i);
   }
-  for(int i = z.size()-1; i >= 0; i--){
-    z.remove(i);
+  for(int i = listZ.size()-1; i >= 0; i--){
+    listZ.remove(i);
   }
+  totalTowers = 0;
   levelNumber = 0;
   startHealth = 500;
   waveNumber = 0;
@@ -44,16 +46,24 @@ void Start() {
   shop = new Shop(200);
 
   // Disse towers bliver ikke brugt i spillet, men bruges så vi har et af hvert tower at referere til i shoppen.
-  t.add(new SR1(50, 50, new PVector(-10000, -10000), 2, false, true)); // Nummer 0
-  t.add(new SR2(500, 50, new PVector(-10000, -10000), 10, false, true)); // Nummer 1
-  t.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, false, true)); // Nummer 2
-  t.add(new LR1(100, 50, new PVector(-10000, -10000), 5, false, true)); // Nummer 3
-  t.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, false, true)); // Nummer 4
-  t.add(new LR3(10000, 50, new PVector(-10000, -10000), 50, false, true)); // Nummer 5
-  t.add(new SP1(10, 50, new PVector(-10000, -10000), 0, false, true)); // Nummer 6
-  t.add(new SP2(20, 50, new PVector(-10000, -10000), 10, false, true)); // Nummer 7
-  t.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, false, true)); // Nummer 8
-  
+  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, false, true, totalTowers)); // Nummer 0
+  totalTowers++;
+  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, false, true, totalTowers)); // Nummer 1
+  totalTowers++;
+  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, false, true, totalTowers)); // Nummer 2
+  totalTowers++;
+  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 5, false, true, totalTowers)); // Nummer 3
+  totalTowers++;
+  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, false, true, totalTowers)); // Nummer 4
+  totalTowers++;
+  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50, false, true, totalTowers)); // Nummer 5
+  totalTowers++;
+  listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, false, true, totalTowers)); // Nummer 6
+  totalTowers++;
+  listT.add(new SP2(20, 50, new PVector(-10000, -10000), 10, false, true, totalTowers)); // Nummer 7
+  totalTowers++;
+  listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, false, true, totalTowers)); // Nummer 8
+  totalTowers++;
 
   p = new Player(startHealth);
 }
@@ -74,8 +84,8 @@ void mouseClicked() {
       }
     }
   } else if (screenNumber == 1) {
-    if (t.get(t.size()-1).placed == false) {
-      t.get(t.size()-1).onClick();
+    if (listT.get(listT.size()-1).placed == false) {
+      listT.get(listT.size()-1).onClick();
     }
     shop.onClick();
   }
