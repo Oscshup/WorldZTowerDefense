@@ -6,6 +6,7 @@ Map[] m = new Map[levelsTotal+1];
 Screen s;
 ArrayList<Tower> t = new ArrayList<Tower>();
 ArrayList<Zombie> z = new ArrayList<Zombie>();
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 Shop shop;
 Player p;
 int screenNumber;

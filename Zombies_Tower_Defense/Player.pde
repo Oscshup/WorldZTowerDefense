@@ -7,7 +7,7 @@ class Player{
   }
   
   void update(){
-    health-=1;
+    health-=0;
     if(health <= 0){
       die();
     }

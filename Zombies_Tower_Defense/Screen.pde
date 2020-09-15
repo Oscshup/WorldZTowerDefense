@@ -30,6 +30,30 @@ class Screen {
     m[level].display();
     shop.display();
     p.update();
+
+
+    for (Tower tower : t) {
+      if (tower.active == true && tower.placed == true) {
+        println("HI");
+        for (Zombie zombie : z) {
+          PVector target = new PVector(zombie.location.x, zombie.location.y);
+          if (dist(tower.location.x, tower.location.y, target.x, target.y) < tower.AttackRadius) {
+
+            if (frameCount % 30 == 0) {
+              tower.shoot();
+            }
+          }
+        }
+      }
+    }
+
+    for (Bullet b : bullets) {
+
+      PVector zLocation = new PVector(z.get(b.id).location.x, z.get(b.id).location.y);
+      b.update(zLocation);
+    }
+
+
     if (waveActive == true) {
       for (int i = 0; i < z.size(); i++) {
         z.get(i).move();
@@ -37,7 +61,7 @@ class Screen {
         z.get(i).display();
       }
     }
-    for(int i = 0; i < t.size(); i++){
+    for (int i = 0; i < t.size(); i++) {
       t.get(i).update();
     }
   }
@@ -49,14 +73,14 @@ class Screen {
 
   void endScreen() {
     background(0);
-    fill(255,0,0);
+    fill(255, 0, 0);
     textSize(40);
     String dieText = "GAME OVER!\nYOU DIED";
     String restartText = "Click to go to menu!";
     textAlign(CENTER);
     text(dieText, width/2, height/2);
     fill(255);
-    text(restartText, width/2, 100); 
+    text(restartText, width/2, 100);
   }
 
   void pauseScreen(int level) {

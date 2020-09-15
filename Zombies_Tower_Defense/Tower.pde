@@ -1,11 +1,13 @@
-class Tower{
-  
+class Tower {
+
   int p;
   float s;
   PVector location;
   float damage;
   boolean active;
   boolean placed;
+
+  float AttackRadius = 250;
 
   Tower(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_) {
     p = p_;
@@ -15,22 +17,21 @@ class Tower{
     active = active_;
     placed = placed_;
   }
-  
-  void update(){
-    if(placed == false){
+
+  void update() {
+    if (placed == false) {
       location.x = mouseX;
       location.y = mouseY;
     }
-    if(active == true){
+    if (active == true) {
       turn();
-      shoot();
       display();
     }
   }
-  
-  void onClick(){
-    if(placed == false){
-      
+
+  void onClick() {
+    if (placed == false) {
+
       placed = true;
     }
   }
@@ -38,13 +39,17 @@ class Tower{
   void display() {
     point(location.x, location.y);
   }
-  
-  void turn(){
-    
+
+  void turn() {
   }
-  
-  void shoot(){
-    
+
+  void shoot() {
+    for (int i = 0; i < z.size(); i++) {
+      Bullet b = new Bullet(location.x, location.y, i);
+
+      bullets.add(b);
+      //println(b);
+    }
   }
 }
 
