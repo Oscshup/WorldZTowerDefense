@@ -121,13 +121,13 @@ class Button {
   }
 
   void onClick() {
-    if (mouseX >= x-w/2 && mouseX <= x+w/2 && mouseY >= y-h/2 && mouseY <= y+h/2) {
-      PVector locationTemp = new PVector(mouseX, mouseY);
-      boolean activeTemp = true;
-      boolean placedTemp = false;
-      listT.add(listT.get(id).getInstance(locationTemp, activeTemp, placedTemp));
-      println(listT.size());
-      println(listT.get(listT.size()-1).placed);
+    if (shop.money >= listT.get(id).p) {
+      if (mouseX >= x-w/2 && mouseX <= x+w/2 && mouseY >= y-h/2 && mouseY <= y+h/2) {
+        PVector locationTemp = new PVector(mouseX, mouseY);
+        boolean activeTemp = true;
+        boolean placedTemp = false;
+        listT.add(listT.get(id).getInstance(locationTemp, activeTemp, placedTemp));
+      }
     }
   }
 }

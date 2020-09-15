@@ -12,6 +12,10 @@ class StartButtons {
     w = w_-10;
     h = h_-10;
     level = level_;
+    if (level != 0) {
+      levelImages[level] = loadImage("Level" + level + ".JPG");
+      levelImages[level].resize(int(w-5), int(h-5));
+    }
   }
 
   void display() {
@@ -21,6 +25,8 @@ class StartButtons {
       noFill();
       rectMode(CENTER);
       rect(x, y, w, h);
+      imageMode(CENTER);
+      image(levelImages[level], x, y);
       int textSize = 30;
       textSize(textSize);
       textAlign(CENTER);

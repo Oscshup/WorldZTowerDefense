@@ -7,16 +7,19 @@ Map[] m = new Map[levelsTotal+1];
 Screen s;
 ArrayList<Tower> listT = new ArrayList<Tower>();
 ArrayList<Zombie> listZ = new ArrayList<Zombie>();
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 Shop shop;
 Player p;
 int screenNumber;
 int startHealth;
+PImage[] levelImages = new PImage[levelsTotal+1];
 
 int waveNumber;
 float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 void setup() {
+  frameRate(60);
   size(1200, 700);
   Start();
 }
@@ -46,23 +49,23 @@ void Start() {
   shop = new Shop(200);
 
   // Disse towers bliver ikke brugt i spillet, men bruges så vi har et af hvert tower at referere til i shoppen.
-  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, false, true, totalTowers)); // Nummer 0
+  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, 100, 2, false, true, totalTowers)); // Nummer 0
   totalTowers++;
-  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, false, true, totalTowers)); // Nummer 1
+  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 100, 4, false, true, totalTowers)); // Nummer 1
   totalTowers++;
-  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, false, true, totalTowers)); // Nummer 2
+  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
   totalTowers++;
-  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 5, false, true, totalTowers)); // Nummer 3
+  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1000, 1, false, true, totalTowers)); // Nummer 3
   totalTowers++;
-  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, false, true, totalTowers)); // Nummer 4
+  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, 50, 0.25, false, true, totalTowers)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50, false, true, totalTowers)); // Nummer 5
+  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50, 200, 0.5, false, true, totalTowers)); // Nummer 5
   totalTowers++;
-  listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, false, true, totalTowers)); // Nummer 6
+  listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
-  listT.add(new SP2(20, 50, new PVector(-10000, -10000), 10, false, true, totalTowers)); // Nummer 7
+  listT.add(new SP2(20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
   totalTowers++;
-  listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, false, true, totalTowers)); // Nummer 8
+  listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
   totalTowers++;
 
   p = new Player(startHealth);
@@ -96,4 +99,18 @@ void keyPressed() {
   if (key == ENTER) {
     s.startWave(waveNumber, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y);
   }
+  
+   if(key == 'p'){
+    if(looping) {
+      noLoop();
+      background(150,199);
+      String textPause = "Paused";
+      textSize(60);
+      fill(0);
+      textAlign(CENTER);
+      text(textPause, width/2, height/2);
+    }
+    else loop();
+  }
+  
 }
