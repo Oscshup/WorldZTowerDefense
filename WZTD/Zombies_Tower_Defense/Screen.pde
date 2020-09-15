@@ -26,10 +26,38 @@ class Screen {
   }
 
   void gameScreen(int level) {
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Screen.pde
     background(0, 230, 0);
     m[level].display();
     shop.display();
     p.update();
+=======
+    imageMode(CORNER);
+    image(background,0,0);
+    //background(0, 230, 0);
+    m[level].display();
+    shop.display();
+    p.update();
+
+    for (Tower tower : listT) {
+      if (tower.active == true && tower.placed == true) {
+        if (tower.savedId != -1 ) {
+          PVector target = new PVector(listZ.get(tower.savedId).location.x, listZ.get(tower.savedId).location.y);
+          if (dist(tower.location.x, tower.location.y, target.x, target.y) < tower.AttackRadius) {
+
+            if (frameCount % 30 == 0) {
+              tower.shoot();
+            }
+          }
+        }
+      }
+    }
+
+    for(int i = bullets.size()-1; i >= 0; i--){
+      bullets.get(i).update();
+    }
+
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Screen.pde
     if (waveActive == true) {
       for (int i = 0; i < listZ.size(); i++) {
         listZ.get(i).move();
@@ -39,6 +67,11 @@ class Screen {
     }
     for(int i = 0; i < listT.size(); i++){
       listT.get(i).update();
+    }
+    for(int i = bullets.size()-1; i >= 0; i--){
+      if (bullets.get(i).location.x < 0){
+        bullets.remove(i);
+      }
     }
   }
 
@@ -58,8 +91,11 @@ class Screen {
     fill(255);
     text(restartText, width/2, 100); 
   }
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Screen.pde
 
   void pauseScreen(int level) {
     background(255);
   }
+=======
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Screen.pde
 }

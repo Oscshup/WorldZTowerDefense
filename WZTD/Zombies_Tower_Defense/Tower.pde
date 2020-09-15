@@ -7,6 +7,12 @@ class Tower {
   boolean active;
   boolean placed;
   int id;
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Tower.pde
+=======
+  float AttackRadius = 100;
+  float angle = 0;
+  int savedId;
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Tower.pde
 
   Tower(int p_, float s_, PVector location_, float damage_, boolean active_, boolean placed_, int id_) {
     p = p_;
@@ -95,6 +101,13 @@ class Tower {
   }
 
   void shoot() {
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Tower.pde
+=======
+    if (savedId != -1) {
+      Bullet b = new Bullet(location.x, location.y, damage, id, savedId, bullets.size());
+      bullets.add(b);
+    }
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Tower.pde
   }
 }
 
@@ -122,7 +135,6 @@ class LR1 extends LongRange {
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    println(placedNew);
     return new LR1(p, s, locationNew, damage, activeNew, placedNew, totalTowers);
   }
 }

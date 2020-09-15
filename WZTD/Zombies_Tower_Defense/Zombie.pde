@@ -10,6 +10,15 @@ class Zombie {
   float dirY;
   float rotate=0;
   float tempDir = 0;
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
+=======
+  float distanceTravelled = 0;
+  int id;
+  
+  ArrayList<Checkpoint> checkpointList;
+  int checkpointLength;
+  PVector target = new PVector(0, 0);
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Zombie.pde
 
   ArrayList<Checkpoint> checkpointList;
   int checkpointLength;
@@ -19,6 +28,7 @@ class Zombie {
     location = new PVector(x_, y_);
     velocity = new PVector(startVel(m[levelNumber]).x, startVel(m[levelNumber]).y);
 <<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
     println(velocity);
 =======
     checkpointList = m[levelNumber].listLevelCheckpoints[levelNumber-1];
@@ -27,6 +37,13 @@ class Zombie {
     health = health_;
     damage = damage_;
 
+=======
+    checkpointList = m[levelNumber].listLevelCheckpoints[levelNumber-1];
+    r = r_;
+    health = health_;
+    damage = damage_;
+    
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Zombie.pde
     checkpointLength = 0;
   }
 
@@ -46,6 +63,11 @@ class Zombie {
   }
 
   void die() {
+    for(int i = bullets.size()-1; i >= 0; i--){
+      if(bullets.get(i).idZ == id){
+        bullets.remove(i);
+      }
+    }
     speed = 0;
     location.y = -1000;
   }
@@ -66,6 +88,7 @@ class Zombie {
 
     circle(location.x+(pathWidth/2*dirX), location.y+(pathWidth/2*dirY), 5);
     location.add(velocity);
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
   }
 
 <<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
@@ -94,6 +117,11 @@ class Zombie {
         dirX = dirY;
         dirY = tempDir;
 =======
+=======
+    distanceTravelled+=velocity.mag();
+  }
+  
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Zombie.pde
   void checkPoints() {
     float d = dist(location.x, location.y, target.x, target.y);
     if (d <= speed) {
@@ -101,6 +129,9 @@ class Zombie {
       location.y = target.y;
       if (checkpointLength != checkpointList.size()-1) {
         checkpointLength++;
+<<<<<<< Updated upstream:WZTD/Zombies_Tower_Defense/Zombie.pde
+>>>>>>> Stashed changes:Zombies_Tower_Defense/Zombie.pde
+=======
 >>>>>>> Stashed changes:Zombies_Tower_Defense/Zombie.pde
       }
     }
