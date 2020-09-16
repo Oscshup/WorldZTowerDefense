@@ -164,7 +164,7 @@ class LR1 extends LongRange {
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    println(placedNew);
+
     return new LR1(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }

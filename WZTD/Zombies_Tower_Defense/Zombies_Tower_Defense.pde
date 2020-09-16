@@ -117,5 +117,8 @@ void keyPressed() {
     }
     else loop();
   }
+  if (key == ESC){
+    exit();
+  }
   
 }

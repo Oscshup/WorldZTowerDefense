@@ -1,8 +1,22 @@
 class Screen {
 
   boolean waveActive = false;
+  PImage background;
+  String[] Types = loadStrings("types.txt");
+  String[] Time = loadStrings("time.txt");
+
+
 
   Screen() {
+    background = loadImage("grass.png");
+    for (int i = 0; i < Types.length; i++) {
+      String[] type = split(Types[i], ',');
+      String[] time = split(Time[i], ',');
+      for (int j = 0; j < time.length; j++){
+      println(time[j] + " " + type[j]);
+    }
+      println("");
+    }
   }
 
   void update(int screen, int level) {
@@ -29,23 +43,23 @@ class Screen {
   }
 
   void gameScreen(int level) {
-    background(0, 230, 0);
+    image(background, 0, 0);
+    //  background(0, 230, 0);
     m[level].display();
     shop.display();
     p.update();
 
 
     // Kills the zombies
-    println(bullets.size());
-    for(Bullet b : bullets){  
+    for (Bullet b : bullets) {  
       b.update();
     }
-    for(int i = bullets.size()-1; i >= 0; i--){
-      if(bullets.get(i).dead == true){
+    for (int i = bullets.size()-1; i >= 0; i--) {
+      if (bullets.get(i).dead == true) {
         bullets.remove(i);
       }
     }
-    //println("Bullet.size(): " + bullets.size());
+
     if (waveActive == true) {
       for (int i = listZ.size()-1; i >= 0; i--) {
         listZ.get(i).move();

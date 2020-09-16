@@ -25,14 +25,14 @@ class Bullet {
     idT = idT_;
     idZ = idZ_;
     idB = idB_;
-    println("TowerID: " + idT + " , ZombieID: " + idZ + " , BulletID: " + idB);
+   
     damage = damage_;
   }
 
 
   void update() {
     if (idZ != -1 && listZ.size() != 0) {
-      //println("Zombie.size(): " + listZ.size() + " , zombieID: " + idZ);
+     
       // Nedenstående kode skal kigges igennem
       Zombie target = listZ.get(0);
       for (int i = listZ.size()-1; i >= 0; i--) {
