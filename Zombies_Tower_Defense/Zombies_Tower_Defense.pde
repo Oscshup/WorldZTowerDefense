@@ -118,7 +118,7 @@ void keyPressed() {
   if (key == 'p') {
     if (looping) {
       noLoop();
-      background(150, 199);
+      background(150);
       String textPause = "Paused";
       textSize(60);
       fill(0);

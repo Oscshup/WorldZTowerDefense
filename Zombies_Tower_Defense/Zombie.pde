@@ -97,6 +97,9 @@ class Zombie {
       location.y = target.y;
       if (checkpointLength != checkpointList.size()-1) {
         checkpointLength++;
+      } else {
+        p.health-=damage;
+        health=0;
       }
     }
     target.set(checkpointList.get(checkpointLength).x, checkpointList.get(checkpointLength).y);

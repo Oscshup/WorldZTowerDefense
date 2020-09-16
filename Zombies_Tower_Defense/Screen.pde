@@ -74,8 +74,8 @@ class Screen {
 
   void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
-    //listZ.add(new Fast_Zombie(20, startX_, startY_, 50, 10, 20, 2, totalZombies));
-    listZ.add(new Normal_Zombie(5, startX_, startY_, 50, 20, 10, 0.8, totalZombies));
+    listZ.add(new Fast_Zombie(20, startX_, startY_, 50, 10, 20, 2, totalZombies));
+    //listZ.add(new Normal_Zombie(5, startX_, startY_, 50, 20, 10, 0.8, totalZombies));
     totalZombies++;
   }
 
