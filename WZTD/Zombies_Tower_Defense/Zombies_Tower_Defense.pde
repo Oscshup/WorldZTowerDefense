@@ -33,12 +33,6 @@ void setup() {
 }
 
 void Start() {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  //timer = new Timer();
-=======
->>>>>>> Stashed changes
-=======
   //Sentry animation
   for (int i = 0; i < sentrys.length; i++) {
     sentrys[i] = loadImage("Mini" + i + ".png");
@@ -46,7 +40,6 @@ void Start() {
   
   lives[0] = loadImage("Heart.png");
   
->>>>>>> Stashed changes
   for (int i = listT.size()-1; i >= 0; i--) {
     listT.remove(i);
   }
@@ -76,23 +69,13 @@ void Start() {
   totalTowers++;
   listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 200, 4, false, true, totalTowers)); // Nummer 1
   totalTowers++;
-<<<<<<< Updated upstream
-  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, 200, 10, false, true, totalTowers)); // Nummer 2
-  totalTowers++;
-<<<<<<< Updated upstream
-  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
-=======
-  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
->>>>>>> Stashed changes
-=======
   listT.add(new SR3(sentrys, 5000, 50, new PVector(-10000, -10000), 50, 200, 10, false, true, totalTowers)); // Nummer 2
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
->>>>>>> Stashed changes
   totalTowers++;
   listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, 50, 0.25, false, true, totalTowers)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50, 200, 0.5, false, true, totalTowers)); // Nummer 5
+  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50,  sqrt( (width*width) + (height*height)), 10, false, true, totalTowers, 150)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
@@ -109,15 +92,7 @@ void draw() {
 }
 
 void mouseClicked() {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  if (screenNumber == 2) {
-=======
   if (screenNumber == 2 || screenNumber == 3) {
->>>>>>> Stashed changes
-=======
-  if (screenNumber == 2 || screenNumber == 3) {
->>>>>>> Stashed changes
     Start();
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
@@ -139,21 +114,11 @@ void keyPressed() {
   if (key == ENTER) {
     if (screenNumber == 1 && s.waveActive == false) {
     }
-<<<<<<< Updated upstream
   }
   char pressedKey = key;
   if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5') {
     s.spawnZombie(pressedKey);
-=======
->>>>>>> Stashed changes
   }
-<<<<<<< Updated upstream
-  char pressedKey = key;
-  if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5') {
-    s.spawnZombie(pressedKey);
-  }
-=======
->>>>>>> Stashed changes
 
   if (key == 'p') {
     if (looping) {

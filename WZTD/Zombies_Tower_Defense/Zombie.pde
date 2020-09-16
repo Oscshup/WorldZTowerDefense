@@ -14,11 +14,11 @@ class Zombie {
   int id;
   int deathPrice;
   float dia;
-  
+
   ArrayList<Checkpoint> checkpointList;
   int checkpointLength;
   PVector target = new PVector(0, 0);
-  
+
   boolean dead = false;
 
   Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
@@ -66,19 +66,15 @@ class Zombie {
       fill(231, 76, 60);
     }
     rectMode(CORNER);
-<<<<<<< Updated upstream
-    rect(location.x-(healthBarWidth/2), location.y-30, healthBarWidth*(health/startHealth), 5);
-=======
     if (health >0) {
       rect(location.x-(healthBarWidth/2), location.y-30, healthBarWidth*(health/startHealth), 5);
     }
->>>>>>> Stashed changes
   }
-  
-  void checkDead(){
+
+  void checkDead() {
     if (health <= 0) {
-      for(int i = bullets.size()-1; i >= 0; i--){
-        if(bullets.get(i).idZ == id && bullets.get(i).sniper == false){
+      for (int i = bullets.size()-1; i >= 0; i--) {
+        if (bullets.get(i).idZ == id && bullets.get(i).sniper == false) {
           bullets.remove(i);
         }
       }
@@ -122,7 +118,7 @@ class Zombie {
 
 
 class Normal_Zombie extends Zombie {
-  
+
   PImage  zNormal;
   Normal_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
     super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);

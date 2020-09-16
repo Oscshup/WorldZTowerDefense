@@ -10,7 +10,7 @@ class Map {
   PVector zombieStart;
   PVector zombieEnd;
 
-  color brown = color(117, 75, 13);
+  color brown = color(182,159,102);
 
   ArrayList[] listLevelSquares = new ArrayList[levelsTotal];
   ArrayList[] listLevelCheckpoints = new ArrayList[levelsTotal];

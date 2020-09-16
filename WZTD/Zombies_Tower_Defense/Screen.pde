@@ -1,7 +1,7 @@
 class Screen {
 
   boolean waveActive = false;
-<<<<<<< Updated upstream
+  PImage background;
 
   String[] textTotal = loadStrings("Waves.txt");
   ArrayList[] waves = new ArrayList[textTotal.length];
@@ -9,19 +9,8 @@ class Screen {
   boolean timerActive = false;
 
   Screen() {
-<<<<<<< Updated upstream
-=======
-
-  String[] textTotal = loadStrings("Waves.txt");
-  ArrayList[] waves = new ArrayList[textTotal.length];
-
-  boolean timerActive = false;
-
-  Screen() {
-=======
     background = loadImage("grass.png");
     
->>>>>>> Stashed changes
     for (int i = 0; i < waves.length; i++) {
       waves[i] = new ArrayList<PVector>();
     }
@@ -36,10 +25,6 @@ class Screen {
         waves[i].add(new PVector(dataZombie[j].x, dataZombie[j].y));
       }
     }
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   }
 
   void update(int screen, int level) {
@@ -68,13 +53,9 @@ class Screen {
   }
 
   void gameScreen(int level) {
-<<<<<<< Updated upstream
-    background(0, 230, 0);
-=======
     imageMode(CORNER);
     image(background,0,0);
     //background(0, 230, 0);
->>>>>>> Stashed changes
     m[level].display();
     shop.display();
     p.update();
@@ -90,17 +71,6 @@ class Screen {
         bullets.remove(i);
       }
     }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    if (waveActive == true) {
-      for (int i = listZ.size()-1; i >= 0; i--) {
-        listZ.get(i).move();
-        listZ.get(i).display();
-        listZ.get(i).displayHealth();
-        listZ.get(i).checkDead();
-=======
-=======
->>>>>>> Stashed changes
     if (waveActive == false && timer.isFinished() == true && timerActive == true) {
       waveActive = true;
       timerActive = false;
@@ -120,10 +90,7 @@ class Screen {
       String timeToWaveText = "Next wave in: " + timeLeft;
       text(timeToWaveText, 5, height-20);
     }
-<<<<<<< Updated upstream
-=======
     textAlign(CENTER);
->>>>>>> Stashed changes
     if (waveNumber > waves.length) {
       win();
     }
@@ -139,10 +106,6 @@ class Screen {
       } else {
         timer.start(timeBetweenWaves);
         timerActive = true;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
       }
     }
     for (int i = 0; i < listT.size(); i++) {
@@ -151,29 +114,6 @@ class Screen {
     }
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  void spawnZombie(char pressedKey) {
-=======
-  void spawnZombie(int zombieType) {
->>>>>>> Stashed changes
-    if (screenNumber == 1) {
-      waveActive = true;
-      if (zombieType == 1) {
-        listZ.add(new Normal_Zombie(5, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 20, 1, 0.8, totalZombies));
-        totalZombies++;
-      } else if (zombieType == 2) {
-        listZ.add(new Fast_Zombie(20, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 10, 5, 2, totalZombies));
-        totalZombies++;
-      } else if (zombieType == 3) {
-        listZ.add(new Tank_Zombie(80, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 100, 20, 0.5, totalZombies));
-        totalZombies++;
-      } else if (zombieType == 4) {
-        listZ.add(new MiniBoss_Zombie(320, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 300, 40, 1, totalZombies));
-        totalZombies++;
-<<<<<<< Updated upstream
-      } else if (pressedKey == '5') {
-=======
   void spawnZombie(int zombieType) {
     if (screenNumber == 1) {
       waveActive = true;
@@ -190,10 +130,6 @@ class Screen {
         listZ.add(new MiniBoss_Zombie(320, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 300, 40, 1, totalZombies));
         totalZombies++;
       } else if (zombieType == 5) {
->>>>>>> Stashed changes
-=======
-      } else if (zombieType == 5) {
->>>>>>> Stashed changes
         listZ.add(new Boss_Zombie(1080, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 1000, 100, 0.7, totalZombies));
         totalZombies++;
       }
@@ -209,16 +145,6 @@ class Screen {
     }
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  void startWave(int waveNumber_, float startX_, float startY_) {
-    waveActive = true;
-    //listZ.add(new Fast_Zombie(20, startX_, startY_, 50, 10, 20, 2, totalZombies));
-    //listZ.add(new Normal_Zombie(5, startX_, startY_, 50, 20, 10, 0.8, totalZombies));
-    //totalZombies++;
-=======
-=======
->>>>>>> Stashed changes
   int zombieNumber = 0;
   Timer timer2 = new Timer();
 
@@ -254,10 +180,6 @@ class Screen {
     text(winText1, width/2, height/2);
     fill(0);
     text(winText2, width/2, 100);
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   }
 
   void loseScreen() {
