@@ -1,12 +1,9 @@
 class Screen {
 
   boolean waveActive = false;
-  PImage background;
 
   Screen() {
-    background = loadImage("grass.png");
   }
-
 
   void update(int screen, int level) {
     if (screen == 0) {
@@ -15,45 +12,79 @@ class Screen {
       gameScreen(level);
     } else if (screen == 2) {
       endScreen();
-    } else {
-      pauseScreen(level);
     }
   }
 
 
   void startScreen() {
     background(255);
+    fill(0);
+    textAlign(CENTER);
+    textSize(40);
+    String startText = "Pick a level!";
+    text(startText, width/2, 100);
     for (int i = 0; i < sb.length; i++) {
       sb[i].display();
     }
   }
 
   void gameScreen(int level) {
-    //imageMode(CORNER); /// WHY THE FUCK DOES THIS HAPPEN
-    //   image(background, 0, 0);
-    background(0, 255, 0);
-
+    background(0, 230, 0);
     m[level].display();
     shop.display();
+    p.update();
+
+
+    // Kills the zombies
+    println(bullets.size());
+    for(Bullet b : bullets){  
+      b.update();
+    }
+    for(int i = bullets.size()-1; i >= 0; i--){
+      if(bullets.get(i).dead == true){
+        bullets.remove(i);
+      }
+    }
+    //println("Bullet.size(): " + bullets.size());
     if (waveActive == true) {
-      for (int i = 0; i < z.size(); i++) {
-        z.get(i).move();
-        z.get(i).update();
-        z.get(i).display();
+      for (int i = listZ.size()-1; i >= 0; i--) {
+        listZ.get(i).move();
+        listZ.get(i).update();
+        listZ.get(i).display();
+        listZ.get(i).checkDead();
+      }
+    }
+    for (int i = 0; i < listT.size(); i++) {
+      listT.get(i).update();
+      listT.get(i).shoot();
+    }
+  }
+
+  void dieZombies(int idZombieDie) {
+    for (int i = listZ.size()-1; i >= 0; i--) {
+      if (listZ.get(i).id == idZombieDie) {
+        shop.money+=listZ.get(i).deathPrice;
+        listZ.remove(i);
       }
     }
   }
 
   void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
-    z.add(new Fast_Zombie(startX_, startY_, 20, 50, 10, color(150, 70, 30)));
+    //listZ.add(new Fast_Zombie(20, startX_, startY_, 50, 10, 20, 2, totalZombies));
+    listZ.add(new Normal_Zombie(5, startX_, startY_, 50, 20, 10, 0.8, totalZombies));
+    totalZombies++;
   }
 
   void endScreen() {
-    background(255);
-  }
-
-  void pauseScreen(int level) {
-    background(255);
+    background(0);
+    fill(255, 0, 0);
+    textSize(40);
+    String dieText = "GAME OVER!\nYOU DIED";
+    String restartText = "Click to go to menu!";
+    textAlign(CENTER);
+    text(dieText, width/2, height/2);
+    fill(255);
+    text(restartText, width/2, 100);
   }
 }

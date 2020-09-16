@@ -3,34 +3,37 @@ class Zombie {
   PVector location;
   PVector velocity;
   float health;
-  float speed = 1;
+  float startHealth;
+  float speed;
   float damage;
-  float r;
   float dirX;
   float dirY;
   float rotate=0;
   float tempDir = 0;
+  float distanceTravelled = 0;
+  int id;
+  int deathPrice;
+  float dia;
+  
+  ArrayList<Checkpoint> checkpointList;
+  int checkpointLength;
+  PVector target = new PVector(0, 0);
+  
+  boolean dead = false;
 
-  Zombie(float x_, float y_, float r_, float health_, float damage_) {
+  Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    speed = speed_;
+    deathPrice = deathPrice_;
+    id = id_;
+    dia = dia_;
     location = new PVector(x_, y_);
     velocity = new PVector(startVel(m[levelNumber]).x, startVel(m[levelNumber]).y);
-    println(velocity);
-    r = r_;
+    checkpointList = m[levelNumber].listLevelCheckpoints[levelNumber-1];
+    startHealth = health_;
     health = health_;
     damage = damage_;
 
-    if (levelNumber == 1) {
-      dirX = 1;
-      dirY = 0;
-    }
-    if (levelNumber == 2) {
-      dirX = 0;
-      dirY = 1;
-    }
-    if (levelNumber == 3) {
-      dirX = 0;
-      dirY = 1;
-    }
+    checkpointLength = 0;
   }
 
   PVector startVel (Map m) {
@@ -44,18 +47,36 @@ class Zombie {
   }
 
   void damagePlayer() {
+    checkDead();
     p.health -= damage;
     health = 0;
   }
 
-  void die() {
-    speed = 0;
-    location.y = -1000;
-  }
-
   void update() {
+    float healthBarWidth = dia;
+    noStroke();
+    fill(255, 100);
+    rectMode(CORNER);
+    rect(location.x-(healthBarWidth/2), location.y - 30, healthBarWidth, 5);
+    if (health > 60) {
+      fill(46, 204, 113);
+    } else if (health > 30) {
+      fill(230, 126, 34);
+    } else {
+      fill(231, 76, 60);
+    }
+    rectMode(CORNER);
+    rect(location.x-(healthBarWidth/2), location.y-30, healthBarWidth*(health/startHealth), 5);
+  }
+  
+  void checkDead(){
     if (health <= 0) {
-      die();
+      for(int i = bullets.size()-1; i >= 0; i--){
+        if(bullets.get(i).idZ == id){
+          bullets.remove(i);
+        }
+      }
+      s.dieZombies(id);
     }
   }
 
@@ -64,80 +85,56 @@ class Zombie {
   }
 
   void move() {
-    tempDir =0;
-
-    if (dirX == 1 && dirY ==0) {
-      rotate = HALF_PI;
-      velocity = new PVector(1, 0);
-    }
-
-    if (dirX == 0 && dirY ==1) {
-      rotate = PI;
-      velocity = new PVector(0, 1);
-    }
-
-    if (dirX == -1 && dirY ==0) {
-      rotate = PI*1.5;
-      velocity = new PVector(-1, 0);
-    }
-    if (dirX ==0 && dirY ==-1) {
-      rotate = 0;
-      velocity = new PVector(0, -1);
-    }
-    // color c = ;
-
-
-    if (get(int(location.x+(pathWidth/2)*dirX), int(location.y+(pathWidth/2)*dirY)) != m[0].brown 
-      && get(int(location.x+((pathWidth/2)+2)*dirX), int(location.y+((pathWidth/2)+2)*dirY+2*dirY)) != m[0].brown) {
-      println("not brown");
-      if (get(int(location.x+(pathWidth/2)*dirY), int(location.y+(pathWidth/2)*dirX)) != m[0].brown 
-        && get(int(location.x+((pathWidth/2)+2)*dirY), int(location.y+((pathWidth/2)+2)*dirX)) != m[0].brown) {
-        tempDir = dirX;
-        dirX = -dirY;
-        dirY = -tempDir;
-      } else if (get(int(location.x+(pathWidth/2)*(-dirY)), int(location.y+(pathWidth/2)*(-dirX))) != m[0].brown 
-        && get(int(location.x+(pathWidth/2)*(-dirY)+2), int(location.y+(pathWidth/2)*(-dirX+2))) != m[0].brown) {
-        tempDir = dirX;
-        dirX = dirY;
-        dirY = tempDir;
-      }
-    } else {
-      //     println("brown");
-    }
-
-
-    circle(location.x+(pathWidth/2*dirX), location.y+(pathWidth/2*dirY), 5);
+    checkPoints();
     location.add(velocity);
+    distanceTravelled+=velocity.mag();
+  }
+
+  void checkPoints() {
+    float d = dist(location.x, location.y, target.x, target.y);
+    if (d <= speed) {
+      location.x = target.x;
+      location.y = target.y;
+      if (checkpointLength != checkpointList.size()-1) {
+        checkpointLength++;
+      }
+    }
+    target.set(checkpointList.get(checkpointLength).x, checkpointList.get(checkpointLength).y);
+    velocity = PVector.sub(target, location);
+    velocity.setMag(speed);
+    rotate = velocity.heading()+PI/2;
   }
 }
 
 
 class Normal_Zombie extends Zombie {
+  
   PImage  zNormal;
-  Normal_Zombie(float x_, float y_, float r_, float health_, float damage_) {
-    super(x_, y_, r_, health_, damage_);
+  Normal_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
     zNormal = loadImage("zNormal.png");
-    zNormal.resize(50, 50);
+    zNormal.resize(int(dia), int(dia));
   }
 
   void display() {
-    shop.money ++;
-    image(zNormal, 20, 20);
+    pushMatrix();
+    translate(location.x, location.y);
+    rotate(rotate);
+    imageMode(CENTER);
+    image(zNormal, 0, 0);
+    popMatrix();
+    imageMode(CORNER);
   }
 }
 
 
 class Fast_Zombie extends Zombie {
 
-  float dia;
-  color c;
   PImage  zFast;
-  Fast_Zombie(float x_, float y_, float r_, float health_, float damage_, color c_) {
-    super(x_, y_, r_, health_, damage_);
-    dia = r*2;
-    c = c_;
+  Fast_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
     zFast = loadImage("zHurtig.png");
-    zFast.resize(50, 50);
+    zFast.resize(int(dia), int(dia));
   }
 
   void display() {
@@ -147,5 +144,6 @@ class Fast_Zombie extends Zombie {
     imageMode(CENTER);
     image(zFast, 0, 0);
     popMatrix();
+    imageMode(CORNER);
   }
 }
