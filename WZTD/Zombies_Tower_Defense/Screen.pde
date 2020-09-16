@@ -2,21 +2,9 @@ class Screen {
 
   boolean waveActive = false;
   PImage background;
-  String[] Types = loadStrings("types.txt");
-  String[] Time = loadStrings("time.txt");
-
-
 
   Screen() {
     background = loadImage("grass.png");
-    for (int i = 0; i < Types.length; i++) {
-      String[] type = split(Types[i], ',');
-      String[] time = split(Time[i], ',');
-      for (int j = 0; j < time.length; j++){
-      println(time[j] + " " + type[j]);
-    }
-      println("");
-    }
   }
 
   void update(int screen, int level) {
@@ -43,8 +31,8 @@ class Screen {
   }
 
   void gameScreen(int level) {
-    image(background, 0, 0);
-    //  background(0, 230, 0);
+    imageMode(CORNER);
+    image(background,0,0);
     m[level].display();
     shop.display();
     p.update();
@@ -59,18 +47,39 @@ class Screen {
         bullets.remove(i);
       }
     }
-
     if (waveActive == true) {
       for (int i = listZ.size()-1; i >= 0; i--) {
         listZ.get(i).move();
-        listZ.get(i).update();
         listZ.get(i).display();
+        listZ.get(i).displayHealth();
         listZ.get(i).checkDead();
       }
     }
     for (int i = 0; i < listT.size(); i++) {
       listT.get(i).update();
       listT.get(i).shoot();
+    }
+  }
+
+  void spawnZombie(char pressedKey) {
+    if (screenNumber == 1) {
+      waveActive = true;
+      if (pressedKey == '1') {
+        listZ.add(new Normal_Zombie(5, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 20, 1, 0.8, totalZombies));
+        totalZombies++;
+      } else if (pressedKey == '2') {
+        listZ.add(new Fast_Zombie(20, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 10, 5, 2, totalZombies));
+        totalZombies++;
+      } else if (pressedKey == '3') {
+        listZ.add(new Tank_Zombie(80, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 100, 20, 0.5, totalZombies));
+        totalZombies++;
+      } else if (pressedKey == '4') {
+        listZ.add(new MiniBoss_Zombie(320, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 300, 40, 1, totalZombies));
+        totalZombies++;
+      } else if (pressedKey == '5') {
+        listZ.add(new Boss_Zombie(1080, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 1000, 100, 0.7, totalZombies));
+        totalZombies++;
+      }
     }
   }
 

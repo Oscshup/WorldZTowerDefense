@@ -12,6 +12,9 @@ class Tower {
   float angle = 0;
   int savedId;
 
+
+
+
   Tower(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     p = p_;
     s = s_;
@@ -60,10 +63,14 @@ class Tower {
     if (active == true) {
       pushMatrix();
       translate(location.x, location.y);
-      rotate(angle);
+      turn(angle);
       display();
       popMatrix();
     }
+  }
+
+  void turn(float angle) {
+    rotate(angle);
   }
 
   void onClick() {
@@ -74,11 +81,14 @@ class Tower {
         if (checkForPath(location.x, location.y, s/2, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
           checkTemp = true;
         }
+        if (location.x >width-shopLength) {
+          checkTemp = true;
+        }
       }
       for (Tower t : listT) {
         if (t.id != id) {
           float distance = dist(t.location.x, t.location.y, location.x, location.y);
-          float minDist = t.s/2+s/2;
+          float minDist = t.s/2+s/2-15;
           if (distance <= minDist) {
             checkTemp = true;
           }
@@ -101,10 +111,10 @@ class Tower {
     float testX = tX;
     float testY = tY;
 
-    if (tX < pX)         testX = pX+5;
-    else if (tX > pX+pW) testX = pX+pW-5;
-    if (tY < pY)         testY = pY+5;
-    else if (tY > pY+pH) testY = pY+pH-5;
+    if (tX < pX)         testX = pX+7;
+    else if (tX > pX+pW) testX = pX+pW-7;
+    if (tY < pY)         testY = pY+7;
+    else if (tY > pY+pH) testY = pY+pH-7;
 
     float distX = tX-testX;
     float distY = tY-testY;
@@ -164,7 +174,6 @@ class LR1 extends LongRange {
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-
     return new LR1(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
@@ -184,16 +193,96 @@ class LR2 extends LongRange {
 }
 
 class LR3 extends LongRange {
-  LR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+
+
+  PImage launcher;
+  PImage raketNed;
+  PImage raketOp;
+  float blastRadius;
+  int up = constrain(50, 50, 200);
+  int launched = 0;
+  int dir = 3;
+  float down = 0;
+  float delay = 0;
+  float max = 200/dir;
+
+  LR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float bR_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
     p_*=100;
+
+    launcher = loadImage("eLauncher.png");
+    raketNed = loadImage("raketNed.png");
+    raketOp = loadImage("raketOp.png");
+
+    launcher.resize(100, 100);
+    raketNed.resize(50, 50);
+    raketOp.resize(50, 50);
   }
   void display() {
     imageMode(CENTER);
-    image(shop.lr3, 0, 0);
+    image(launcher, 0, 0);
+  }
+
+  void turn(float angle) {
+    rotate(PI);
+  }
+
+  void shoot() {
+    if (active == true && placed == true) {
+      for (int i = listZ.size()-1; i >= 0; i--) {
+        Zombie z = listZ.get(i);
+        if (z.id == savedId && frameCount % 60/fireRate == 0 && launched == 0) {
+          launched = 1;
+          dir = 3;
+          down = 0;
+          delay = 0;
+          max = 200/dir;
+        }
+      }
+    }
+    if (launched ==1) {
+      pushMatrix();
+      translate(location.x+30, location.y+5);
+      imageMode(CENTER);
+
+      if (dir == 3) {
+        image(raketOp, 0, 0, up, up);
+      }
+      up+=dir;
+      if (up > max) {
+        down = 1;
+      } 
+      if (down == 1) {
+        delay++;
+        if (delay >100) {
+          int targetNumber = -1;
+          for (int i = 0; i < listZ.size(); i++) {
+            if (listZ.get(i).id == savedId) {
+              targetNumber = i;
+            }
+          }
+          if (targetNumber != -1) {
+            dir = -3;
+            if ( up !=0 && down != 0) {
+              pushMatrix();
+              translate( listZ.get(targetNumber).location.x-location.x-30, listZ.get(targetNumber).location.x-location.y-5);
+              image(raketNed, 0, 0, up, up);
+              popMatrix();
+            }
+          }
+        }
+      }
+      if (up <= 0) {
+        up = 0;
+        down = 0;
+        delay = 0;
+        launched = 0;
+      }
+      popMatrix();
+    }
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new LR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+    return new LR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius);
   }
 }
 
@@ -240,10 +329,6 @@ class SR3 extends ShortRange {
   void display() {
     imageMode(CENTER);
     image(shop.sr3, 0, 0);
-  }
-  void turn() {
-  }
-  void shoot() {
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new SR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
