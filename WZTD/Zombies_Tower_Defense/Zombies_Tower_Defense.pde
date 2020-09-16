@@ -1,11 +1,12 @@
 int startMoney = 100000;
 float pathWidth;
-Timer timer;
 int levelsTotal = 3;
 int levelNumber;
 int totalTowers;
 int totalZombies;
 int totalBullets;
+int timeBetweenWaves = 10000;
+Timer timer = new Timer();
 Map[] m = new Map[levelsTotal+1];
 Screen s;
 ArrayList<Tower> listT = new ArrayList<Tower>();
@@ -28,7 +29,10 @@ void setup() {
 }
 
 void Start() {
+<<<<<<< Updated upstream
   //timer = new Timer();
+=======
+>>>>>>> Stashed changes
   for (int i = listT.size()-1; i >= 0; i--) {
     listT.remove(i);
   }
@@ -54,13 +58,17 @@ void Start() {
   shop = new Shop(startMoney);
 
   // Disse towers bliver ikke brugt i spillet, men bruges så vi har et af hvert tower at referere til i shoppen.
-  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, 100, 2, false, true, totalTowers)); // Nummer 0
+  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, 200, 2, false, true, totalTowers)); // Nummer 0
   totalTowers++;
-  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 100, 4, false, true, totalTowers)); // Nummer 1
+  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 200, 4, false, true, totalTowers)); // Nummer 1
   totalTowers++;
-  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
+  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, 200, 10, false, true, totalTowers)); // Nummer 2
   totalTowers++;
+<<<<<<< Updated upstream
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
+=======
+  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
+>>>>>>> Stashed changes
   totalTowers++;
   listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, 50, 0.25, false, true, totalTowers)); // Nummer 4
   totalTowers++;
@@ -81,7 +89,11 @@ void draw() {
 }
 
 void mouseClicked() {
+<<<<<<< Updated upstream
   if (screenNumber == 2) {
+=======
+  if (screenNumber == 2 || screenNumber == 3) {
+>>>>>>> Stashed changes
     Start();
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
@@ -101,12 +113,20 @@ void mouseClicked() {
 
 void keyPressed() {
   if (key == ENTER) {
-    s.startWave(waveNumber, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y);
+    if (screenNumber == 1 && s.waveActive == false) {
+    }
   }
+  char pressedKey = key;
+  if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5') {
+    s.spawnZombie(pressedKey);
+  }
+<<<<<<< Updated upstream
   char pressedKey = key;
   if(key == '1' || key == '2' || key == '3' || key == '4' || key == '5'){
     s.spawnZombie(pressedKey);
   }
+=======
+>>>>>>> Stashed changes
 
   if (key == 'p') {
     if (looping) {

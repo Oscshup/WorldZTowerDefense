@@ -33,6 +33,19 @@ class Tower {
     if (placed == false) {
       location.x = mouseX;
       location.y = mouseY;
+      stroke(0,200);
+      strokeWeight(4);
+      noFill();
+      circle(location.x, location.y, range);
+      stroke(0,120);
+      strokeWeight(2);
+      if(checkLocation() == true){
+        fill(0,255,0,120);
+      } else {
+        fill(255,0,0,120);
+      }
+      circle(location.x, location.y, s);
+      
     }
     if (active == true && placed == true) {
       float highestDistanceTravelled = 0;
@@ -65,14 +78,12 @@ class Tower {
       popMatrix();
     }
   }
-
-  void onClick() {
-    if (placed == false) {
-      boolean checkTemp = false;
-      ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
+  
+  boolean checkLocation(){
+    ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
       for (int i = 0; i < squareList.size(); i++) {
         if (checkForPath(location.x, location.y, s/2, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
-          checkTemp = true;
+          return false;
         }
       }
       for (Tower t : listT) {
@@ -80,11 +91,16 @@ class Tower {
           float distance = dist(t.location.x, t.location.y, location.x, location.y);
           float minDist = t.s/2+s/2;
           if (distance <= minDist) {
-            checkTemp = true;
+            return false;
           }
         }
       }
-      if (checkTemp == false) {
+    return true;
+  }
+
+  void onClick() {
+    if (placed == false) {
+      if (checkLocation() == true) {
         placed = true;
         shop.money-=p;
         totalTowers++;
@@ -190,6 +206,9 @@ class LR3 extends LongRange {
   void display() {
     imageMode(CENTER);
     image(shop.lr3, 0, 0);
+  }
+  void shoot(){
+    
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new LR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
