@@ -33,6 +33,7 @@ class Tower {
     if (placed == false) {
       location.x = mouseX;
       location.y = mouseY;
+<<<<<<< Updated upstream
       stroke(0,200);
       strokeWeight(4);
       noFill();
@@ -46,6 +47,20 @@ class Tower {
       }
       circle(location.x, location.y, s);
       
+=======
+      stroke(0, 200);
+      strokeWeight(4);
+      noFill();
+      circle(location.x, location.y, range);
+      stroke(0, 120);
+      strokeWeight(2);
+      if (checkLocation() == true) {
+        fill(0, 255, 0, 120);
+      } else {
+        fill(255, 0, 0, 120);
+      }
+      circle(location.x, location.y, s);
+>>>>>>> Stashed changes
     }
     if (active == true && placed == true) {
       float highestDistanceTravelled = 0;
@@ -78,6 +93,7 @@ class Tower {
       popMatrix();
     }
   }
+<<<<<<< Updated upstream
   
   boolean checkLocation(){
     ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
@@ -95,6 +111,28 @@ class Tower {
           }
         }
       }
+=======
+  void turn(float angle) {
+    rotate(angle);
+  }
+
+  boolean checkLocation() {
+    ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
+    for (int i = 0; i < squareList.size(); i++) {
+      if (checkForPath(location.x, location.y, s/2, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
+        return false;
+      }
+    }
+    for (Tower t : listT) {
+      if (t.id != id) {
+        float distance = dist(t.location.x, t.location.y, location.x, location.y);
+        float minDist = t.s/2+s/2-15;
+        if (distance <= minDist) {
+          return false;
+        }
+      }
+    }
+>>>>>>> Stashed changes
     return true;
   }
 
@@ -129,10 +167,6 @@ class Tower {
       return true;
     }
     return false;
-  }
-
-  boolean checkForTower() {
-    return true;
   }
 
   void display() {
@@ -199,7 +233,22 @@ class LR2 extends LongRange {
 }
 
 class LR3 extends LongRange {
+<<<<<<< Updated upstream
   LR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+=======
+  PImage launcher;
+  PImage raketNed;
+  PImage raketOp;
+  float blastRadius;
+  int up = constrain(50, 50, 200);
+  int launched = 0;
+  int dir = 3;
+  float down = 0;
+  float delay = 0;
+  float max = 200/dir;
+
+  LR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float bR_) {
+>>>>>>> Stashed changes
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
     p_*=100;
   }
@@ -252,19 +301,50 @@ class SR2 extends ShortRange {
   }
 }
 class SR3 extends ShortRange {
-  SR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+  PImage[] images;
+  int current;
+
+  SR3(PImage[] tempImg, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+    images = tempImg;
+    current = 0;
+    for (int i = 0; i < images.length; i++) {
+      images[i].resize(100, 100);
+    }
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sr3, 0, 0);
+    pushMatrix();
+    rotate(-PI/2);
+    boolean shooting = false;
+    for (int i = listZ.size()-1; i >= 0; i--) {
+      if (dist(location.x, location.y, listZ.get(i).location.x, listZ.get(i).location.y) <= range) {
+        shooting =true;
+        break;
+      }
+    }
+    if (shooting == true) {
+      image(images[current], 0, 0);
+      current++;
+      if (current >= 4) {
+        current = 0;
+      }
+    } else {
+      current = 0;
+      image(images[current], 0, 0);
+    }
+    popMatrix();
   }
+<<<<<<< Updated upstream
   void turn() {
   }
   void shoot() {
   }
+=======
+
+>>>>>>> Stashed changes
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+    return new SR3(images, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 

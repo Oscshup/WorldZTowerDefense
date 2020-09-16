@@ -1,19 +1,38 @@
-class Player{
+class Player {
 
   float health;
 
-  Player(float health_){
+  int current;
+  PImage[] img;
+
+  Player(float health_, PImage[] tempImage) {
     health = health_;
-  }
-  
-  void update(){
-    if(health <= 0){
-      die();
+    current = 0;
+    img = tempImage;
+    for (int i = 0; i < img.length; i++) {
+      img[i].resize(50, 50);
     }
   }
-  
-  void die(){
+
+  void update() {
+    live();
+    health-=0;
+    if (health <= 0) {
+      die();
+    }
+    println(health);
+  }
+
+  void die() {
     screenNumber = 2;
   }
 
+
+  void live() {
+    textSize(30);
+    fill(0);
+    textAlign(CENTER);  
+    text(int(health), width-130, height/2-320);
+    image(img[current], width-200, height/2-350);
+  }
 }

@@ -66,7 +66,13 @@ class Zombie {
       fill(231, 76, 60);
     }
     rectMode(CORNER);
+<<<<<<< Updated upstream
     rect(location.x-(healthBarWidth/2), location.y-30, healthBarWidth*(health/startHealth), 5);
+=======
+    if (health >0) {
+      rect(location.x-(healthBarWidth/2), location.y-30, healthBarWidth*(health/startHealth), 5);
+    }
+>>>>>>> Stashed changes
   }
   
   void checkDead(){
@@ -76,7 +82,7 @@ class Zombie {
           bullets.remove(i);
         }
       }
-      s.dieZombies(id);
+      s.dieZombies(id, deathPrice);
     }
   }
 
@@ -97,6 +103,14 @@ class Zombie {
       location.y = target.y;
       if (checkpointLength != checkpointList.size()-1) {
         checkpointLength++;
+      } else {
+        p.health-=damage;
+        for (int i = bullets.size()-1; i >= 0; i--) {
+          if (bullets.get(i).idZ == id && bullets.get(i).sniper == false) {
+            bullets.remove(i);
+          }
+        }
+        s.dieZombies(id, 0);
       }
     }
     target.set(checkpointList.get(checkpointLength).x, checkpointList.get(checkpointLength).y);
