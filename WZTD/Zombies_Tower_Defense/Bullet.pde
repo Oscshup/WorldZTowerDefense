@@ -4,16 +4,17 @@ class Bullet {
   //where does the bullet shooting towards
   //How fast Bullet move on screen
   float speed = 4;
-
   float size = 1;
-  
+
+  IntList zombiesHitId = new IntList();
+
   boolean dead = false;
+  boolean sniper = false;
 
   int idT;
   int idZ;
   int idB;
 
-  //bullet velocity
   PVector velocity;
 
   boolean hit = false;
@@ -25,32 +26,65 @@ class Bullet {
     idT = idT_;
     idZ = idZ_;
     idB = idB_;
-    println("TowerID: " + idT + " , ZombieID: " + idZ + " , BulletID: " + idB);
     damage = damage_;
+
+    for (int j = listT.size()-1; j >= 0; j--) {
+      if (listT.get(j).id == idT && listT.get(j).p == 100) {
+        sniper = true;
+        break;
+      }
+    }
+    if (idZ != -1 && listZ.size() != 0 && sniper == true) {
+      Zombie target2 = listZ.get(0);
+      for (int i = listZ.size()-1; i >= 0; i--) {
+        if (listZ.get(i).id == idZ) {
+          target2 = listZ.get(i);
+        }
+      }
+      velocity = PVector.sub(target2.location, location);
+      velocity.setMag(speed);
+    }
   }
 
 
   void update() {
     if (idZ != -1 && listZ.size() != 0) {
-      //println("Zombie.size(): " + listZ.size() + " , zombieID: " + idZ);
-      // Nedenstående kode skal kigges igennem
+      
       Zombie target = listZ.get(0);
       for (int i = listZ.size()-1; i >= 0; i--) {
         if (listZ.get(i).id == idZ) {
           target = listZ.get(i);
         }
       }
-      velocity = PVector.sub(target.location, location);
-      velocity.setMag(speed); 
+      if (sniper == false) {
+        velocity = PVector.sub(target.location, location);
+        velocity.setMag(speed);
+      }
       location.add(velocity);
       float angle = velocity.heading();
-      if (size+10 >= dist(location.x, location.y, target.location.x, target.location.y)) {
-        target.health-=damage;
+      for (int i = listZ.size()-1; i >= 0; i--) {
+        if (size+10 >= dist(location.x, location.y, listZ.get(i).location.x, listZ.get(i).location.y)) {
+          boolean hitZombieBefore = false;
+          for (int k = 0; k < zombiesHitId.size(); k++) {
+            if (listZ.get(i).id == zombiesHitId.get(k)) {
+              hitZombieBefore = true;
+            }
+          }
+          if (hitZombieBefore == false) {
+            listZ.get(i).health-=damage;
+            zombiesHitId.append(listZ.get(i).id);
+          }
+          if (sniper == false) {
+            location.x = -1000000;
+            dead = true;
+            break;
+          }
+        }
+      }
+      if (location.x > m[levelNumber].xMax || location.x < 0 || location.y > m[levelNumber].yMax) {
         location.x = -1000000;
         dead = true;
       }
-
-      //compute rotation angle from velocity
 
       pushMatrix();
       translate(location.x, location.y);

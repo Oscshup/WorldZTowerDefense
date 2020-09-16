@@ -29,10 +29,10 @@ void setup() {
 
 void Start() {
   //timer = new Timer();
-  for(int i = listT.size()-1; i >= 0; i--){
+  for (int i = listT.size()-1; i >= 0; i--) {
     listT.remove(i);
   }
-  for(int i = listZ.size()-1; i >= 0; i--){
+  for (int i = listZ.size()-1; i >= 0; i--) {
     listZ.remove(i);
   }
   totalTowers = 0;
@@ -60,7 +60,7 @@ void Start() {
   totalTowers++;
   listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
   totalTowers++;
-  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1000, 1, false, true, totalTowers)); // Nummer 3
+  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
   totalTowers++;
   listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, 50, 0.25, false, true, totalTowers)); // Nummer 4
   totalTowers++;
@@ -81,7 +81,7 @@ void draw() {
 }
 
 void mouseClicked() {
-  if(screenNumber == 2){
+  if (screenNumber == 2) {
     Start();
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
@@ -97,25 +97,26 @@ void mouseClicked() {
     }
     shop.onClick();
   }
-  
 }
 
 void keyPressed() {
   if (key == ENTER) {
     s.startWave(waveNumber, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y);
   }
-  
-   if(key == 'p'){
-    if(looping) {
+  char pressedKey = key;
+  if(key == '1' || key == '2' || key == '3' || key == '4' || key == '5'){
+    s.spawnZombie(pressedKey);
+  }
+
+  if (key == 'p') {
+    if (looping) {
       noLoop();
-      background(150,199);
+      background(150, 199);
       String textPause = "Paused";
       textSize(60);
       fill(0);
       textAlign(CENTER);
       text(textPause, width/2, height/2);
-    }
-    else loop();
+    } else loop();
   }
-  
 }
