@@ -1,8 +1,11 @@
+int startMoney = 100000;
 float pathWidth;
 Timer timer;
 int levelsTotal = 3;
 int levelNumber;
 int totalTowers;
+int totalZombies;
+int totalBullets;
 Map[] m = new Map[levelsTotal+1];
 Screen s;
 ArrayList<Tower> listT = new ArrayList<Tower>();
@@ -33,6 +36,8 @@ void Start() {
     listZ.remove(i);
   }
   totalTowers = 0;
+  totalZombies = 0;
+  totalBullets = 0;
   levelNumber = 0;
   startHealth = 500;
   waveNumber = 0;
@@ -46,7 +51,7 @@ void Start() {
     sb[i] = new StartButtons(i*width/4, height/2, width/4, width/4, i);
   }
   s = new Screen();
-  shop = new Shop(200);
+  shop = new Shop(startMoney);
 
   // Disse towers bliver ikke brugt i spillet, men bruges så vi har et af hvert tower at referere til i shoppen.
   listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, 100, 2, false, true, totalTowers)); // Nummer 0

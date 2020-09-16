@@ -34,26 +34,18 @@ class Screen {
     shop.display();
     p.update();
 
-    for (Tower tower : listT) {
-      if (tower.active == true && tower.placed == true) {
-        for (Zombie zombie : listZ) {
-          PVector target = new PVector(zombie.location.x, zombie.location.y);
-          if (dist(tower.location.x, tower.location.y, target.x, target.y) < tower.range) {
-
-            if (frameCount % 60/tower.fireRate == 0) {
-              tower.shoot();
-            }
-          }
-        }
-      }
-    }
 
     // Kills the zombies
-
-    for (int i = bullets.size()-1; i >= 0; i--) {
-      bullets.get(i).update();
+    println(bullets.size());
+    for(Bullet b : bullets){  
+      b.update();
     }
-    println("Bullet.size(): " + bullets.size());
+    for(int i = bullets.size()-1; i >= 0; i--){
+      if(bullets.get(i).dead == true){
+        bullets.remove(i);
+      }
+    }
+    //println("Bullet.size(): " + bullets.size());
     if (waveActive == true) {
       for (int i = listZ.size()-1; i >= 0; i--) {
         listZ.get(i).move();
@@ -64,34 +56,24 @@ class Screen {
     }
     for (int i = 0; i < listT.size(); i++) {
       listT.get(i).update();
+      listT.get(i).shoot();
     }
   }
 
   void dieZombies(int idZombieDie) {
-    shop.money+=listZ.get(idZombieDie).deathPrice;
-    listZ.remove(idZombieDie);
-    for (int i = listZ.size()-1; i >= idZombieDie; i--) {
-      listZ.get(i).id-=1;
-    }
-    for (int i = bullets.size()-1; i >= 0; i--) {
-      if (bullets.get(i).idZ > idZombieDie) {
-        bullets.get(i).idZ-=1;
+    for (int i = listZ.size()-1; i >= 0; i--) {
+      if (listZ.get(i).id == idZombieDie) {
+        shop.money+=listZ.get(i).deathPrice;
+        listZ.remove(i);
       }
-    }
-  }
-
-  void removeBullet(int idBulletDie) {
-    println("Bullet.size(): " + bullets.size() + " , bulletID: " + idBulletDie);
-    bullets.remove(idBulletDie);
-    for (int i = bullets.size()-1; i >= idBulletDie; i--) {
-      bullets.get(i).idB--;
     }
   }
 
   void startWave(int waveNumber_, float startX_, float startY_) {
     waveActive = true;
-    //listZ.add(new Fast_Zombie(20, startX_, startY_, 50, 10, 20, 2, listZ.size()));
-    listZ.add(new Normal_Zombie(5, startX_, startY_, 50, 20, 10, 0.8, listZ.size()));
+    //listZ.add(new Fast_Zombie(20, startX_, startY_, 50, 10, 20, 2, totalZombies));
+    listZ.add(new Normal_Zombie(5, startX_, startY_, 50, 20, 10, 0.8, totalZombies));
+    totalZombies++;
   }
 
   void endScreen() {

@@ -4,7 +4,7 @@ class Zombie {
   PVector velocity;
   float health;
   float startHealth;
-  float speed = 1;
+  float speed;
   float damage;
   float dirX;
   float dirY;
@@ -74,9 +74,6 @@ class Zombie {
       for(int i = bullets.size()-1; i >= 0; i--){
         if(bullets.get(i).idZ == id){
           bullets.remove(i);
-          for(int j = bullets.size()-1; j >= 0; j--){
-            bullets.get(j).idB--;
-          }
         }
       }
       s.dieZombies(id);

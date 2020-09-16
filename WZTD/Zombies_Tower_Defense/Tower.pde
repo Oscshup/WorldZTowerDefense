@@ -37,7 +37,7 @@ class Tower {
     if (active == true && placed == true) {
       float highestDistanceTravelled = 0;
       savedId = -1;
-      for (int i = 0; i < listZ.size(); i++) {
+      for (int i = listZ.size()-1; i >= 0; i--) {
         float dis = dist(listZ.get(i).location.x, listZ.get(i).location.y, location.x, location.y);
         if (dis<=range) {
           if (listZ.get(i).distanceTravelled > highestDistanceTravelled) {
@@ -46,9 +46,13 @@ class Tower {
           }
         }
       }
-      if (listZ.size() > 0 && savedId != -1 && savedId < listZ.size()) {
-        PVector distance = PVector.sub(listZ.get(savedId).location, location);
-        angle = distance.heading();
+      if (listZ.size() > 0 && savedId != -1) {
+        for (int i = listZ.size()-1; i >= 0; i--) {
+          if (listZ.get(i).id == savedId) {
+            PVector distance = PVector.sub(listZ.get(i).location, location);
+            angle = distance.heading();
+          }
+        }
       } else {
         angle = 0;
       }
@@ -123,9 +127,14 @@ class Tower {
   }
 
   void shoot() {
-    for (int i = 0; i < listZ.size(); i++) {
-      Bullet b = new Bullet(location.x, location.y, damage, id, savedId, bullets.size());
-      bullets.add(b);
+    if (active == true && placed == true) {
+      for (int i = listZ.size()-1; i >= 0; i--) {
+        Zombie z = listZ.get(i);
+        if (z.id == savedId && frameCount % 60/fireRate == 0 && dist(location.x, location.y, z.location.x, z.location.y) < range) {
+          Bullet b = new Bullet(location.x, location.y, damage, id, savedId, totalBullets);
+          bullets.add(b);
+        }
+      }
     }
   }
 }
@@ -207,8 +216,6 @@ class SR1 extends ShortRange {
   void display() {
     imageMode(CENTER);
     image(shop.sr1, 0, 0);
-    fill(0);
-    circle(0, 0, 10);
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new SR1(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
