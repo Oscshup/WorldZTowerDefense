@@ -21,34 +21,36 @@ int waveNumber;
 float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
- PImage[] sentrys = new PImage[4];
-
+PImage[] sentrys = new PImage[4];
+PImage[] lives = new PImage[1];
 
 void setup() {
   frameRate(60);
   size(1200, 700);
   Start();
- 
 }
 
 void Start() {
+  //Sentry animation
   for (int i = 0; i < sentrys.length; i++) {
-      sentrys[i] = loadImage("MinigunSentry" + i + ".png");
+    sentrys[i] = loadImage("Mini" + i + ".png");
   }
   
-  
+  lives[0] = loadImage("Heart.png");
+
+
   //timer = new Timer();
-  for(int i = listT.size()-1; i >= 0; i--){
+  for (int i = listT.size()-1; i >= 0; i--) {
     listT.remove(i);
   }
-  for(int i = listZ.size()-1; i >= 0; i--){
+  for (int i = listZ.size()-1; i >= 0; i--) {
     listZ.remove(i);
   }
   totalTowers = 0;
   totalZombies = 0;
   totalBullets = 0;
   levelNumber = 0;
-  startHealth = 500;
+  startHealth = 100;
   waveNumber = 0;
   screenNumber = 0;
   shopLength = 300;
@@ -67,7 +69,7 @@ void Start() {
   totalTowers++;
   listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 100, 4, false, true, totalTowers)); // Nummer 1
   totalTowers++;
-  listT.add(new SR3(sentrys,5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
+  listT.add(new SR3(sentrys, 5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1000, 1, false, true, totalTowers)); // Nummer 3
   totalTowers++;
@@ -82,7 +84,7 @@ void Start() {
   listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
   totalTowers++;
 
-  p = new Player(startHealth);
+  p = new Player(startHealth, lives);
 }
 
 void draw() {
@@ -90,7 +92,7 @@ void draw() {
 }
 
 void mouseClicked() {
-  if(screenNumber == 2){
+  if (screenNumber == 2) {
     Start();
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
@@ -106,25 +108,22 @@ void mouseClicked() {
     }
     shop.onClick();
   }
-  
 }
 
 void keyPressed() {
   if (key == ENTER) {
     s.startWave(waveNumber, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y);
   }
-  
-   if(key == 'p'){
-    if(looping) {
+
+  if (key == 'p') {
+    if (looping) {
       noLoop();
-      background(150,199);
+      background(150, 199);
       String textPause = "Paused";
       textSize(60);
       fill(0);
       textAlign(CENTER);
       text(textPause, width/2, height/2);
-    }
-    else loop();
+    } else loop();
   }
-  
 }
