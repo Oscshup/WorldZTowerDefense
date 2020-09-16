@@ -233,20 +233,45 @@ class SR2 extends ShortRange {
     return new SR2(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
+
 class SR3 extends ShortRange {
-  SR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+  PImage[] images;
+  int current;
+
+  SR3(PImage[] tempImg, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+    images = tempImg;
+    current = 0;
+    for (int i = 0; i < images.length; i++) {
+      images[i].resize(100, 100);
+    }
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sr3, 0, 0);
+    pushMatrix();
+    rotate(-PI/2);
+    boolean shooting = false;
+    for (int i = listZ.size()-1; i >= 0; i--) {
+      if (dist(location.x, location.y, listZ.get(i).location.x, listZ.get(i).location.y) <= range) {
+        shooting =true;
+        break;
+      }
+    }
+    if (shooting == true) {
+      image(images[current], 0, 0);
+      current++;
+      if (current >= 4) {
+        current = 0;
+      }
+    } else {
+      current = 0;
+      image(images[current], 0, 0);
+    }
+    popMatrix();
   }
-  void turn() {
-  }
-  void shoot() {
-  }
+
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+    return new SR3(images, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 

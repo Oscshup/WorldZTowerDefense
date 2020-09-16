@@ -21,13 +21,22 @@ int waveNumber;
 float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
+ PImage[] sentrys = new PImage[4];
+
+
 void setup() {
   frameRate(60);
   size(1200, 700);
   Start();
+ 
 }
 
 void Start() {
+  for (int i = 0; i < sentrys.length; i++) {
+      sentrys[i] = loadImage("MinigunSentry" + i + ".png");
+  }
+  
+  
   //timer = new Timer();
   for(int i = listT.size()-1; i >= 0; i--){
     listT.remove(i);
@@ -58,7 +67,7 @@ void Start() {
   totalTowers++;
   listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 100, 4, false, true, totalTowers)); // Nummer 1
   totalTowers++;
-  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
+  listT.add(new SR3(sentrys,5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1000, 1, false, true, totalTowers)); // Nummer 3
   totalTowers++;
