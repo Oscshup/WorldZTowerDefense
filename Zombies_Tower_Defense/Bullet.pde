@@ -6,46 +6,58 @@ class Bullet {
   float speed = 4;
 
   float size = 1;
+  
+  boolean dead = false;
 
-  int id;
+  int idT;
+  int idZ;
+  int idB;
 
   //bullet velocity
   PVector velocity;
-  
+
   boolean hit = false;
 
   float damage;
 
-  Bullet(float startX, float startY, float damage_, int id_) {
+  Bullet(float startX, float startY, float damage_, int idT_, int idZ_, int idB_) {
     location = new PVector(startX, startY);
-    id = id_;
+    idT = idT_;
+    idZ = idZ_;
+    idB = idB_;
+    println("TowerID: " + idT + " , ZombieID: " + idZ + " , BulletID: " + idB);
     damage = damage_;
   }
 
 
-  void update(Zombie z) {
-    float opacity = 255;
-    if(z.health <= 0){
-      opacity = 0;
-    }
-    velocity = PVector.sub(z.location, location);
-    velocity.setMag(speed); 
-    location.add(velocity);
-    float angle = velocity.heading();
-    if(size >= dist(location.x, location.y, z.location.x, z.location.y)){
-      opacity = 0;
-      z.health-=damage;
-    }
+  void update() {
+    if (idZ != -1 && listZ.size() != 0) {
+      //println("Zombie.size(): " + listZ.size() + " , zombieID: " + idZ);
+      // Nedenstående kode skal kigges igennem
+      Zombie target = listZ.get(0);
+      for (int i = listZ.size()-1; i >= 0; i--) {
+        if (listZ.get(i).id == idZ) {
+          target = listZ.get(i);
+        }
+      }
+      velocity = PVector.sub(target.location, location);
+      velocity.setMag(speed); 
+      location.add(velocity);
+      float angle = velocity.heading();
+      if (size+10 >= dist(location.x, location.y, target.location.x, target.location.y)) {
+        target.health-=damage;
+        location.x = -1000000;
+        dead = true;
+      }
 
-    //compute rotation angle from velocity
-    
-    pushMatrix();
-    translate(location.x, location.y);
-    rotate(angle);
-    stroke(0, opacity);
-    line(0, 0, size, 0);
-    popMatrix();
+      //compute rotation angle from velocity
+
+      pushMatrix();
+      translate(location.x, location.y);
+      rotate(angle);
+      stroke(0);
+      line(0, 0, size, 0);
+      popMatrix();
+    }
   }
-
- 
 }
