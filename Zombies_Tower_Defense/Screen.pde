@@ -1,7 +1,8 @@
 class Screen {
 
   boolean waveActive = false;
-
+  int waves=1;
+  
   Screen() {
   }
 
@@ -30,6 +31,8 @@ class Screen {
 
   void gameScreen(int level) {
     background(0, 230, 0);
+    textSize(30);
+    text(waves + "Waves",width-140, height/2-280);
     m[level].display();
     shop.display();
     p.update();
