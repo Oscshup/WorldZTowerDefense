@@ -64,7 +64,7 @@ class Bullet {
     location.add(velocity);
     float angle = velocity.heading();
     for (int i = listZ.size()-1; i >= 0; i--) {
-      if (size+10 >= dist(location.x, location.y, listZ.get(i).location.x, listZ.get(i).location.y)) {
+      if (listZ.get(i).dia/2-5>= dist(location.x, location.y, listZ.get(i).location.x, listZ.get(i).location.y)) {
         boolean hitZombieBefore = false;
         for (int k = 0; k < zombiesHitId.size(); k++) {
           if (listZ.get(i).id == zombiesHitId.get(k)) {

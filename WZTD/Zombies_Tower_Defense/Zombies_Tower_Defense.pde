@@ -25,7 +25,6 @@ StartButtons[] sb = new StartButtons[levelsTotal+1];
 PImage[] sentrys = new PImage[4];
 PImage[] lives = new PImage[1];
 
-
 void setup() {
   frameRate(60);
   size(1200, 700);
@@ -73,9 +72,9 @@ void Start() {
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
   totalTowers++;
-  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, 50, 0.25, false, true, totalTowers)); // Nummer 4
+  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 20, 200, 2, false, true, totalTowers)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50,  sqrt( (width*width) + (height*height)), 10, false, true, totalTowers, 150)); // Nummer 5
+  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50,  1.5*sqrt( (width*width) + (height*height)), 10, false, true, totalTowers, 150)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
@@ -111,15 +110,6 @@ void mouseClicked() {
 }
 
 void keyPressed() {
-  if (key == ENTER) {
-    if (screenNumber == 1 && s.waveActive == false) {
-    }
-  }
-  char pressedKey = key;
-  if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5') {
-    s.spawnZombie(pressedKey);
-  }
-
   if (key == 'p') {
     if (looping) {
       noLoop();

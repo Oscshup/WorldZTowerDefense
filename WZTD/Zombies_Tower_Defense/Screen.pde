@@ -7,10 +7,12 @@ class Screen {
   ArrayList[] waves = new ArrayList[textTotal.length];
 
   boolean timerActive = false;
+  
+  boolean zombieDead = false;
 
   Screen() {
     background = loadImage("grass.png");
-    
+
     for (int i = 0; i < waves.length; i++) {
       waves[i] = new ArrayList<PVector>();
     }
@@ -54,7 +56,7 @@ class Screen {
 
   void gameScreen(int level) {
     imageMode(CORNER);
-    image(background,0,0);
+    image(background, 0, 0);
     //background(0, 230, 0);
     m[level].display();
     shop.display();
@@ -80,25 +82,20 @@ class Screen {
     if (waveActive == true && waveNumber <= waves.length) {
       wave();
     } 
-    fill(0);
-    String waveText = "Next wave in: " + waveNumber;
-    textAlign(CORNER);
-    textSize(20);
-    text(waveText, 5, height-50);
-    if (timerActive == true) {
-      int timeLeft = timer2.totalTime-(millis()-timer2.savedTime);
-      String timeToWaveText = "Next wave in: " + timeLeft;
-      text(timeToWaveText, 5, height-20);
-    }
-    textAlign(CENTER);
     if (waveNumber > waves.length) {
       win();
     }
-    for (int i = listZ.size()-1; i >= 0; i--) {
-      listZ.get(i).move();
-      listZ.get(i).display();
-      listZ.get(i).displayHealth();
-      listZ.get(i).checkDead();
+    if (listZ.size() != 0) {
+      for (int i = listZ.size()-1; i >= 0; i--) {
+        listZ.get(i).move();
+        if (zombieDead == false) {
+          listZ.get(i).display();
+          listZ.get(i).displayHealth();
+          listZ.get(i).checkDead();
+        } else {
+          zombieDead = false;
+        }
+      }
     }
     if (listZ.size() == 0 && timerActive == false && waveActive == false) {
       if (waveNumber > waves.length) {
@@ -112,6 +109,17 @@ class Screen {
       listT.get(i).update();
       listT.get(i).shoot();
     }
+    fill(255);
+    String waveText = "Wave number: " + waveNumber;
+    textAlign(CORNER);
+    textSize(20);
+    text(waveText, 5, height-50);
+    if (timerActive == true) {
+      int timeLeft = ceil((timer.totalTime-(millis()-timer.savedTime))/1000);
+      String timeToWaveText = "Next wave in: " + timeLeft;
+      text(timeToWaveText, 5, height-20);
+    }
+    textAlign(CENTER);
   }
 
   void spawnZombie(int zombieType) {
@@ -141,13 +149,13 @@ class Screen {
       if (listZ.get(i).id == idZombieDie) {
         shop.money+=deathPrice;
         listZ.remove(i);
+        zombieDead = true;
       }
     }
   }
 
   int zombieNumber = 0;
   Timer timer2 = new Timer();
-
   void wave() {
     ArrayList<PVector> w = waves[waveNumber-1];
     if (zombieNumber < w.size()) {

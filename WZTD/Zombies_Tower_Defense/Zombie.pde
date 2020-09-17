@@ -14,12 +14,12 @@ class Zombie {
   int id;
   int deathPrice;
   float dia;
+  
+  boolean dead = false;
 
   ArrayList<Checkpoint> checkpointList;
   int checkpointLength;
   PVector target = new PVector(0, 0);
-
-  boolean dead = false;
 
   Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
     speed = speed_;
@@ -93,6 +93,7 @@ class Zombie {
   }
 
   void checkPoints() {
+    boolean dead = false;
     float d = dist(location.x, location.y, target.x, target.y);
     if (d <= speed) {
       location.x = target.x;
@@ -107,6 +108,7 @@ class Zombie {
           }
         }
         s.dieZombies(id, 0);
+        dead = true;
       }
     }
     target.set(checkpointList.get(checkpointLength).x, checkpointList.get(checkpointLength).y);
