@@ -407,7 +407,7 @@ class SP3 extends Special {
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sp1, 0, 0);
+    image(shop.sp3, 0, 0);
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new SP3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);

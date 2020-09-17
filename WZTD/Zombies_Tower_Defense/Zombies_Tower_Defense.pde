@@ -24,6 +24,7 @@ StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 PImage[] sentrys = new PImage[4];
 PImage[] lives = new PImage[1];
+//PImage[] supplyDrop = new PImage
 
 
 void setup() {
