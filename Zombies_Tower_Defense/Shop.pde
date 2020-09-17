@@ -27,9 +27,9 @@ class Shop {
     lr1 = loadImage("rifle.png");
     lr2 = loadImage("Plane.png");
     lr3 = loadImage("Missile.png");
-    //sp1 = loadImage("BLANK.png");
+    sp1 = loadImage("Olie.png");
     sp2 = loadImage("Mine.png");
-    sp3 = loadImage("supplyDropIcon.png");
+    sp3 = loadImage("supIcon.png");
 
     shopCoins.resize(50, 50);
     sr1.resize(50, 50);
@@ -38,7 +38,7 @@ class Shop {
     lr1.resize(50, 50);
     lr2.resize(50, 50);
     lr3.resize(50, 50);
-    // sp1.resize(50, 50);
+    sp1.resize(50, 50);
     sp2.resize(50, 50);
     sp3.resize(50, 50);
     shopImg.resize(int(shopLength), height+off);
@@ -65,7 +65,7 @@ class Shop {
     image(lr1, width-shopLength+45, 375);
     image(lr2, width-shopLength+45, 425);
     image(lr3, width-shopLength+45, 475);
-    //   image(sp1, width-shopLength+45, 525);
+    image(sp1, width-shopLength+45, 525);
     image(sp2, width-shopLength+45, 575);
     image(sp3, width-shopLength+45, 625);
     textSize(32);

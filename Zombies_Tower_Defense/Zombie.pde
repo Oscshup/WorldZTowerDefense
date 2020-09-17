@@ -15,11 +15,11 @@ class Zombie {
   int deathPrice;
   float dia;
   
+  boolean dead = false;
+
   ArrayList<Checkpoint> checkpointList;
   int checkpointLength;
   PVector target = new PVector(0, 0);
-  
-  boolean dead = false;
 
   Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
     speed = speed_;
@@ -52,31 +52,33 @@ class Zombie {
     health = 0;
   }
 
-  void update() {
+  void displayHealth() {
     float healthBarWidth = dia;
     noStroke();
     fill(255, 100);
     rectMode(CORNER);
     rect(location.x-(healthBarWidth/2), location.y - 30, healthBarWidth, 5);
-    if (health > 60) {
+    if (health > startHealth*0.6) {
       fill(46, 204, 113);
-    } else if (health > 30) {
+    } else if (health > startHealth*0.3) {
       fill(230, 126, 34);
     } else {
       fill(231, 76, 60);
     }
     rectMode(CORNER);
-    rect(location.x-(healthBarWidth/2), location.y-30, healthBarWidth*(health/startHealth), 5);
+    if (health >0) {
+      rect(location.x-(healthBarWidth/2), location.y-30, healthBarWidth*(health/startHealth), 5);
+    }
   }
-  
-  void checkDead(){
+
+  void checkDead() {
     if (health <= 0) {
-      for(int i = bullets.size()-1; i >= 0; i--){
-        if(bullets.get(i).idZ == id){
+      for (int i = bullets.size()-1; i >= 0; i--) {
+        if (bullets.get(i).idZ == id && bullets.get(i).sniper == false) {
           bullets.remove(i);
         }
       }
-      s.dieZombies(id);
+      s.dieZombies(id, deathPrice);
     }
   }
 
@@ -91,6 +93,7 @@ class Zombie {
   }
 
   void checkPoints() {
+    boolean dead = false;
     float d = dist(location.x, location.y, target.x, target.y);
     if (d <= speed) {
       location.x = target.x;
@@ -99,7 +102,13 @@ class Zombie {
         checkpointLength++;
       } else {
         p.health-=damage;
-        health=0;
+        for (int i = bullets.size()-1; i >= 0; i--) {
+          if (bullets.get(i).idZ == id && bullets.get(i).sniper == false) {
+            bullets.remove(i);
+          }
+        }
+        s.dieZombies(id, 0);
+        dead = true;
       }
     }
     target.set(checkpointList.get(checkpointLength).x, checkpointList.get(checkpointLength).y);
@@ -111,7 +120,7 @@ class Zombie {
 
 
 class Normal_Zombie extends Zombie {
-  
+
   PImage  zNormal;
   Normal_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
     super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
@@ -124,7 +133,7 @@ class Normal_Zombie extends Zombie {
     translate(location.x, location.y);
     rotate(rotate);
     imageMode(CENTER);
-    image(zNormal, 0, 0);
+    image(zNormal, -3, 0);
     popMatrix();
     imageMode(CORNER);
   }
@@ -146,6 +155,66 @@ class Fast_Zombie extends Zombie {
     rotate(rotate);
     imageMode(CENTER);
     image(zFast, 0, 0);
+    popMatrix();
+    imageMode(CORNER);
+  }
+}
+
+class Tank_Zombie extends Zombie {
+
+  PImage  zTank;
+  Tank_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+    zTank = loadImage("zTank.png");
+    zTank.resize(int(dia), int(dia));
+  }
+
+  void display() {
+    pushMatrix();
+    translate(location.x, location.y);
+    rotate(rotate);
+    imageMode(CENTER);
+    image(zTank, 0, 0);
+    popMatrix();
+    imageMode(CORNER);
+  }
+}
+
+class MiniBoss_Zombie extends Zombie {
+
+  PImage  zMiniBoss;
+  MiniBoss_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+    zMiniBoss = loadImage("zMiniBoss.png");
+    zMiniBoss.resize(int(dia), int(dia)*2);
+  }
+
+  void display() {
+    pushMatrix();
+    translate(location.x, location.y);
+    rotate(rotate);
+    imageMode(CENTER);
+    image(zMiniBoss, 0, 0);
+    popMatrix();
+    imageMode(CORNER);
+  }
+}
+
+class Boss_Zombie extends Zombie {
+
+  PImage  zBoss;
+  Boss_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+    zBoss = loadImage("zBoss.png");
+    zBoss.resize(int(dia)*2, int(dia)*2);
+  }
+
+  void display() {
+    pushMatrix();
+    translate(location.x, location.y);
+    rotate(rotate);
+    imageMode(CENTER);
+    image(zBoss, 0, 0);
     popMatrix();
     imageMode(CORNER);
   }
