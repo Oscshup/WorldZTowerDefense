@@ -11,9 +11,11 @@ class Tower {
   float fireRate;
   float angle = 0;
   int savedId;
+  Timer timerFireRate = new Timer();
 
 
-
+  //For the rocket launcher
+  boolean rocketActive = false;
 
   Tower(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     p = p_;
@@ -36,6 +38,18 @@ class Tower {
     if (placed == false) {
       location.x = mouseX;
       location.y = mouseY;
+      stroke(0, 200);
+      strokeWeight(4);
+      noFill();
+      circle(location.x, location.y, range);
+      stroke(0, 120);
+      strokeWeight(2);
+      if (checkLocation() == true) {
+        fill(0, 255, 0, 120);
+      } else {
+        fill(255, 0, 0, 120);
+      }
+      circle(location.x, location.y, s);
     }
     if (active == true && placed == true) {
       float highestDistanceTravelled = 0;
@@ -56,45 +70,50 @@ class Tower {
             angle = distance.heading();
           }
         }
-      } else {
-        angle = 0;
-      }
+      } /*else {
+       angle = 0;
+       }*/
     }
     if (active == true) {
       pushMatrix();
       translate(location.x, location.y);
       turn(angle);
+      if (p == 10000) {
+        translate(-location.x, -location.y);
+      }
       display();
       popMatrix();
     }
   }
-
   void turn(float angle) {
     rotate(angle);
   }
 
+  boolean checkLocation() {
+    ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
+    for (int i = 0; i < squareList.size(); i++) {
+      if (checkForPath(location.x, location.y, s/2, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
+        return false;
+      }
+    }
+    for (Tower t : listT) {
+      if (t.id != id) {
+        float distance = dist(t.location.x, t.location.y, location.x, location.y);
+        float minDist = t.s/2+s/2-15;
+        if (distance <= minDist) {
+          return false;
+        }
+      }
+    }
+    if (location.x > m[levelNumber].xMax-25) {
+      return false;
+    }
+    return true;
+  }
+
   void onClick() {
     if (placed == false) {
-      boolean checkTemp = false;
-      ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
-      for (int i = 0; i < squareList.size(); i++) {
-        if (checkForPath(location.x, location.y, s/2, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
-          checkTemp = true;
-        }
-        if (location.x >width-shopLength) {
-          checkTemp = true;
-        }
-      }
-      for (Tower t : listT) {
-        if (t.id != id) {
-          float distance = dist(t.location.x, t.location.y, location.x, location.y);
-          float minDist = t.s/2+s/2-15;
-          if (distance <= minDist) {
-            checkTemp = true;
-          }
-        }
-      }
-      if (checkTemp == false) {
+      if (checkLocation() == true) {
         placed = true;
         shop.money-=p;
         totalTowers++;
@@ -125,27 +144,25 @@ class Tower {
     return false;
   }
 
-  boolean checkForTower() {
-    return true;
-  }
-
   void display() {
     point(location.x, location.y);
-  }
-
-  void turn() {
   }
 
   void shoot() {
     if (active == true && placed == true) {
       for (int i = listZ.size()-1; i >= 0; i--) {
         Zombie z = listZ.get(i);
-        if (z.id == savedId && frameCount % 60/fireRate == 0 && dist(location.x, location.y, z.location.x, z.location.y) < range) {
+        if (z.id == savedId && timerFireRate.isFinished() && dist(location.x, location.y, z.location.x, z.location.y) < range) {
           Bullet b = new Bullet(location.x, location.y, damage, id, savedId, totalBullets);
           bullets.add(b);
+          timerFireRate.start(int(fireRate));
         }
       }
     }
+  }
+
+  // For the rockets and bombs
+  void explode(float targetX_, float targetY_) {
   }
 }
 
@@ -186,6 +203,9 @@ class LR2 extends LongRange {
     imageMode(CENTER);
     image(shop.lr2, 0, 0);
   }
+  void turn(float angle) {
+    rotate(angle+PI/2);
+  }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
     return new LR2(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
@@ -193,96 +213,95 @@ class LR2 extends LongRange {
 }
 
 class LR3 extends LongRange {
-
-
   PImage launcher;
-  PImage raketNed;
-  PImage raketOp;
+  PImage[] images;
+  int current;
   float blastRadius;
-  int up = constrain(50, 50, 200);
-  int launched = 0;
-  int dir = 3;
-  float down = 0;
-  float delay = 0;
-  float max = 200/dir;
+  Rocket rocket;
+  float explosionOpacity;
+  PVector explodeCoords = new PVector(0, 0);
+  boolean explosionActive = false;
+  float lockAngle;
 
-  LR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float bR_) {
+  LR3(PImage[] tempImg, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float bR_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+    images = tempImg;
+    current = 0;
+
     p_*=100;
+    blastRadius = bR_;
+    explosionOpacity = 255;
+    for (int i = 0; i < images.length; i++) {
+      images[i].resize(int(3*blastRadius), int(3*blastRadius));
+    }
 
     launcher = loadImage("eLauncher.png");
-    raketNed = loadImage("raketNed.png");
-    raketOp = loadImage("raketOp.png");
-
     launcher.resize(100, 100);
-    raketNed.resize(50, 50);
-    raketOp.resize(50, 50);
   }
   void display() {
     imageMode(CENTER);
-    image(launcher, 0, 0);
+    image(launcher, location.x, location.y);
+    if (rocketActive == false && explosionActive == false) {
+      translate(location.x, location.y);
+      rotate(-angle-PI/2);
+      translate(-location.x, -location.y);
+    } else {
+      translate(location.x, location.y);
+      rotate(-lockAngle-PI/2);
+      translate(-location.x, -location.y);
+    }
+
+    if (rocketActive == true) {
+      rocket.update();
+      rocket.display();
+    }
+    if (explosionActive == true) {
+      image(images[current], explodeCoords.x, explodeCoords.y);
+      if (frameCount % 7 == 0) {
+        current++;
+      }
+      if (current == 12) {
+        current = 0;
+        explosionActive = false;
+      }
+
+
+
+
+      // explosionActive = false;
+      //   explosionOpacity = 255;
+    }
+  }
+
+  void explode(float targetX_, float targetY_) {
+    explosionActive = true;
+    explodeCoords.set(targetX_, targetY_);
   }
 
   void turn(float angle) {
-    rotate(PI);
+    if (rocketActive == false && explosionActive == false) {
+      rotate(angle+PI/2);
+    } else {
+      rotate(lockAngle+PI/2);
+    }
   }
 
   void shoot() {
-    if (active == true && placed == true) {
-      for (int i = listZ.size()-1; i >= 0; i--) {
-        Zombie z = listZ.get(i);
-        if (z.id == savedId && frameCount % 60/fireRate == 0 && launched == 0) {
-          launched = 1;
-          dir = 3;
-          down = 0;
-          delay = 0;
-          max = 200/dir;
+    if (active == true && placed == true && rocketActive == false && explosionActive == false && timerFireRate.isFinished()) {
+      for (int i = 0; i < listZ.size(); i++) {
+        if (listZ.get(i).id == savedId ) {
+          rocket = new Rocket(id, listZ.get(i), blastRadius, fireRate, s, damage);
+          rocketActive = true;
+          timerFireRate.start(int (fireRate));
+          lockAngle = angle;
+          break;
         }
       }
-    }
-    if (launched ==1) {
-      pushMatrix();
-      translate(location.x+30, location.y+5);
-      imageMode(CENTER);
-
-      if (dir == 3) {
-        image(raketOp, 0, 0, up, up);
-      }
-      up+=dir;
-      if (up > max) {
-        down = 1;
-      } 
-      if (down == 1) {
-        delay++;
-        if (delay >100) {
-          int targetNumber = -1;
-          for (int i = 0; i < listZ.size(); i++) {
-            if (listZ.get(i).id == savedId) {
-              targetNumber = i;
-            }
-          }
-          if (targetNumber != -1) {
-            dir = -3;
-            if ( up !=0 && down != 0) {
-              pushMatrix();
-              translate( listZ.get(targetNumber).location.x-location.x-30, listZ.get(targetNumber).location.x-location.y-5);
-              image(raketNed, 0, 0, up, up);
-              popMatrix();
-            }
-          }
-        }
-      }
-      if (up <= 0) {
-        up = 0;
-        down = 0;
-        delay = 0;
-        launched = 0;
-      }
-      popMatrix();
     }
   }
+
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new LR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius);
+    return new LR3(images, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius);
   }
 }
 
@@ -323,15 +342,43 @@ class SR2 extends ShortRange {
   }
 }
 class SR3 extends ShortRange {
-  SR3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+  PImage[] images;
+  int current;
+
+  SR3(PImage[] tempImg, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+    images = tempImg;
+    current = 0;
+    for (int i = 0; i < images.length; i++) {
+      images[i].resize(100, 100);
+    }
   }
   void display() {
     imageMode(CENTER);
-    image(shop.sr3, 0, 0);
+    pushMatrix();
+    rotate(-PI/2);
+    boolean shooting = false;
+    for (int i = listZ.size()-1; i >= 0; i--) {
+      if (dist(location.x, location.y, listZ.get(i).location.x, listZ.get(i).location.y) <= range) {
+        shooting =true;
+        break;
+      }
+    }
+    if (shooting == true) {
+      image(images[current], 0, 0);
+      current++;
+      if (current >= 4) {
+        current = 0;
+      }
+    } else {
+      current = 0;
+      image(images[current], 0, 0);
+    }
+    popMatrix();
   }
+
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SR3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+    return new SR3(images, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 
@@ -359,16 +406,89 @@ class SP1 extends Special {
     return new SP1(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
+
 class SP2 extends Special {
-  SP2(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+  PImage[] images;
+  int current = 0;
+  float dis;
+  boolean detonate = false;
+  boolean exploded = false;
+  boolean removeMine = false;
+
+  SP2(PImage[] tempImg, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+    images = tempImg;
+    current = 0;
+    for (int i = 0; i < images.length; i++) {
+      images[i].resize(int(pathWidth*2), int(pathWidth*2));
+    }
+  }
+  void shoot() {
+  }
+  void turn(float angle) {
+  }
+  boolean checkLocation() {
+    ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
+    boolean placeable = false;
+    for (int i = 0; i < squareList.size(); i++) {
+      if (checkForPath(location.x, location.y, s/2, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
+        placeable = true;
+      }
+    }
+    for (Tower t : listT) {
+      if (t.id != id) {
+        float distance = dist(t.location.x, t.location.y, location.x, location.y);
+        float minDist = t.s/2+s/2-50;
+        if (distance <= minDist) {
+          return false;
+        }
+      }
+    }
+    if (location.x > m[levelNumber].xMax-25 || placeable == false) {
+      return false;
+    }
+    return true;
   }
   void display() {
-    imageMode(CENTER);
-    image(shop.sp2, 0, 0);
+    if (exploded == false && removeMine == false && detonate == false) {
+      imageMode(CENTER);
+      image(shop.sp2, 0, 0);
+    }
+
+
+    if (detonate == true && exploded == false) {
+      imageMode(CENTER);
+      image(images[current], 0, 0);
+      if (frameCount % 7 == 0) {
+        current++;
+
+        if (current == 12) {
+          current = 0;
+          removeMine= true;
+          exploded = true;
+        } else if (current == 1) {
+          for (int i = listZ.size()-1; i >=0; i--) {
+            dis = dist(0, 0, listZ.get(i).location.x-location.x, listZ.get(i).location.y-location.y);
+            if (dis <= pathWidth) {
+              listZ.get(i).health-=damage;
+
+            }
+          }
+        }
+      }
+    }
+
+    for (int i = listZ.size()-1; i >= 0; i--) {
+      noFill();
+      dis = dist(0, 0, listZ.get(i).location.x-location.x, listZ.get(i).location.y-location.y);
+      if (dis <= pathWidth/2 && placed == true) {
+        detonate =true;
+        break;
+      }
+    }
   }
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SP2(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+    return new SP2(images, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 class SP3 extends Special {

@@ -1,11 +1,14 @@
 int startMoney = 100000;
 float pathWidth;
-Timer timer;
 int levelsTotal = 3;
 int levelNumber;
 int totalTowers;
 int totalZombies;
 int totalBullets;
+
+
+int timeBetweenWaves = 10000;
+Timer timer = new Timer();
 Map[] m = new Map[levelsTotal+1];
 Screen s;
 ArrayList<Tower> listT = new ArrayList<Tower>();
@@ -21,6 +24,10 @@ int waveNumber;
 float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
+PImage[] sentrys = new PImage[4];
+PImage[] lives = new PImage[1];
+PImage[] explosion = new PImage[12];
+
 void setup() {
   frameRate(60);
   size(1200, 700);
@@ -28,7 +35,16 @@ void setup() {
 }
 
 void Start() {
-  //timer = new Timer();
+  //Sentry animation
+  for (int i = 0; i < sentrys.length; i++) {
+    sentrys[i] = loadImage("Mini" + i + ".png");
+  }
+    for (int i = 0; i < explosion.length; i++) {
+    explosion[i] = loadImage("explosion" + i + ".png");
+  }
+  
+  lives[0] = loadImage("Heart.png");
+  
   for (int i = listT.size()-1; i >= 0; i--) {
     listT.remove(i);
   }
@@ -54,26 +70,26 @@ void Start() {
   shop = new Shop(startMoney);
 
   // Disse towers bliver ikke brugt i spillet, men bruges så vi har et af hvert tower at referere til i shoppen.
-  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, 100, 2, false, true, totalTowers)); // Nummer 0
+  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, 200, 1000, false, true, totalTowers)); // Nummer 0
   totalTowers++;
-  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 100, 4, false, true, totalTowers)); // Nummer 1
+  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 200, 500, false, true, totalTowers)); // Nummer 1
   totalTowers++;
-  listT.add(new SR3(5000, 50, new PVector(-10000, -10000), 50, 100, 10, false, true, totalTowers)); // Nummer 2
+  listT.add(new SR3(sentrys, 5000, 50, new PVector(-10000, -10000), 50, 200, 100, false, true, totalTowers)); // Nummer 2
   totalTowers++;
-  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
+  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 5000, false, true, totalTowers)); // Nummer 3
   totalTowers++;
-  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 10, 50, 0.25, false, true, totalTowers)); // Nummer 4
+  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 20, 200,1000 , false, true, totalTowers)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50,  sqrt( (width*width) + (height*height)), 10, false, true, totalTowers, 150)); // Nummer 5
+  listT.add(new LR3(explosion,10000, 50, new PVector(-10000, -10000), 50,  1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 150)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
-  listT.add(new SP2(20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
+  listT.add(new SP2(explosion,20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
   totalTowers++;
   listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
   totalTowers++;
 
-  p = new Player(startHealth);
+  p = new Player(startHealth, lives);
 }
 
 void draw() {
@@ -81,7 +97,7 @@ void draw() {
 }
 
 void mouseClicked() {
-  if (screenNumber == 2) {
+  if (screenNumber == 2 || screenNumber == 3) {
     Start();
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
@@ -100,14 +116,6 @@ void mouseClicked() {
 }
 
 void keyPressed() {
-  if (key == ENTER) {
-    s.startWave(waveNumber, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y);
-  }
-  char pressedKey = key;
-  if(key == '1' || key == '2' || key == '3' || key == '4' || key == '5'){
-    s.spawnZombie(pressedKey);
-  }
-
   if (key == 'p') {
     if (looping) {
       noLoop();
