@@ -69,7 +69,6 @@ class Rocket {
 
   void display() {
     imageMode(CENTER);
-    println(location);
     pushMatrix();
     translate(location.x, location.y);
     rotate(velocity.heading()+PI/2);
