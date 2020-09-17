@@ -24,15 +24,22 @@ StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 PImage[] sentrys = new PImage[4];
 PImage[] lives = new PImage[1];
+PImage planeBomb;
+PImage[] explosion = new PImage[12];
 
 void setup() {
   frameRate(60);
   size(1200, 700);
+  planeBomb = loadImage("Bomb.png");
   Start();
 }
 
 void Start() {
   //Sentry animation
+  for(int i = 0; i < explosion.length; i++){
+    explosion[i] = loadImage("explosion" + i + ".png");
+  }
+  planeBomb.resize(50,50);
   for (int i = 0; i < sentrys.length; i++) {
     sentrys[i] = loadImage("Mini" + i + ".png");
   }
@@ -72,7 +79,7 @@ void Start() {
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 0.2, false, true, totalTowers)); // Nummer 3
   totalTowers++;
-  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 20, 200, 2, false, true, totalTowers)); // Nummer 4
+  listT.add(new LR2(explosion, 1000, 100, new PVector(-10000, -10000), 20, 200, 200, false, true, totalTowers, 50)); // Nummer 4
   totalTowers++;
   listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50,  1.5*sqrt( (width*width) + (height*height)), 10, false, true, totalTowers, 150)); // Nummer 5
   totalTowers++;

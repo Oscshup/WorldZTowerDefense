@@ -12,6 +12,11 @@ class Tower {
   float angle = 0;
   int savedId;
 
+  // For the plane
+  PVector velocity;
+
+  Timer timerFireRate = new Timer();
+
   //For the rocket launcher
   boolean rocketActive = false;
 
@@ -68,15 +73,13 @@ class Tower {
             angle = distance.heading();
           }
         }
-      } /*else {
-       angle = 0;
-       }*/
+      }
     }
     if (active == true) {
       pushMatrix();
       translate(location.x, location.y);
       turn(angle);
-      if(p == 10000){
+      if (p == 10000) {
         translate(-location.x, -location.y);
       }
       display();
@@ -103,7 +106,7 @@ class Tower {
         }
       }
     }
-    if(location.x > m[levelNumber].xMax-25){
+    if (location.x > m[levelNumber].xMax-25) {
       return false;
     }
     return true;
@@ -161,6 +164,10 @@ class Tower {
   // For the rockets and bombs
   void explode(float targetX_, float targetY_) {
   }
+
+  // For the plane
+  void removeBomb(int idB) {
+  }
 }
 
 class LongRange extends Tower {
@@ -193,19 +200,133 @@ class LR1 extends LongRange {
 }
 
 class LR2 extends LongRange {
-  LR2(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+
+  float angle = 0;
+  float speed = 5;
+  PImage plane;
+  float blastRadius;
+  int totalBombs = 0;
+  PVector velocity;
+  PVector startLocation = new PVector(0, 0);
+  PVector endLocation = new PVector(width, height);
+
+  ArrayList<PlaneBomb> listPB = new ArrayList<PlaneBomb>();
+  PImage[] explosionsImg;
+
+  LR2(PImage[] explosionsImg_, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float blastRadius_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+    blastRadius = blastRadius_;
+    velocity = new PVector(0, 0);
+    planeBomb.resize(int(s/2), int(s/2));
+    explosionsImg = explosionsImg_;
+    for (int i = 0; i < explosionsImg.length; i++) {
+      explosionsImg[i].resize(int(2*blastRadius), int(2*blastRadius));
+    }
+    plane = loadImage("Plane.png");
+  }
+  void update() {
+    if (placed == false && active == true) {
+      location.x = mouseX;
+      location.y = mouseY;
+      stroke(0, 120);
+      strokeWeight(2);
+      if (checkLocation() == true) {
+        fill(0, 255, 0, 120);
+      } else {
+        fill(255, 0, 0, 120);
+      }
+      circle(location.x, location.y, s);
+      fill(0);
+      textSize(15);
+      textAlign(CENTER);
+      String dirText = "Right-click to change direction";
+      text(dirText, location.x, location.y-100);
+    }
+    if (active == true) {
+      pushMatrix();
+      
+
+      //translate(-location.x, -location.y);
+      if (placed == true) {
+        location.add(velocity);
+        float endDistance = dist(location.x, location.y, endLocation.x, endLocation.y);
+        if (endDistance <= 100) {
+          location.set(startLocation);
+        }
+        for (int i = listPB.size()-1; i >= 0; i--) {
+          listPB.get(i).update();
+          listPB.get(i).display();
+        }
+      }
+      translate(location.x, location.y);
+      turn();
+      display();
+      popMatrix();
+    }
+  }
+  void turn() {
+    rotate(angle);
+  }
+  void onClick() {
+    if (placed == false) {
+      if (checkLocation() == true && mouseButton == LEFT) {
+        placed = true;
+        shop.money-=p;
+        totalTowers++;
+        velocity.set(speed*cos(angle-PI/2), speed*sin(angle-PI/2));
+        endLocation.set(location.x+velocity.x*800/2, location.y+velocity.y*800/2);
+        startLocation.set(location.x-velocity.x*800/2, location.y-velocity.y*800/2);
+      } else if (mouseButton == RIGHT) {
+        angle+=PI/4;
+      }
+    }
+  }
+  void shoot() {
+    if (placed == true && active == true)
+      if (location.x < m[levelNumber].xMax && location.x > m[levelNumber].xStart && location.y < m[levelNumber].yMax && location.y > m[levelNumber].yStart) {
+        if (timerFireRate.isFinished()) {
+          listPB.add(new PlaneBomb(location, velocity, explosionsImg, totalBombs, id, angle, blastRadius, damage));
+          totalBombs++;
+          timerFireRate.start(int(fireRate));
+        }
+      }
+  }
+  void removeBomb(int idB) {
+    for (int i = listPB.size()-1; i >= 0; i--) {
+      if (listPB.get(i).idB == idB) {
+        listPB.remove(i);
+      }
+    }
+  }
+  boolean checkLocation() {
+    ArrayList<Square> squareList = m[levelNumber].listLevelSquares[levelNumber-1];
+    boolean placeable = false;
+    for (int i = 0; i < squareList.size(); i++) {
+      if (checkForPath(location.x, location.y, 1, squareList.get(i).x, squareList.get(i).y, squareList.get(i).w, squareList.get(i).h) == true) {
+        placeable = true;
+      }
+    }
+    for (Tower t : listT) {
+      if (t.id != id) {
+        float distance = dist(t.location.x, t.location.y, location.x, location.y);
+        float minDist = t.s/2+s/2-15;
+        if (distance <= minDist) {
+          return false;
+        }
+      }
+    }
+    if (location.x > m[levelNumber].xMax-25 || placeable == false) {
+      return false;
+    }
+    return true;
   }
   void display() {
     imageMode(CENTER);
-    image(shop.lr2, 0, 0);
-  }
-  void turn(float angle){
-    rotate(angle+PI/2);
+    image(plane, 0, 0,s,s);
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new LR2(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+    return new LR2(explosionsImg, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius);
   }
 }
 
@@ -231,7 +352,7 @@ class LR3 extends LongRange {
     imageMode(CENTER);
     image(launcher, location.x, location.y);
     if (rocketActive == false && explosionActive == false) {
-      translate(location.x,location.y);
+      translate(location.x, location.y);
       rotate(-angle-PI/2);
       translate(-location.x, -location.y);
     } else {
