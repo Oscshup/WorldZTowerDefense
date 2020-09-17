@@ -29,7 +29,7 @@ class Shop {
     lr3 = loadImage("Missile.png");
     sp1 = loadImage("Olie.png");
     sp2 = loadImage("Mine.png");
-    sp3 = loadImage("supplyDropIcon.png");
+    sp3 = loadImage("supIcon.png");
 
     shopCoins.resize(50, 50);
     sr1.resize(50, 50);

@@ -20,7 +20,6 @@ class Player {
     if (health <= 0) {
       die();
     }
-    println(health);
   }
 
   void die() {
