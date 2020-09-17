@@ -7,8 +7,12 @@ class Screen {
   ArrayList[] waves = new ArrayList[textTotal.length];
 
   boolean timerActive = false;
-  
+
   boolean zombieDead = false;
+  
+  boolean loading = false;
+
+  int skillPointsEarned = 0;
 
   Screen() {
     background = loadImage("grass.png");
@@ -30,6 +34,12 @@ class Screen {
   }
 
   void update(int screen, int level) {
+    if (loading == true) {
+      fill(0);
+      textSize(40);
+      textAlign(CENTER);
+      text("Loading...", width/2, height/2+150);
+    }
     if (screen == 0) {
       startScreen();
     } else if (screen == 1) {
@@ -103,21 +113,26 @@ class Screen {
       } else {
         timer.start(timeBetweenWaves);
         timerActive = true;
+        skillPoints+=skillPointsEarned;
+        skillPointsEarned = 0;
       }
     }
     for (int i = 0; i < listT.size(); i++) {
       listT.get(i).update();
       listT.get(i).shoot();
+      if (listT.get(i).menuActive == true) {
+        listT.get(i).drawMenu();
+      }
     }
     fill(255);
     String waveText = "Wave number: " + waveNumber;
     textAlign(CORNER);
     textSize(20);
-    text(waveText, 5, height-50);
+    text(waveText, m[levelNumber].xMax-180, height/2-310);
     if (timerActive == true) {
       int timeLeft = ceil((timer.totalTime-(millis()-timer.savedTime))/1000);
       String timeToWaveText = "Next wave in: " + timeLeft;
-      text(timeToWaveText, 5, height-20);
+      text(timeToWaveText, m[levelNumber].xMax-180, height/2-280);
     }
     textAlign(CENTER);
   }
@@ -126,19 +141,19 @@ class Screen {
     if (screenNumber == 1) {
       waveActive = true;
       if (zombieType == 1) {
-        listZ.add(new Normal_Zombie(5, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 20, 1, 0.8, totalZombies));
+        listZ.add(new Normal_Zombie(5, 1, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 20, 1, 0.8, totalZombies));
         totalZombies++;
       } else if (zombieType == 2) {
-        listZ.add(new Fast_Zombie(20, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 10, 5, 2, totalZombies));
+        listZ.add(new Fast_Zombie(20, 2, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 10, 5, 2, totalZombies));
         totalZombies++;
       } else if (zombieType == 3) {
-        listZ.add(new Tank_Zombie(80, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 100, 20, 0.5, totalZombies));
+        listZ.add(new Tank_Zombie(80, 3, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 100, 20, 0.5, totalZombies));
         totalZombies++;
       } else if (zombieType == 4) {
-        listZ.add(new MiniBoss_Zombie(320, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 300, 40, 1, totalZombies));
+        listZ.add(new MiniBoss_Zombie(320, 5, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 300, 40, 1, totalZombies));
         totalZombies++;
       } else if (zombieType == 5) {
-        listZ.add(new Boss_Zombie(1080, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 1000, 100, 0.7, totalZombies));
+        listZ.add(new Boss_Zombie(1080, 10, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 1000, 100, 0.7, totalZombies));
         totalZombies++;
       }
     }

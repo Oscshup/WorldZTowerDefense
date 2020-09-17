@@ -11,17 +11,23 @@ class Tower {
   float fireRate;
   float angle = 0;
   int savedId;
-
+  int sellPrice;
   // For the plane
   PVector velocity;
+  float blastRadius;
+
+  TowerMenu tm;
 
   Timer timerFireRate = new Timer();
 
   //For the rocket launcher
   boolean rocketActive = false;
 
+  boolean menuActive = false;
+
   Tower(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     p = p_;
+    sellPrice = p/2;
     s = s_;
     id = id_;
     range = range_;
@@ -30,6 +36,10 @@ class Tower {
     damage = damage_;
     active = active_;
     placed = placed_;
+  }
+
+  void createMenu() {
+    tm = new TowerMenu(sellPrice, id, damage, range, fireRate, 0);
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
@@ -59,7 +69,7 @@ class Tower {
       savedId = -1;
       for (int i = listZ.size()-1; i >= 0; i--) {
         float dis = dist(listZ.get(i).location.x, listZ.get(i).location.y, location.x, location.y);
-        if (dis<=range) {
+        if (dis<=range/2+listZ.get(i).dia/2) {
           if (listZ.get(i).distanceTravelled > highestDistanceTravelled) {
             highestDistanceTravelled = listZ.get(i).distanceTravelled;
             savedId = listZ.get(i).id;
@@ -112,12 +122,36 @@ class Tower {
     return true;
   }
 
+  void drawMenu() {
+    tm.display();
+    stroke(0, 200);
+    strokeWeight(4);
+    noFill();
+    circle(location.x, location.y, range);
+  }
+
   void onClick() {
     if (placed == false) {
       if (checkLocation() == true) {
         placed = true;
         shop.money-=p;
         totalTowers++;
+      }
+    } else if (placed == true && active == true) {
+      float distance = dist(mouseX, mouseY, location.x, location.y);
+      if (distance < s/2 && menuActive == false) {
+        for (int i = 0; i < listT.size(); i++) {
+          listT.get(i).menuActive = false;
+        }
+        menuActive = true;
+      } else if (distance < s/2 && menuActive == true) {
+        menuActive = false;
+      } else if (menuActive == true) {
+        if (mouseX > tm.buttonLocation.x-tm.buttonSize.x/2 && mouseX < tm.buttonLocation.x+tm.buttonSize.x && mouseY > tm.buttonLocation.y-tm.buttonSize.y/2 && mouseY < tm.buttonLocation.y+tm.buttonSize.y) {
+          menuActive = false;
+        } else {
+          tm.onClick();
+        }
       }
     }
   }
@@ -205,18 +239,19 @@ class LR2 extends LongRange {
   float angle = 0;
   float speed = 5;
   PImage plane;
-  float blastRadius;
   int totalBombs = 0;
   PVector velocity;
   PVector startLocation = new PVector(0, 0);
   PVector endLocation = new PVector(width, height);
+  float distanceLap;
 
   ArrayList<PlaneBomb> listPB = new ArrayList<PlaneBomb>();
   PImage[] explosionsImg;
 
-  LR2(PImage[] explosionsImg_, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float blastRadius_) {
+  LR2(PImage[] explosionsImg_, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float blastRadius_, float distanceLap_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
     blastRadius = blastRadius_;
+    distanceLap = distanceLap_;
     velocity = new PVector(0, 0);
     planeBomb.resize(int(s/2), int(s/2));
     explosionsImg = explosionsImg_;
@@ -224,6 +259,9 @@ class LR2 extends LongRange {
       explosionsImg[i].resize(int(2*blastRadius), int(2*blastRadius));
     }
     plane = loadImage("Plane.png");
+  }
+  void createMenu() {
+    tm = new TowerMenu(sellPrice, id, damage, range, fireRate, blastRadius);
   }
   void update() {
     if (placed == false && active == true) {
@@ -245,7 +283,7 @@ class LR2 extends LongRange {
     }
     if (active == true) {
       pushMatrix();
-      
+
 
       //translate(-location.x, -location.y);
       if (placed == true) {
@@ -275,8 +313,8 @@ class LR2 extends LongRange {
         shop.money-=p;
         totalTowers++;
         velocity.set(speed*cos(angle-PI/2), speed*sin(angle-PI/2));
-        endLocation.set(location.x+velocity.x*800/2, location.y+velocity.y*800/2);
-        startLocation.set(location.x-velocity.x*800/2, location.y-velocity.y*800/2);
+        endLocation.set(location.x+velocity.x*distanceLap/2, location.y+velocity.y*distanceLap/2);
+        startLocation.set(location.x-velocity.x*distanceLap/2, location.y-velocity.y*distanceLap/2);
       } else if (mouseButton == RIGHT) {
         angle+=PI/4;
       }
@@ -323,11 +361,11 @@ class LR2 extends LongRange {
   }
   void display() {
     imageMode(CENTER);
-    image(plane, 0, 0,s,s);
+    image(plane, 0, 0, s, s);
   }
 
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new LR2(explosionsImg, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius);
+    return new LR2(explosionsImg, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius, distanceLap);
   }
 }
 
@@ -335,7 +373,6 @@ class LR3 extends LongRange {
   PImage launcher;
   PImage[] images;
   int current;
-  float blastRadius;
   Rocket rocket;
   float explosionOpacity;
   PVector explodeCoords = new PVector(0, 0);
@@ -356,6 +393,9 @@ class LR3 extends LongRange {
 
     launcher = loadImage("eLauncher.png");
     launcher.resize(100, 100);
+  }
+  void createMenu() {
+    tm = new TowerMenu(sellPrice, id, damage, range, fireRate, blastRadius);
   }
   void display() {
     imageMode(CENTER);
@@ -383,12 +423,6 @@ class LR3 extends LongRange {
         current = 0;
         explosionActive = false;
       }
-
-
-
-
-      // explosionActive = false;
-      //   explosionOpacity = 255;
     }
   }
 
@@ -517,6 +551,8 @@ class SP1 extends Special {
   SP1(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
   }
+  void createMenu() {
+  }
   void display() {
     imageMode(CENTER);
     image(shop.sp1, 0, 0);
@@ -540,6 +576,8 @@ class SP2 extends Special {
     for (int i = 0; i < images.length; i++) {
       images[i].resize(int(pathWidth*2), int(pathWidth*2));
     }
+  }
+  void createMenu() {
   }
   void shoot() {
   }
@@ -589,7 +627,6 @@ class SP2 extends Special {
             dis = dist(0, 0, listZ.get(i).location.x-location.x, listZ.get(i).location.y-location.y);
             if (dis <= pathWidth) {
               listZ.get(i).health-=damage;
-
             }
           }
         }
@@ -613,6 +650,8 @@ class SP2 extends Special {
 class SP3 extends Special {
   SP3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+  }
+  void createMenu() {
   }
   void display() {
     imageMode(CENTER);

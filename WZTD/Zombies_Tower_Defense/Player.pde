@@ -29,9 +29,9 @@ class Player {
 
   void live() {
     textSize(30);
-    fill(0);
+    fill(255);
     textAlign(CENTER);  
-    text(int(health), width-130, height/2-320);
-    image(img[current], width-200, height/2-350);
+    text(int(health), width-130, height/2-300);
+    image(img[current], width-200, height/2-330);
   }
 }
