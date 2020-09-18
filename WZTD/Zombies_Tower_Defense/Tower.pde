@@ -594,6 +594,10 @@ class SP1 extends Special {
   }
   void shoot() {
   }
+  void createMenu() {
+  }
+  void drawMenu() {
+  }
   void turn(float angle) {
   }
   boolean checkLocation() {
@@ -666,6 +670,8 @@ class SP2 extends Special {
     }
   }
   void createMenu() {
+  }
+  void drawMenu() {
   }
   void shoot() {
   }

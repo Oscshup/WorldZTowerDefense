@@ -89,7 +89,7 @@ void Start() {
   timeCountdown = false;
   timeLoading = 500;
   skillPoints = 0;
-  startMoney = 200000;
+  startMoney = 200;
   totalTowers = 0;
   totalZombies = 0;
   totalBullets = 0;
