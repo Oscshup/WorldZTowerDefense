@@ -3,7 +3,7 @@ class Bullet {
   PVector location;
   //where does the bullet shooting towards
   //How fast Bullet move on screen
-  float speed = 4;
+  float speed = 8;
   float size = 1;
 
   IntList zombiesHitId = new IntList();
@@ -29,10 +29,12 @@ class Bullet {
     idZ = idZ_;
     idB = idB_;
     damage = damage_;
+    
 
     for (int j = listT.size()-1; j >= 0; j--) {
       if (listT.get(j).id == idT && listT.get(j).p == 100) {
         sniper = true;
+        speed = 12;
         break;
       }
     }

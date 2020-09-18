@@ -15,10 +15,10 @@ class TowerMenu {
   float boxW = 160;
   float boxH = (m[levelNumber].yMax-m[levelNumber].yStart)/5-20-20;
 
-  float damageIncrease = 1.5;
-  float rangeIncrease = 1.3;
-  float fireRateIncrease = 0.8;
-  float blastRadiusIncrease = 1.5;
+  float damageIncrease = 1.2;
+  float rangeIncrease = 1.2;
+  float fireRateIncrease = 0.85;
+  float blastRadiusIncrease = 1.25;
 
   int id;
   int sellPrice;

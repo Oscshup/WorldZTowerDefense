@@ -1,7 +1,9 @@
 import processing.sound.*; // Installér library "Sound", som er lavet af Processing Foundation
 Sound sound;
 
-int startMoney = 100000;
+SoundFile musik;
+
+int startMoney;
 float pathWidth;
 int levelsTotal = 3;
 int levelNumber;
@@ -46,16 +48,17 @@ float timeLoading;
 void setup() {
   frameRate(60);
   size(1200, 700);
+  
+  musik = new SoundFile(this,"TDZW.mp3");
+  
   planeBomb = loadImage("Bomb.png");
   sound = new Sound(this);
+  musik.loop(1,0.1);
   l.startL(); 
   Start();
 }
 
 void Start() {
-  // Highscore
-
-
   highScoreLoad = loadStrings("HighScore.txt");
   highScore = int(highScoreLoad[0]);
 
@@ -85,7 +88,8 @@ void Start() {
   }
   timeCountdown = false;
   timeLoading = 500;
-  skillPoints = 10000;
+  skillPoints = 0;
+  startMoney = 200000;
   totalTowers = 0;
   totalZombies = 0;
   totalBullets = 0;
@@ -105,17 +109,20 @@ void Start() {
   shop = new Shop(startMoney);
 
   // Disse towers bliver ikke brugt i spillet, men bruges så vi har et af hvert tower at referere til i shoppen.
-  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 2, 200, 1000, false, true, totalTowers)); // Nummer 0
+  
+  //Damage, range, fireRate
+  
+  listT.add(new SR1(50, 50, new PVector(-10000, -10000), 5, 200, 1000, false, true, totalTowers)); // Nummer 0
   totalTowers++;
-  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 10, 200, 500, false, true, totalTowers)); // Nummer 1
+  listT.add(new SR2(500, 50, new PVector(-10000, -10000), 5, 200, 250, false, true, totalTowers)); // Nummer 1
   totalTowers++;
-  listT.add(new SR3(sentrys, 5000, 50, new PVector(-10000, -10000), 50, 200, 100, false, true, totalTowers)); // Nummer 2
+  listT.add(new SR3(sentrys, 5000, 50, new PVector(-10000, -10000), 3, 200, 50, false, true, totalTowers)); // Nummer 2
   totalTowers++;
-  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 5000, false, true, totalTowers)); // Nummer 3
+  listT.add(new LR1(100, 50, new PVector(-10000, -10000), 8, 1.5*sqrt( (width*width) + (height*height)), 3000, false, true, totalTowers)); // Nummer 3
   totalTowers++;
   listT.add(new LR2(explosionPlane, 1000, 100, new PVector(-10000, -10000), 20, 200, 200, false, true, totalTowers, 50, 800)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(explosionRocket, 10000, 50, new PVector(-10000, -10000), 50, 1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 150)); // Nummer 5
+  listT.add(new LR3(explosionRocket, 10000, 50, new PVector(-10000, -10000), 40, 1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 130)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;

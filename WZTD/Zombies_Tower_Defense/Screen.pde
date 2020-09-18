@@ -162,19 +162,19 @@ class Screen {
     if (screenNumber == 1) {
       waveActive = true; 
       if (zombieType == 1) {
-        listZ.add(new Normal_Zombie(5, 1, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 20, 1, 0.8, totalZombies)); 
+        listZ.add(new Normal_Zombie(5, 1, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 30, 1, 0.8, totalZombies)); 
         totalZombies++;
       } else if (zombieType == 2) {
-        listZ.add(new Fast_Zombie(20, 2, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 10, 5, 2, totalZombies)); 
+        listZ.add(new Fast_Zombie(20, 2, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 20, 5, 2, totalZombies)); 
         totalZombies++;
       } else if (zombieType == 3) {
-        listZ.add(new Tank_Zombie(80, 3, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 100, 20, 0.5, totalZombies)); 
+        listZ.add(new Tank_Zombie(80, 3, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 150, 20, 0.5, totalZombies)); 
         totalZombies++;
       } else if (zombieType == 4) {
-        listZ.add(new MiniBoss_Zombie(320, 5, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 300, 40, 1, totalZombies)); 
+        listZ.add(new MiniBoss_Zombie(320, 4, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 500, 40, 1, totalZombies)); 
         totalZombies++;
       } else if (zombieType == 5) {
-        listZ.add(new Boss_Zombie(1080, 10, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 1000, 100, 0.7, totalZombies)); 
+        listZ.add(new Boss_Zombie(1080, 5, m[levelNumber].zombieStart.x, m[levelNumber].zombieStart.y, 50, 2000, 100, 0.7, totalZombies)); 
         totalZombies++;
       }
     }

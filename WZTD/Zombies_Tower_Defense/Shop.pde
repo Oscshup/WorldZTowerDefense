@@ -46,6 +46,7 @@ class Shop {
 
     prices = new int[]{50, 500, 5000, 100, 1000, 10000, 10, 20, 1200};
     for (int i = 0; i < b.length; i++) {
+      println("HI");
       b[i] = new Button(width-shopLength/5, 270+i*height/(100/7)-10, width-(width-shopLength/5), height/(100/7)-10, 15, 15, 15, 15, i);
     }
   }
@@ -71,8 +72,11 @@ class Shop {
     image(sp3, width-shopLength+45, 625);
     textSize(32);
     fill(0);
-    text("SHOP", width-shopLength+shopLength/3, 150);
-    text(money, width-shopLength+shopLength/2, 210);
+    textAlign(CENTER);
+    text("SHOP", width-shopLength+shopLength/2, 150);
+    textAlign(LEFT);
+    text(money, width-shopLength+shopLength/3, 210);
+    textAlign(CENTER);
     for (int i = 0; i < 9; i++) {
       fill(0);
       stroke(0);

@@ -340,7 +340,8 @@ class LR2 extends LongRange {
         inScreen = false;
       }
       if (inScreen == true && !sound.flyBy.isPlaying()) {
-        sound.flyBy.play(1, 1);
+        sound.flyBy.amp(0.05);
+        sound.flyBy.play();
       }
     }
   }
