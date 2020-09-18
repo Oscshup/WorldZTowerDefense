@@ -362,15 +362,6 @@ class LR2 extends LongRange {
         placeable = true;
       }
     }
-    for (Tower t : listT) {
-      if (t.id != id) {
-        float distance = dist(t.location.x, t.location.y, location.x, location.y);
-        float minDist = t.size/2+size/2-15;
-        if (distance <= minDist) {
-          return false;
-        }
-      }
-    }
     if (location.x > m[levelNumber].xMax-25 || placeable == false) {
       return false;
     }
