@@ -44,7 +44,7 @@ class Shop {
     sp3.resize(50, 50);
     shopImg.resize(int(shopLength), height+off);
 
-    prices = new int[]{50, 500, 5000, 100, 1000, 10000, 10, 20, 1200};
+    prices = new int[]{50, 500, 10000, 100, 1000, 5000, 10, 20, 1200};
     for (int i = 0; i < b.length; i++) {
       b[i] = new Button(width-shopLength/5, 270+i*height/(100/7)-10, width-(width-shopLength/5), height/(100/7)-10, 15, 15, 15, 15, i);
     }

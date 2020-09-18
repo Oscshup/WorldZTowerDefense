@@ -120,9 +120,9 @@ void Start() {
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 8, 1.5*sqrt( (width*width) + (height*height)), 3000, false, true, totalTowers)); // Nummer 3
   totalTowers++;
-  listT.add(new LR2(explosionPlane, 1000, 100, new PVector(-10000, -10000), 20, 200, 200, false, true, totalTowers, 50, 800)); // Nummer 4
+  listT.add(new LR2(explosionPlane, 1000, 100, new PVector(-10000, -10000), 40, 200, 200, false, true, totalTowers, 50, 800)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(explosionRocket, 5000, 50, new PVector(-10000, -10000), 40, 1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 130)); // Nummer 5
+  listT.add(new LR3(explosionRocket, 5000, 50, new PVector(-10000, -10000), 70, 1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 130)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
