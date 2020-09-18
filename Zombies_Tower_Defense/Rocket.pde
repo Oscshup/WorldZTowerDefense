@@ -28,7 +28,7 @@ class Rocket {
     blastRadius = blastRadius_;
     fireRate = fireRate_;
     damage = damage_;
-    speed = 3;
+    speed = 5;
     s = s_;
     rocketImg.resize(int(50),int(50));
     for (int i = 0; i < listT.size(); i++) {

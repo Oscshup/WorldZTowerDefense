@@ -80,6 +80,12 @@ class Shop {
       b[i].display();
     }
   }
+
+  void sell() {
+    for (int i = 0; i < listT.size(); i++) {
+      listT.remove(i);
+    }
+  }
 }
 
 class Button {

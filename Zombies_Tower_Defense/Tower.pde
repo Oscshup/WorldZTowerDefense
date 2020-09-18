@@ -76,7 +76,7 @@ class Tower {
       pushMatrix();
       translate(location.x, location.y);
       turn(angle);
-      if(p == 10000){
+      if (p == 10000) {
         translate(-location.x, -location.y);
       }
       display();
@@ -103,7 +103,7 @@ class Tower {
         }
       }
     }
-    if(location.x > m[levelNumber].xMax-25){
+    if (location.x > m[levelNumber].xMax-25) {
       return false;
     }
     return true;
@@ -115,6 +115,14 @@ class Tower {
         placed = true;
         shop.money-=p;
         totalTowers++;
+      }
+    } else {
+      if (p == 1200) {
+        PVector locationTemp = new PVector(mouseX, mouseY);
+        boolean activeTemp = true;
+        boolean placedTemp = false;
+       listT.add(listT.get(int(random(0,6))).getInstance(locationTemp, activeTemp, placedTemp));
+        s.removeTower(id);
       }
     }
   }
@@ -200,7 +208,7 @@ class LR2 extends LongRange {
     imageMode(CENTER);
     image(shop.lr2, 0, 0);
   }
-  void turn(float angle){
+  void turn(float angle) {
     rotate(angle+PI/2);
   }
 
@@ -231,7 +239,7 @@ class LR3 extends LongRange {
     imageMode(CENTER);
     image(launcher, location.x, location.y);
     if (rocketActive == false && explosionActive == false) {
-      translate(location.x,location.y);
+      translate(location.x, location.y);
       rotate(-angle-PI/2);
       translate(-location.x, -location.y);
     } else {
@@ -401,14 +409,38 @@ class SP2 extends Special {
   }
 }
 class SP3 extends Special {
-  SP3(int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
+  PImage[] img;
+  int current = 0;
+
+
+
+  SP3(PImage[] sup_, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
+    img = sup_;
+    current = 0;
+    for (int i = 0; i < img.length; i++) {
+      img[i].resize(100, 100);
+    }
   }
+
   void display() {
     imageMode(CENTER);
-    image(shop.sp1, 0, 0);
+
+
+    if (placed == true) {
+      if (frameCount % 60 == 0) {
+        if (current < img.length-1) {
+          current++;
+        }
+      }
+      image(img[current], 0, 0);
+    } else {
+      current = 0;
+      image(img[current], 0, 0);
+    }
   }
+
   Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SP3(p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+    return new SP3(img, p, s, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }

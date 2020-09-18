@@ -22,8 +22,11 @@ int waveNumber;
 float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
+Loading l = new Loading();
+
 PImage[] sentrys = new PImage[4];
 PImage[] lives = new PImage[1];
+PImage[] supply = new PImage[4];
 
 void setup() {
   frameRate(60);
@@ -32,6 +35,10 @@ void setup() {
 }
 
 void Start() {
+  for (int i = 0; i < supply.length; i++) {
+    supply[i] = loadImage("sup" + i + ".png");
+  }
+  
   //Sentry animation
   for (int i = 0; i < sentrys.length; i++) {
     sentrys[i] = loadImage("Mini" + i + ".png");
@@ -80,7 +87,7 @@ void Start() {
   totalTowers++;
   listT.add(new SP2(20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
   totalTowers++;
-  listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
+  listT.add(new SP3(supply, 1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
   totalTowers++;
 
   p = new Player(startHealth, lives);
@@ -107,6 +114,10 @@ void mouseClicked() {
     }
     shop.onClick();
   }
+  
+  
+  //shop.sell();
+
 }
 
 void keyPressed() {

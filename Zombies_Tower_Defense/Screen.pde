@@ -121,6 +121,15 @@ class Screen {
     }
     textAlign(CENTER);
   }
+  
+  void removeTower(int idT){
+    for(int i = listT.size()-1; i >= 0; i--){
+      if(listT.get(i).id == idT){
+        listT.remove(i);
+        break;
+      }
+    }
+  }
 
   void spawnZombie(int zombieType) {
     if (screenNumber == 1) {
