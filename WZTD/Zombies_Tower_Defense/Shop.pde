@@ -46,7 +46,6 @@ class Shop {
 
     prices = new int[]{50, 500, 5000, 100, 1000, 10000, 10, 20, 1200};
     for (int i = 0; i < b.length; i++) {
-      println("HI");
       b[i] = new Button(width-shopLength/5, 270+i*height/(100/7)-10, width-(width-shopLength/5), height/(100/7)-10, 15, 15, 15, 15, i);
     }
   }

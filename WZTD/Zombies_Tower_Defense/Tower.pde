@@ -771,7 +771,6 @@ class SP3 extends Special {
       float distance = dist(mouseX, mouseY, location.x, location.y);
       if (distance < size/2 && menuActive == false) {
         if (current == 3) {
-          //println("HI");
           PVector locationTemp = new PVector(mouseX, mouseY);
           boolean activeTemp = true;
           boolean placedTemp = false;
