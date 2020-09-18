@@ -138,18 +138,20 @@ class Tower {
       }
     } else if (placed == true && active == true) {
       float distance = dist(mouseX, mouseY, location.x, location.y);
-      if (distance < size/2 && menuActive == false) {
-        for (int i = 0; i < listT.size(); i++) {
-          listT.get(i).menuActive = false;
-        }
-        menuActive = true;
-      } else if (distance < size/2 && menuActive == true) {
-        menuActive = false;
-      } else if (menuActive == true) {
-        if (mouseX > tm.buttonLocation.x-tm.buttonSize.x/2 && mouseX < tm.buttonLocation.x+tm.buttonSize.x && mouseY > tm.buttonLocation.y-tm.buttonSize.y/2 && mouseY < tm.buttonLocation.y+tm.buttonSize.y) {
+      if (p != listT.get(6).p && p != listT.get(7).p && p != listT.get(8).p) {
+        if (distance < size/2 && menuActive == false) {
+          for (int i = 0; i < listT.size(); i++) {
+            listT.get(i).menuActive = false;
+          }
+          menuActive = true;
+        } else if (distance < size/2 && menuActive == true) {
           menuActive = false;
-        } else {
-          tm.onClick();
+        } else if (menuActive == true) {
+          if (mouseX > tm.buttonLocation.x-tm.buttonSize.x/2 && mouseX < tm.buttonLocation.x+tm.buttonSize.x && mouseY > tm.buttonLocation.y-tm.buttonSize.y/2 && mouseY < tm.buttonLocation.y+tm.buttonSize.y) {
+            menuActive = false;
+          } else {
+            tm.onClick();
+          }
         }
       }
     }
