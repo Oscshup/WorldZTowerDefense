@@ -48,9 +48,7 @@ class Screen {
       gameScreen(level);
     } else if (screen == 2) {
       loseScreen();
-    } else if (screen == 3) {
-      winScreen();
-    }
+    } 
   }
 
 
@@ -74,6 +72,12 @@ class Screen {
     shop.display();
     p.update();
 
+    for (Tower t : listT) {
+      if (t.p == listT.get(6).p) {
+        t.update();
+        t.shoot();
+      }
+    }
 
     // Kills the zombies
 
@@ -120,10 +124,12 @@ class Screen {
       skillPointsEarned = 0;
     }
     for (int i = 0; i < listT.size(); i++) {
-      listT.get(i).update(); 
-      listT.get(i).shoot(); 
-      if (listT.get(i).menuActive == true) {
-        listT.get(i).drawMenu();
+      if (listT.get(i).p != listT.get(6).p) {
+        listT.get(i).update(); 
+        listT.get(i).shoot(); 
+        if (listT.get(i).menuActive == true) {
+          listT.get(i).drawMenu();
+        }
       }
     }
     fill(255); 
@@ -137,6 +143,15 @@ class Screen {
       text(timeToWaveText, m[levelNumber].xMax-180, height/2-280);
     }
     textAlign(CENTER);
+  }
+  
+  void removeTower(int idT){
+    for(int i = listT.size()-1; i >= 0; i--){
+      if(listT.get(i).id == idT){
+        listT.remove(i);
+        break;
+      }
+    }
   }
 
   void spawnZombie(int zombieType) {
@@ -195,23 +210,6 @@ class Screen {
     }
   }
 
-  void win() {
-    delay(500); 
-    screenNumber = 3;
-  }
-
-  void winScreen() {
-    background(255); 
-    textSize(50); 
-    String winText1 = "YOU WIN!"; 
-    String winText2 = "Click to go to menu!"; 
-    textAlign(CENTER); 
-    fill(0, 230, 0); 
-    text(winText1, width/2, height/2); 
-    fill(0); 
-    text(winText2, width/2, 100);
-  }
-
   void loseScreen() {
     background(0); 
     fill(255, 0, 0); 
@@ -222,5 +220,6 @@ class Screen {
     text(dieText, width/2, height/2); 
     fill(255); 
     text(restartText, width/2, 100);
+    text(highScoreText, width/2, height-100);
   }
 }

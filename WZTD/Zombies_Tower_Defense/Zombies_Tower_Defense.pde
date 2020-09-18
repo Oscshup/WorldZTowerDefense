@@ -30,6 +30,11 @@ PImage planeBomb;
 PImage[] explosionRocket = new PImage[12];
 PImage[] explosionPlane = new PImage[12];
 PImage[] explosionMine = new PImage[12];
+PImage[] supplyDropImg = new PImage[4];
+
+int highScore;
+String highScoreText;
+String[] highScoreLoad;
 
 void setup() {
   frameRate(60);
@@ -39,13 +44,23 @@ void setup() {
 }
 
 void Start() {
-  //Sentry animation
+  // Highscore
+  highScoreLoad = loadStrings("HighScore.txt");
+  highScore = int(highScoreLoad[0]);
+  
+  
+  for (int i = 0; i < supplyDropImg.length; i++) {
+    supplyDropImg[i] = loadImage("sup" + i + ".png");
+  }
+
   for (int i = 0; i < explosionRocket.length; i++) {
     explosionRocket[i] = loadImage("explosion" + i + ".png");
     explosionPlane[i] = loadImage("explosion" + i + ".png");
     explosionMine[i] = loadImage("explosion" + i + ".png");
   }
-  planeBomb.resize(50, 50);
+
+  //planeBomb.resize(50, 50);
+
   for (int i = 0; i < sentrys.length; i++) {
     sentrys[i] = loadImage("Mini" + i + ".png");
   }
@@ -94,7 +109,7 @@ void Start() {
   totalTowers++;
   listT.add(new SP2(explosionMine, 20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
   totalTowers++;
-  listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
+  listT.add(new SP3(supplyDropImg, 1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
   totalTowers++;
 
   p = new Player(startHealth, lives);
@@ -117,12 +132,15 @@ void mouseClicked() {
       }
     }
   } else if (screenNumber == 1) {
-    if(listT.get(listT.size()-1).placed == true){
-      for (int i = 0; i < listT.size(); i++) {
+    for (int i = 9; i < listT.size(); i++) {
+      if (listT.get(i).p != listT.get(8).p) {
         listT.get(i).onClick();
       }
-    } else {
-      listT.get(listT.size()-1).onClick();
+    }
+    for (int i = 9; i < listT.size(); i++) {
+      if (listT.get(i).p == listT.get(8).p) {
+        listT.get(i).onClick();
+      }
     }
     shop.onClick();
   }
