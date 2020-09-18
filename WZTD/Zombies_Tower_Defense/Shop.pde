@@ -123,20 +123,32 @@ class Button {
 
   void onClick() {
     boolean shopReady = true;
-    for(Tower t : listT){
-      if(t.placed == false){
+    for (Tower t : listT) {
+      if (t.placed == false) {
         shopReady = false;
         break;
       }
     }
     if (shop.money >= listT.get(id).p && shopReady == true) {
       if (mouseX >= x-w/2 && mouseX <= x+w/2 && mouseY >= y-h/2 && mouseY <= y+h/2) {
+
         PVector locationTemp = new PVector(mouseX, mouseY);
         boolean activeTemp = true;
         boolean placedTemp = false;
-        listT.add(listT.get(id).getInstance(locationTemp, activeTemp, placedTemp));
-        listT.get(listT.size()-1).createMenu();
-        println("BUY ID: " + listT.get(listT.size()-1).id);
+        Tower t = listT.get(id).getInstance(1, locationTemp, activeTemp, placedTemp);
+        boolean buyable = true;
+        if (t.p == listT.get(8).p) {
+          for (int i = 9; i < listT.size(); i++) {
+            if (listT.get(i).p == t.p) {
+              buyable = false;
+              break;
+            }
+          }
+        }
+        if (buyable == true) {
+          listT.add(t);
+          t.createMenu();
+        }
       }
     }
   }

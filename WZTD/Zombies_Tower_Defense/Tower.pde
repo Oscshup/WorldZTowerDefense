@@ -42,9 +42,11 @@ class Tower {
     tm = new TowerMenu(sellPrice, id, damage, range, fireRate, 0);
   }
 
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-
-    return new Tower(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new Tower(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 
   void update() {
@@ -89,9 +91,6 @@ class Tower {
       pushMatrix();
       translate(location.x, location.y);
       turn(angle);
-      if (p == 10000) {
-        translate(-location.x, -location.y);
-      }
       display();
       popMatrix();
     }
@@ -132,7 +131,6 @@ class Tower {
 
   void onClick() {
     if (placed == false) {
-      println("HI");
       if (checkLocation() == true) {
         placed = true;
         shop.money-=p;
@@ -153,15 +151,6 @@ class Tower {
         } else {
           tm.onClick();
         }
-      }
-    } else {
-      if (p == 1200) {
-        //println("HI");
-        PVector locationTemp = new PVector(mouseX, mouseY);
-        boolean activeTemp = true;
-        boolean placedTemp = false;
-        listT.add(listT.get(int(random(0, 6))).getInstance(locationTemp, activeTemp, placedTemp));
-        s.removeTower(id);
       }
     }
   }
@@ -224,8 +213,11 @@ class LongRange extends Tower {
     point(location.x, location.y);
   }
 
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new Tower(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new Tower(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 
@@ -239,12 +231,16 @@ class LR1 extends LongRange {
     image(shop.lr1, 0, 0);
   }
 
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new LR1(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new LR1(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 
-class LR2 extends LongRange {   
+class LR2 extends LongRange {
+
   float angle = 0;
   float speed = 5;
   PImage plane;
@@ -261,8 +257,6 @@ class LR2 extends LongRange {
 
   LR2(PImage[] explosionsImg_, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float blastRadius_, float distanceLap_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
-
-
     blastRadius = blastRadius_;
     distanceLap = distanceLap_;
     velocity = new PVector(0, 0);
@@ -334,7 +328,7 @@ class LR2 extends LongRange {
     }
   }
   void shoot() {
-    if (placed == true && active == true)
+    if (placed == true && active == true) {
       if (location.x < m[levelNumber].xMax && location.x > m[levelNumber].xStart && location.y < m[levelNumber].yMax && location.y > m[levelNumber].yStart) {
         inScreen = true;
         if (timerFireRate.isFinished()) {
@@ -343,13 +337,11 @@ class LR2 extends LongRange {
           timerFireRate.start(int(fireRate));
         }
       } else {
-        println("s");
         inScreen = false;
       }
-    if (inScreen == true && !sound.flyBy.isPlaying()) {
-      sound.flyBy.play(1, 1);
-      //  } else if (inScreen == false){
-      //  sound.flyBy.stop();
+      if (inScreen == true && !sound.flyBy.isPlaying()) {
+        sound.flyBy.play(1, 1);
+      }
     }
   }
   void removeBomb(int idB) {
@@ -386,8 +378,11 @@ class LR2 extends LongRange {
     image(plane, 0, 0, size, size);
   }
 
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new LR2(explosionsImg, p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius, distanceLap );
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new LR2(explosionsImg, priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius, distanceLap);
   }
 }
 
@@ -421,13 +416,11 @@ class LR3 extends LongRange {
   }
   void display() {
     imageMode(CENTER);
-    image(launcher, location.x, location.y);
+    image(launcher, 0, 0);
     if (rocketActive == false && explosionActive == false) {
-      translate(location.x, location.y);
       rotate(-angle-PI/2);
       translate(-location.x, -location.y);
     } else {
-      translate(location.x, location.y);
       rotate(-lockAngle-PI/2);
       translate(-location.x, -location.y);
     }
@@ -475,8 +468,11 @@ class LR3 extends LongRange {
     }
   }
 
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new LR3(images, p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new LR3(images, priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers, blastRadius);
   }
 }
 
@@ -487,8 +483,11 @@ class ShortRange extends Tower {
   void display() {
     point(location.x, location.y);
   }
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new Tower(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new Tower(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 
@@ -500,8 +499,11 @@ class SR1 extends ShortRange {
     imageMode(CENTER);
     image(shop.sr1, 0, 0);
   }
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SR1(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new SR1(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 class SR2 extends ShortRange {
@@ -512,8 +514,11 @@ class SR2 extends ShortRange {
     imageMode(CENTER);
     image(shop.sr2, 0, 0);
   }
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SR2(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new SR2(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 class SR3 extends ShortRange {
@@ -542,8 +547,6 @@ class SR3 extends ShortRange {
     if (shooting == true) {
       image(images[current], 0, 0);
       current++;
-
-
       if (current >= 4) {
         current = 0;
       }
@@ -554,8 +557,11 @@ class SR3 extends ShortRange {
     popMatrix();
   }
 
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SR3(images, p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new SR3(images, priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 
@@ -566,8 +572,11 @@ class Special extends Tower {
   void display() {
     point(location.x, location.y);
   }
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new Tower(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new Tower(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 
@@ -630,10 +639,15 @@ class SP1 extends Special {
       }
     }
   }
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SP1(p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new SP1(priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
+
 class SP2 extends Special {
   PImage[] images;
   int current = 0;
@@ -715,8 +729,12 @@ class SP2 extends Special {
       }
     }
   }
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SP2(images, p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new SP2(images, priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }
 
@@ -733,6 +751,30 @@ class SP3 extends Special {
     }
   }
 
+  void onClick() {
+    if (placed == false) {
+      if (checkLocation() == true) {
+        placed = true;
+        shop.money-=p;
+        totalTowers++;
+      }
+    } else if (placed == true && active == true) {
+      float distance = dist(mouseX, mouseY, location.x, location.y);
+      if (distance < size/2 && menuActive == false) {
+        if (current == 3) {
+          //println("HI");
+          PVector locationTemp = new PVector(mouseX, mouseY);
+          boolean activeTemp = true;
+          boolean placedTemp = false;
+          int priceTemp = 0;
+          listT.add(listT.get(int(random(0, 6))).getInstance(priceTemp, locationTemp, activeTemp, placedTemp));
+          listT.get(listT.size()-1).createMenu();
+          s.removeTower(id);
+        }
+      }
+    }
+  }
+
   void createMenu() {
   }
   void drawMenu() {
@@ -740,7 +782,6 @@ class SP3 extends Special {
 
   void display() {
     imageMode(CENTER);
-
 
     if (placed == true) {
       if (frameCount % 60 == 0) {
@@ -755,7 +796,10 @@ class SP3 extends Special {
     }
   }
 
-  Tower getInstance(PVector locationNew, boolean activeNew, boolean placedNew) {
-    return new SP3(img, p, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
+  Tower getInstance(int priceNew, PVector locationNew, boolean activeNew, boolean placedNew) {
+    if (priceNew == 1) {
+      priceNew = p;
+    }
+    return new SP3(img, priceNew, size, locationNew, damage, range, fireRate, activeNew, placedNew, totalTowers);
   }
 }

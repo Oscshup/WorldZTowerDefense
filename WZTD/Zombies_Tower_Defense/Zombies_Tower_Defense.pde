@@ -1,7 +1,5 @@
-import processing.sound.*;
-
+import processing.sound.*; // Installér library "Sound", som er lavet af Processing Foundation
 Sound sound;
-
 
 int startMoney = 100000;
 float pathWidth;
@@ -37,15 +35,30 @@ PImage[] explosionPlane = new PImage[12];
 PImage[] explosionMine = new PImage[12];
 PImage[] supplyDropImg = new PImage[4];
 
+int highScore;
+String highScoreText;
+String[] highScoreLoad;
+
+Loading l = new Loading();
+boolean timeCountdown;
+float timeLoading;
+
 void setup() {
   frameRate(60);
   size(1200, 700);
   planeBomb = loadImage("Bomb.png");
   sound = new Sound(this);
+  l.startL(); 
   Start();
 }
 
 void Start() {
+  // Highscore
+
+
+  highScoreLoad = loadStrings("HighScore.txt");
+  highScore = int(highScoreLoad[0]);
+
   for (int i = 0; i < supplyDropImg.length; i++) {
     supplyDropImg[i] = loadImage("sup" + i + ".png");
   }
@@ -70,6 +83,8 @@ void Start() {
   for (int i = listZ.size()-1; i >= 0; i--) {
     listZ.remove(i);
   }
+  timeCountdown = false;
+  timeLoading = 500;
   skillPoints = 10000;
   totalTowers = 0;
   totalZombies = 0;
@@ -113,14 +128,13 @@ void Start() {
 }
 
 void draw() {
- 
   s.update(screenNumber, levelNumber);
 }
 
 void mouseClicked() {
-  if (screenNumber == 2 || screenNumber == 3) {
-    s.loading = true;
-    Start();
+  if (screenNumber == 2) {
+    timeCountdown = true;
+    screenNumber = 3;
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
       int tempLevel = sb[i].clicked();
@@ -130,12 +144,15 @@ void mouseClicked() {
       }
     }
   } else if (screenNumber == 1) {
-    if (listT.get(listT.size()-1).placed == true) {
-      for (int i = 0; i < listT.size(); i++) {
+    for (int i = 9; i < listT.size(); i++) {
+      if (listT.get(i).p != listT.get(8).p) {
         listT.get(i).onClick();
       }
-    } else {
-      listT.get(listT.size()-1).onClick();
+    }
+    for (int i = 9; i < listT.size(); i++) {
+      if (listT.get(i).p == listT.get(8).p) {
+        listT.get(i).onClick();
+      }
     }
     shop.onClick();
   }

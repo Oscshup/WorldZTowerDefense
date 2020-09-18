@@ -16,7 +16,6 @@ class Player {
 
   void update() {
     live();
-    health-=0;
     if (health <= 0) {
       die();
     }
@@ -24,6 +23,15 @@ class Player {
 
   void die() {
     screenNumber = 2;
+    if(waveNumber > highScore){
+      highScore = waveNumber;
+      highScoreText = "New HighScore: " + highScore;
+    }  else {
+      highScoreText = "New HighScore: " + highScore;
+    }
+    String[] highScoreList = new String[1];
+    highScoreList[0] = str(highScore);
+    saveStrings("HighScore.txt", highScoreList);
   }
 
 
