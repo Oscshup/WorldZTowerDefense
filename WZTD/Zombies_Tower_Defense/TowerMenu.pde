@@ -114,7 +114,7 @@ class TowerMenu {
           if (mouseX >= upgradeButtonLocation[i].x - upgradeButtonSize[i].x && mouseX <= upgradeButtonLocation[i].x + upgradeButtonSize[i].x) {
             if (mouseY >= upgradeButtonLocation[i].y - upgradeButtonSize[i].y && mouseX <= upgradeButtonLocation[i].y + upgradeButtonSize[i].y) {
               skillPoints-=cost[i];
-              cost[i]*=2;
+              cost[i]*=1.25;
               sellPrice+=cost[i]*10;
               if (i == 0) {
                 upgrades[i]*=damageIncrease;

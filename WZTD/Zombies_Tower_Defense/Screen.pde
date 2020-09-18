@@ -99,7 +99,7 @@ class Screen {
       waveNumber++;
       if (waveNumber > waves.length) {
         wRandom = new ArrayList<PVector>();
-        int l = int(random(waveNumber*3, waveNumber*4));
+        int l = int(random(waveNumber*3, waveNumber*7));
         for (int i = 0; i < l; i++) {
           wRandom.add(new PVector(int(random(1, 6)), int(random(300, 1500))));
         }
