@@ -37,7 +37,7 @@ class Screen {
     } else if (screen == 2) {
       loseScreen();
     } else if (screen == 3) {
-      winScreen();
+      loadingScreen();
     }
   }
 
@@ -123,7 +123,7 @@ class Screen {
   }
   
   void removeTower(int idT){
-    for(int i = listT.size()-1; i >= 0; i--){
+    for(int i = listT.size()-1; i >= 0; i--){ //<>//
       if(listT.get(i).id == idT){
         listT.remove(i);
         break;
@@ -187,8 +187,8 @@ class Screen {
     screenNumber = 3;
   }
 
-  void winScreen() {
-    background(255);
+  void loadingScreen() {
+    l.display();
     textSize(50);
     String winText1 = "YOU WIN!";
     String winText2 = "Click to go to menu!";
@@ -210,4 +210,6 @@ class Screen {
     fill(255);
     text(restartText, width/2, 100);
   }
+  
+  
 }

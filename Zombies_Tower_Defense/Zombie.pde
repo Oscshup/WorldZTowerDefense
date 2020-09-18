@@ -4,7 +4,7 @@ class Zombie {
   PVector velocity;
   float health;
   float startHealth;
-  float speed;
+  float speed = 500;
   float damage;
   float dirX;
   float dirY;
@@ -22,7 +22,7 @@ class Zombie {
   PVector target = new PVector(0, 0);
 
   Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
-    speed = speed_;
+    //speed = speed_;
     deathPrice = deathPrice_;
     id = id_;
     dia = dia_;

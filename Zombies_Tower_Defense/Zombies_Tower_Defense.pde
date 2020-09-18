@@ -32,6 +32,7 @@ void setup() {
   frameRate(60);
   size(1200, 700);
   Start();
+  l.startL();
 }
 
 void Start() {
@@ -56,7 +57,7 @@ void Start() {
   totalZombies = 0;
   totalBullets = 0;
   levelNumber = 0;
-  startHealth = 500;
+  startHealth = 1;
   waveNumber = 0;
   screenNumber = 0;
   shopLength = 300;
@@ -98,7 +99,9 @@ void draw() {
 }
 
 void mouseClicked() {
-  if (screenNumber == 2 || screenNumber == 3) {
+  if (screenNumber == 2){
+    screenNumber = 3;
+  } else if(screenNumber == 3) {
     Start();
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
