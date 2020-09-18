@@ -1,3 +1,8 @@
+import processing.sound.*;
+
+Sound sound;
+
+
 int startMoney = 100000;
 float pathWidth;
 int levelsTotal = 3;
@@ -18,6 +23,8 @@ int screenNumber;
 int startHealth;
 PImage[] levelImages = new PImage[levelsTotal+1];
 
+int skillPoints;
+
 int waveNumber;
 float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
@@ -28,39 +35,47 @@ PImage planeBomb;
 PImage[] explosionRocket = new PImage[12];
 PImage[] explosionPlane = new PImage[12];
 PImage[] explosionMine = new PImage[12];
+PImage[] supplyDropImg = new PImage[4];
 
 void setup() {
   frameRate(60);
   size(1200, 700);
   planeBomb = loadImage("Bomb.png");
+  sound = new Sound(this);
   Start();
 }
 
 void Start() {
-  //Sentry animation
-  for(int i = 0; i < explosionRocket.length; i++){
+  for (int i = 0; i < supplyDropImg.length; i++) {
+    supplyDropImg[i] = loadImage("sup" + i + ".png");
+  }
+
+  for (int i = 0; i < explosionRocket.length; i++) {
     explosionRocket[i] = loadImage("explosion" + i + ".png");
     explosionPlane[i] = loadImage("explosion" + i + ".png");
     explosionMine[i] = loadImage("explosion" + i + ".png");
   }
-  planeBomb.resize(50,50);
+
+  //planeBomb.resize(50, 50);
+
   for (int i = 0; i < sentrys.length; i++) {
     sentrys[i] = loadImage("Mini" + i + ".png");
   }
-  
+
   lives[0] = loadImage("Heart.png");
-  
+
   for (int i = listT.size()-1; i >= 0; i--) {
     listT.remove(i);
   }
   for (int i = listZ.size()-1; i >= 0; i--) {
     listZ.remove(i);
   }
+  skillPoints = 10000;
   totalTowers = 0;
   totalZombies = 0;
   totalBullets = 0;
   levelNumber = 0;
-  startHealth = 500;
+  startHealth = 100;
   waveNumber = 0;
   screenNumber = 0;
   shopLength = 300;
@@ -83,15 +98,15 @@ void Start() {
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 5000, false, true, totalTowers)); // Nummer 3
   totalTowers++;
-  listT.add(new LR2(explosionPlane, 1000, 100, new PVector(-10000, -10000), 20, 200, 200, false, true, totalTowers, 50)); // Nummer 4
+  listT.add(new LR2(explosionPlane, 1000, 100, new PVector(-10000, -10000), 20, 200, 200, false, true, totalTowers, 50, 800)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(explosionRocket, 10000, 50, new PVector(-10000, -10000), 50,  1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 150)); // Nummer 5
+  listT.add(new LR3(explosionRocket, 10000, 50, new PVector(-10000, -10000), 50, 1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 150)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
   listT.add(new SP2(explosionMine, 20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
   totalTowers++;
-  listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
+  listT.add(new SP3(supplyDropImg, 1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
   totalTowers++;
 
   p = new Player(startHealth, lives);
@@ -103,6 +118,7 @@ void draw() {
 
 void mouseClicked() {
   if (screenNumber == 2 || screenNumber == 3) {
+    s.loading = true;
     Start();
   } else if (screenNumber == 0) {
     for (int i = 0; i < sb.length; i++) {
@@ -113,7 +129,11 @@ void mouseClicked() {
       }
     }
   } else if (screenNumber == 1) {
-    if (listT.get(listT.size()-1).placed == false) {
+    if (listT.get(listT.size()-1).placed == true) {
+      for (int i = 0; i < listT.size(); i++) {
+        listT.get(i).onClick();
+      }
+    } else {
       listT.get(listT.size()-1).onClick();
     }
     shop.onClick();

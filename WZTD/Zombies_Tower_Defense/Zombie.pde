@@ -13,6 +13,7 @@ class Zombie {
   float distanceTravelled = 0;
   int id;
   int deathPrice;
+  int deathSkillPoints;
   float dia;
   
   boolean slowed = false;
@@ -22,9 +23,10 @@ class Zombie {
   int checkpointLength;
   PVector target = new PVector(0, 0);
 
-  Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+  Zombie(int deathPrice_, int deathSkillPoints_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
     speed = speed_;
     deathPrice = deathPrice_;
+    deathSkillPoints = deathSkillPoints_;
     id = id_;
     dia = dia_;
     location = new PVector(x_, y_);
@@ -51,6 +53,7 @@ class Zombie {
     checkDead();
     p.health -= damage;
     health = 0;
+    s.skillPointsEarned-=deathSkillPoints;
   }
 
   void displayHealth() {
@@ -80,6 +83,7 @@ class Zombie {
         }
       }
       s.dieZombies(id, deathPrice);
+      s.skillPointsEarned+=deathSkillPoints;
     }
   }
 
@@ -123,8 +127,8 @@ class Zombie {
 class Normal_Zombie extends Zombie {
 
   PImage  zNormal;
-  Normal_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
-    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+  Normal_Zombie(int deathPrice_, int deathSkillPoints_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, deathSkillPoints_, x_, y_, dia_, health_, damage_, speed_, id_);
     zNormal = loadImage("zNormal.png");
     zNormal.resize(int(dia), int(dia));
   }
@@ -144,8 +148,8 @@ class Normal_Zombie extends Zombie {
 class Fast_Zombie extends Zombie {
 
   PImage  zFast;
-  Fast_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
-    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+  Fast_Zombie(int deathPrice_, int deathSkillPoints_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, deathSkillPoints_, x_, y_, dia_, health_, damage_, speed_, id_);
     zFast = loadImage("zHurtig.png");
     zFast.resize(int(dia), int(dia));
   }
@@ -164,8 +168,8 @@ class Fast_Zombie extends Zombie {
 class Tank_Zombie extends Zombie {
 
   PImage  zTank;
-  Tank_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
-    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+  Tank_Zombie(int deathPrice_, int deathSkillPoints_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, deathSkillPoints_, x_, y_, dia_, health_, damage_, speed_, id_);
     zTank = loadImage("zTank.png");
     zTank.resize(int(dia), int(dia));
   }
@@ -184,8 +188,8 @@ class Tank_Zombie extends Zombie {
 class MiniBoss_Zombie extends Zombie {
 
   PImage  zMiniBoss;
-  MiniBoss_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
-    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+  MiniBoss_Zombie(int deathPrice_, int deathSkillPoints_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, deathSkillPoints_, x_, y_, dia_, health_, damage_, speed_, id_);
     zMiniBoss = loadImage("zMiniBoss.png");
     zMiniBoss.resize(int(dia), int(dia)*2);
   }
@@ -204,8 +208,8 @@ class MiniBoss_Zombie extends Zombie {
 class Boss_Zombie extends Zombie {
 
   PImage  zBoss;
-  Boss_Zombie(int deathPrice_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
-    super(deathPrice_, x_, y_, dia_, health_, damage_, speed_, id_);
+  Boss_Zombie(int deathPrice_, int deathSkillPoints_, float x_, float y_, float dia_, float health_, float damage_, float speed_, int id_) {
+    super(deathPrice_, deathSkillPoints_, x_, y_, dia_, health_, damage_, speed_, id_);
     zBoss = loadImage("zBoss.png");
     zBoss.resize(int(dia)*2, int(dia)*2);
   }

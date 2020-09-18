@@ -135,6 +135,8 @@ class Button {
         boolean activeTemp = true;
         boolean placedTemp = false;
         listT.add(listT.get(id).getInstance(locationTemp, activeTemp, placedTemp));
+        listT.get(listT.size()-1).createMenu();
+        println("BUY ID: " + listT.get(listT.size()-1).id);
       }
     }
   }
