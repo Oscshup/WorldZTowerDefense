@@ -10,8 +10,6 @@ class Screen {
 
   boolean zombieDead = false;
 
-  boolean loading = false;
-
   int skillPointsEarned = 0;
 
   ArrayList<PVector> wRandom;
@@ -36,11 +34,15 @@ class Screen {
   }
 
   void update(int screen, int level) {
-    if (loading == true) {
-      fill(0);
-      textSize(40);
-      textAlign(CENTER);
-      text("Loading...", width/2, height/2+150);
+    if (timeCountdown == true) {
+      timeLoading--;
+      if (timeLoading <= 0) {
+
+        if (screenNumber == 3) {
+          screenNumber = 0;
+          Start();
+        }
+      }
     }
     if (screen == 0) {
       startScreen();
@@ -48,7 +50,9 @@ class Screen {
       gameScreen(level);
     } else if (screen == 2) {
       loseScreen();
-    } 
+    } else if (screen == 3) {
+      loadingScreen();
+    }
   }
 
 
@@ -144,10 +148,10 @@ class Screen {
     }
     textAlign(CENTER);
   }
-  
-  void removeTower(int idT){
-    for(int i = listT.size()-1; i >= 0; i--){
-      if(listT.get(i).id == idT){
+
+  void removeTower(int idT) {
+    for (int i = listT.size()-1; i >= 0; i--) {
+      if (listT.get(i).id == idT) {
         listT.remove(i);
         break;
       }
@@ -208,6 +212,16 @@ class Screen {
       waveActive = false; 
       zombieNumber = 0;
     }
+  }
+  
+  void loadingScreen() {
+    l.display();
+    textSize(50);
+    String loseText = "YOU DESTROYED HUMANITY!";
+    
+    textAlign(CENTER);
+    fill(random(200,255),0,0);
+    text(loseText, width/2, height/2);
   }
 
   void loseScreen() {

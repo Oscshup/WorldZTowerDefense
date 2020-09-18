@@ -253,6 +253,8 @@ class LR2 extends LongRange {
   ArrayList<PlaneBomb> listPB = new ArrayList<PlaneBomb>();
   PImage[] explosionsImg;
 
+  boolean inScreen = false;
+
   LR2(PImage[] explosionsImg_, int p_, float s_, PVector location_, float damage_, float range_, float fireRate_, boolean active_, boolean placed_, int id_, float blastRadius_, float distanceLap_) {
     super(p_, s_, location_, damage_, range_, fireRate_, active_, placed_, id_);
     blastRadius = blastRadius_;
@@ -326,14 +328,21 @@ class LR2 extends LongRange {
     }
   }
   void shoot() {
-    if (placed == true && active == true)
+    if (placed == true && active == true) {
       if (location.x < m[levelNumber].xMax && location.x > m[levelNumber].xStart && location.y < m[levelNumber].yMax && location.y > m[levelNumber].yStart) {
+        inScreen = true;
         if (timerFireRate.isFinished()) {
           listPB.add(new PlaneBomb(location, velocity, explosionsImg, totalBombs, id, angle, blastRadius, damage));
           totalBombs++;
           timerFireRate.start(int(fireRate));
         }
+      } else {
+        inScreen = false;
       }
+      if (inScreen == true && !sound.flyBy.isPlaying()) {
+        sound.flyBy.play(1, 1);
+      }
+    }
   }
   void removeBomb(int idB) {
     for (int i = listPB.size()-1; i >= 0; i--) {
