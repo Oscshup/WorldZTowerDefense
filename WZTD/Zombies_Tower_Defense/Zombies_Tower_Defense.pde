@@ -58,12 +58,12 @@ void Start() {
   for (int i = listZ.size()-1; i >= 0; i--) {
     listZ.remove(i);
   }
-  skillPoints = 1000;
+  skillPoints = 10000;
   totalTowers = 0;
   totalZombies = 0;
   totalBullets = 0;
   levelNumber = 0;
-  startHealth = 500;
+  startHealth = 100;
   waveNumber = 0;
   screenNumber = 0;
   shopLength = 300;

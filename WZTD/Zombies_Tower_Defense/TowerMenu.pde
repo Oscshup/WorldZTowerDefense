@@ -12,7 +12,7 @@ class TowerMenu {
   int blastRadiusLevel = 1;
   float[] upgrades;
   int[] cost;
-  float boxW = 150;
+  float boxW = 160;
   float boxH = (m[levelNumber].yMax-m[levelNumber].yStart)/5-20-20;
 
   float damageIncrease = 1.5;
