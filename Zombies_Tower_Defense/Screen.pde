@@ -190,13 +190,16 @@ class Screen {
   void loadingScreen() {
     l.display();
     textSize(50);
-    String winText1 = "YOU WIN!";
-    String winText2 = "Click to go to menu!";
+    String winText1 = "Click here to save the HUMANITY!!";
+    String winText2 = "YOU DESTORY THE HUMANITY!\nSO GO BACK NOW!\nTRY SAVE HUNAMITY AGAIN ";
+    
     textAlign(CENTER);
-    fill(0, 230, 0);
-    text(winText1, width/2, height/2);
-    fill(0);
-    text(winText2, width/2, 100);
+    fill(random(100,200), 0, 0);
+    text(winText1, width/2, height-100);
+    fill(random(200,255),0,0);
+    text(winText2, width/2, height/2);
+    
+    
   }
 
   void loseScreen() {

@@ -5,7 +5,7 @@ int levelNumber;
 int totalTowers;
 int totalZombies;
 int totalBullets;
-int timeBetweenWaves = 10000;
+int timeBetweenWaves = 100;
 Timer timer = new Timer();
 Map[] m = new Map[levelsTotal+1];
 Screen s;
@@ -22,11 +22,13 @@ int waveNumber;
 float shopLength;
 StartButtons[] sb = new StartButtons[levelsTotal+1];
 
-Loading l = new Loading();
-
 PImage[] sentrys = new PImage[4];
 PImage[] lives = new PImage[1];
 PImage[] supply = new PImage[4];
+
+Loading l = new Loading();
+boolean timeCountdown;
+float timeLoading;
 
 void setup() {
   frameRate(60);
@@ -39,20 +41,22 @@ void Start() {
   for (int i = 0; i < supply.length; i++) {
     supply[i] = loadImage("sup" + i + ".png");
   }
-  
+
   //Sentry animation
   for (int i = 0; i < sentrys.length; i++) {
     sentrys[i] = loadImage("Mini" + i + ".png");
   }
-  
+
   lives[0] = loadImage("Heart.png");
-  
+
   for (int i = listT.size()-1; i >= 0; i--) {
     listT.remove(i);
   }
   for (int i = listZ.size()-1; i >= 0; i--) {
     listZ.remove(i);
   }
+  timeCountdown = false;
+  timeLoading = 1000;
   totalTowers = 0;
   totalZombies = 0;
   totalBullets = 0;
@@ -82,7 +86,7 @@ void Start() {
   totalTowers++;
   listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 20, 200, 2, false, true, totalTowers)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50,  1.5*sqrt( (width*width) + (height*height)), 10, false, true, totalTowers, 150)); // Nummer 5
+  listT.add(new LR3(10000, 50, new PVector(-10000, -10000), 50, 1.5*sqrt( (width*width) + (height*height)), 10, false, true, totalTowers, 150)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
@@ -96,14 +100,28 @@ void Start() {
 
 void draw() {
   s.update(screenNumber, levelNumber);
+
+  if (timeCountdown == true) {
+    timeLoading--;
+    if (timeLoading == 0) {
+
+      if (screenNumber == 3) {
+        screenNumber = 0;
+        Start();
+      }
+    }
+    println(timeLoading);
+  }
 }
 
 void mouseClicked() {
-  if (screenNumber == 2){
+
+  if (screenNumber == 2) {
+    timeCountdown = true;
     screenNumber = 3;
-  } else if(screenNumber == 3) {
-    Start();
-  } else if (screenNumber == 0) {
+  }
+  if (screenNumber == 0) {
+
     for (int i = 0; i < sb.length; i++) {
       int tempLevel = sb[i].clicked();
       if (tempLevel != 0) {
@@ -117,10 +135,9 @@ void mouseClicked() {
     }
     shop.onClick();
   }
-  
-  
-  //shop.sell();
 
+
+  //shop.sell();
 }
 
 void keyPressed() {

@@ -1,6 +1,6 @@
 class Loading {
-  int num = 8;
-  float scl = 1;
+  int num = 10;
+  float scl = 2;
   float[] l = new float[num];
   float  lSize, lMaxSize = 80*scl;
   float posX = width*2, posY = height*2;
