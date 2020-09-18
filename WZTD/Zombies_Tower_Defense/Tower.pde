@@ -343,12 +343,13 @@ class LR2 extends LongRange {
           timerFireRate.start(int(fireRate));
         }
       } else {
-     // inScreen = false;
-    }
-    if (inScreen == true) {
-      sound.flyBy.play(1, 0.2);
-    } else if (inScreen == false){
-    //  sound.flyBy.stop();
+        println("s");
+        inScreen = false;
+      }
+    if (inScreen == true && !sound.flyBy.isPlaying()) {
+      sound.flyBy.play(1, 1);
+      //  } else if (inScreen == false){
+      //  sound.flyBy.stop();
     }
   }
   void removeBomb(int idB) {
@@ -541,6 +542,8 @@ class SR3 extends ShortRange {
     if (shooting == true) {
       image(images[current], 0, 0);
       current++;
+
+
       if (current >= 4) {
         current = 0;
       }
