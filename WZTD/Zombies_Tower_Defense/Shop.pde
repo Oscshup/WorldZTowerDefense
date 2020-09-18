@@ -5,6 +5,7 @@ class Shop {
   PImage sr2;
   PImage sr3;
   PImage lr1;
+  PImage lr2Shop;
   PImage lr2;
   PImage lr3;
   PImage sp1;  
@@ -29,7 +30,7 @@ class Shop {
     lr3 = loadImage("Missile.png");
     sp1 = loadImage("Olie.png");
     sp2 = loadImage("Mine.png");
-    sp3 = loadImage("supplyDropIcon.png");
+    sp3 = loadImage("supIcon.png");
 
     shopCoins.resize(50, 50);
     sr1.resize(50, 50);
@@ -121,7 +122,14 @@ class Button {
   }
 
   void onClick() {
-    if (shop.money >= listT.get(id).p) {
+    boolean shopReady = true;
+    for(Tower t : listT){
+      if(t.placed == false){
+        shopReady = false;
+        break;
+      }
+    }
+    if (shop.money >= listT.get(id).p && shopReady == true) {
       if (mouseX >= x-w/2 && mouseX <= x+w/2 && mouseY >= y-h/2 && mouseY <= y+h/2) {
         PVector locationTemp = new PVector(mouseX, mouseY);
         boolean activeTemp = true;

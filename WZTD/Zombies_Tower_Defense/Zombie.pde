@@ -15,6 +15,7 @@ class Zombie {
   int deathPrice;
   float dia;
   
+  boolean slowed = false;
   boolean dead = false;
 
   ArrayList<Checkpoint> checkpointList;

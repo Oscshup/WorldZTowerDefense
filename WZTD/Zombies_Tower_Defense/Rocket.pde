@@ -28,7 +28,7 @@ class Rocket {
     blastRadius = blastRadius_;
     fireRate = fireRate_;
     damage = damage_;
-    speed = 5;
+    speed = 3;
     s = s_;
     rocketImg.resize(int(50),int(50));
     for (int i = 0; i < listT.size(); i++) {
@@ -41,11 +41,10 @@ class Rocket {
     velocity = PVector.sub(target, location);
     velocity.setMag(speed);
     timer3.start(300);
-  
   }
 
   void update() {
-    if (stage == 0 && timer3.isFinished()) {
+    if (stage == 0 && frameCount % 60/fireRate == 0 && timer3.isFinished()) {
       stage = 1;
     } 
     if (stage == 1) {
@@ -70,7 +69,6 @@ class Rocket {
 
   void display() {
     imageMode(CENTER);
- 
     pushMatrix();
     translate(location.x, location.y);
     rotate(velocity.heading()+PI/2);

@@ -5,8 +5,6 @@ int levelNumber;
 int totalTowers;
 int totalZombies;
 int totalBullets;
-
-
 int timeBetweenWaves = 10000;
 Timer timer = new Timer();
 Map[] m = new Map[levelsTotal+1];
@@ -26,21 +24,28 @@ StartButtons[] sb = new StartButtons[levelsTotal+1];
 
 PImage[] sentrys = new PImage[4];
 PImage[] lives = new PImage[1];
-PImage[] explosion = new PImage[12];
+PImage planeBomb;
+PImage[] explosionRocket = new PImage[12];
+PImage[] explosionPlane = new PImage[12];
+PImage[] explosionMine = new PImage[12];
 
 void setup() {
   frameRate(60);
   size(1200, 700);
+  planeBomb = loadImage("Bomb.png");
   Start();
 }
 
 void Start() {
   //Sentry animation
+  for(int i = 0; i < explosionRocket.length; i++){
+    explosionRocket[i] = loadImage("explosion" + i + ".png");
+    explosionPlane[i] = loadImage("explosion" + i + ".png");
+    explosionMine[i] = loadImage("explosion" + i + ".png");
+  }
+  planeBomb.resize(50,50);
   for (int i = 0; i < sentrys.length; i++) {
     sentrys[i] = loadImage("Mini" + i + ".png");
-  }
-    for (int i = 0; i < explosion.length; i++) {
-    explosion[i] = loadImage("explosion" + i + ".png");
   }
   
   lives[0] = loadImage("Heart.png");
@@ -78,13 +83,13 @@ void Start() {
   totalTowers++;
   listT.add(new LR1(100, 50, new PVector(-10000, -10000), 4, 1.5*sqrt( (width*width) + (height*height)), 5000, false, true, totalTowers)); // Nummer 3
   totalTowers++;
-  listT.add(new LR2(1000, 50, new PVector(-10000, -10000), 20, 200,1000 , false, true, totalTowers)); // Nummer 4
+  listT.add(new LR2(explosionPlane, 1000, 100, new PVector(-10000, -10000), 20, 200, 200, false, true, totalTowers, 50)); // Nummer 4
   totalTowers++;
-  listT.add(new LR3(explosion,10000, 50, new PVector(-10000, -10000), 50,  1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 150)); // Nummer 5
+  listT.add(new LR3(explosionRocket, 10000, 50, new PVector(-10000, -10000), 50,  1.5*sqrt( (width*width) + (height*height)), 20000, false, true, totalTowers, 150)); // Nummer 5
   totalTowers++;
   listT.add(new SP1(10, 50, new PVector(-10000, -10000), 0, pathWidth, 0, false, true, totalTowers)); // Nummer 6
   totalTowers++;
-  listT.add(new SP2(explosion,20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
+  listT.add(new SP2(explosionMine, 20, 50, new PVector(-10000, -10000), 10, pathWidth*2, 0, false, true, totalTowers)); // Nummer 7
   totalTowers++;
   listT.add(new SP3(1200, 50, new PVector(-10000, -10000), 0, 0, 0, false, true, totalTowers)); // Nummer 8
   totalTowers++;

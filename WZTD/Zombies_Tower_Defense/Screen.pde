@@ -7,7 +7,7 @@ class Screen {
   ArrayList[] waves = new ArrayList[textTotal.length];
 
   boolean timerActive = false;
-  
+
   boolean zombieDead = false;
 
   Screen() {
@@ -62,7 +62,12 @@ class Screen {
     shop.display();
     p.update();
 
-
+    for (Tower t : listT) {
+      if (t.p == listT.get(6).p) {
+        t.update();
+        t.shoot();
+      }
+    }
     // Kills the zombies
 
     for (Bullet b : bullets) {  
@@ -106,8 +111,10 @@ class Screen {
       }
     }
     for (int i = 0; i < listT.size(); i++) {
-      listT.get(i).update();
-      listT.get(i).shoot();
+      if (listT.get(i).p != listT.get(6).p) {
+        listT.get(i).update();
+        listT.get(i).shoot();
+      }
     }
     fill(255);
     String waveText = "Wave number: " + waveNumber;
